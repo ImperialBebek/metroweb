@@ -230,6 +230,17 @@
   font-family: var(--font-semibold);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .alarms-switch-fill,
+  .alarms-switch-thumb {
+    transition: none;
+  }
+
+  .alarms-toast {
+    animation: none;
+  }
+}
+
 @keyframes alarms-toast-in {
   from {
     transform: perspective(1000px) rotateX(-90deg);

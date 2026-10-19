@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { prefersReducedMotion, swivel } from '../motion'
 import { useNavigation } from '../navigation'
 import { ACCENTS } from '../theme'
+import { useModal } from './modal'
 import { useTilt } from './useTilt'
 
 interface AccentPickerProps {
@@ -30,9 +31,9 @@ export function AccentPicker({ value, onPick, onClose, container }: AccentPicker
     swivel(el, 'out').finished.then(done)
   }
 
+  useModal(root, '[aria-checked="true"]')
   useLayoutEffect(() => {
     if (root.current && !prefersReducedMotion()) swivel(root.current, 'in')
-    root.current?.querySelector<HTMLButtonElement>('[aria-checked="true"]')?.focus({ preventScroll: true })
   }, [])
 
   const closeRef = useRef(close)
@@ -50,7 +51,7 @@ export function AccentPicker({ value, onPick, onClose, container }: AccentPicker
 
   if (!container) return null
   return createPortal(
-    <div className="full-picker" ref={root} role="dialog" aria-label="Accents">
+    <div className="full-picker" ref={root} role="dialog" aria-modal aria-label="Accents">
       <div className="full-picker-header">accents</div>
       <div className="accent-grid" role="radiogroup" aria-label="Accent color">
         {ACCENTS.map((accent, index) => (

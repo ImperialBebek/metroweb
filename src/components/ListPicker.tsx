@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useState, type ReactNode } from 'react'
-import { EXPO_OUT_6 } from '../motion'
+import { EXPO_OUT_6, prefersReducedMotion } from '../motion'
 import { useNavigation } from '../navigation'
 import { useTilt } from './useTilt'
 
@@ -60,6 +60,7 @@ export function ListPicker<T extends string | number>({
   const optionCount = options.length
   const expandRef = useCallback(
     (el: HTMLDivElement | null) => {
+      if (prefersReducedMotion()) return
       el?.animate([{ height: `${ITEM_HEIGHT}px` }, { height: `${optionCount * ITEM_HEIGHT}px` }], {
         duration: EXPAND_DURATION,
         easing: EXPO_OUT_6,

@@ -1,7 +1,7 @@
 # 13 · Web and accessibility deviations
 
 > **Status** Draft · **Baseline** Windows Phone 8.0 · **Last reviewed** 2026-10-19
-> **Code** [`src/App.tsx`](../../src/App.tsx) (history, keys, viewport), [`src/navigation.tsx`](../../src/navigation.tsx) (`inert` pages), [`src/motion.ts`](../../src/motion.ts) (`prefersReducedMotion`), [`src/index.css`](../../src/index.css) (focus style), [`src/theme.ts`](../../src/theme.ts)
+> **Code** [`src/App.tsx`](../../src/App.tsx) (history, keys, viewport), [`src/navigation.tsx`](../../src/navigation.tsx) (`inert` pages), [`src/components/modal.ts`](../../src/components/modal.ts) (popups), [`src/motion.ts`](../../src/motion.ts) (`prefersReducedMotion`), [`src/index.css`](../../src/index.css) (focus style), [`src/theme.ts`](../../src/theme.ts)
 > **Sources** Source review; contrast computed with the WCAG 2 formula from the palette in `theme.ts`
 
 [The phone wins](01-principles.md#rules-this-project-adds), except where a browser can't do what the phone does or where copying the phone would shut people out. This page lists both kinds of exception:
@@ -15,13 +15,14 @@
 |---|---|---|
 | Hardware or capacitive Back, Start and Search keys | The 8.1 on-screen [navigation bar](11-system-ui.md#navigation-bar), always shown | A browser has no keys below the screen |
 | Back key | Also browser Back and the Android back gesture, Escape, and Backspace when not typing. See [Browser and keyboard](08-navigation.md#browser-and-keyboard) | People expect browser Back to work; keyboard users need a Back key |
-| Search key opens Bing | Does nothing | Out of scope |
+| Search key opens Bing | Does nothing, and is `aria-disabled` | Out of scope |
 | Volume rocker | The desk's volume keys (at 1100 px and wider), **+** / **−** (also **=** / **_**), and the media volume keys | Phones' browsers don't pass the hardware keys to the page |
 | Tapping the system tray shows all its indicators | Opens the [volume band](11-system-ui.md#volume-band). In a home-screen web app, tapping the top safe area does the same | Otherwise the volume band can't be reached on a phone |
 | Touch only | Pointer events: mouse and pen drag pivots, panoramas and sliders, and tilt on press. Buttons also work from the keyboard | Desktop browsers |
 | Press and hold (context menus, moving tiles) | Not implemented | Not built yet |
 | The phone's on-screen keyboard and word suggestions | The device's own keyboard | A web page can't replace it |
 | Calculator and the phone keypad take taps only | Both also take typed digits (and Calculator, operators) | Keyboard users |
+| Pivots and panoramas move by swiping | Also by the left and right arrow keys: on a focused pivot header, or anywhere in a panorama outside a control that uses arrows. Focus follows to the new header | Keyboard users |
 
 ## Rendering
 
@@ -94,33 +95,31 @@ The phone's own answer was its ease of access settings (high contrast and text s
 ## What the recreation already does
 
 - Pages under the top one, unselected pivot items, panorama sections other than the current one, and the hidden Start pane are `inert` and `aria-hidden`.
-- Buttons get a 2 px dashed accent outline on keyboard focus (`button:focus-visible`). The looping selector, the speed dial and the alarm ringer's buttons have their own.
+- Popups (message boxes, full-screen popups, the accent picker, the alarm ringer) go through `useModal` in [`src/components/modal.ts`](../../src/components/modal.ts). While one is open, the running app, Start and any older popup are `inert`. Focus moves into the popup on open (a message box's first button, the current accent swatch, the ringer's dismiss, or a full-screen popup itself) and goes back on close to whatever had it. The navigation bar stays live, because Back has to work.
+- Every popup is a `dialog` or `alertdialog` with a label and `aria-modal`.
+- Pivot headers are a `tablist` of `tab`s, each controlling its `tabpanel`. Only the selected tab is in the tab order.
+- Buttons, links and anything with a `tabindex` get a 2 px dashed accent outline on keyboard focus (`:focus-visible`). The looping selector, the speed dial and the alarm ringer's buttons have their own.
 - Controls carry roles: `switch` (toggle switch), `listbox` and `option` (list picker), `spinbutton` (looping selector), `slider` (volume, seek), `radiogroup` (accent picker), `menu` (app bar menu), `alertdialog` (message boxes, alarm ringer), `grid` (Calendar month).
+- A live tile's name includes what it shows: "messaging, 2 new", "phone, 1 missed", "calendar, next: Lunch with Anna, 12:30 PM", "alarms, next alarm 7:00 AM monday".
 - Live regions announce the alarm-set toast (`status`), calendar reminders (`alert`), the calculator display, the phone keypad, in-call state, and new messages in a Messaging thread.
-- Reduced motion is respected by the shell and most components. See [Motion](07-motion.md#reduced-motion).
+- Reduced motion is respected everywhere. See [Motion](07-motion.md#reduced-motion).
 - The system tray is `aria-hidden`, since it duplicates nothing a screen reader user can act on.
+- Search, on the navigation bar and in the app list, does nothing; both buttons are `aria-disabled` so they're announced as unavailable.
 
 ## Accessibility gaps
 
 | Gap | Where | Effect | Fix |
 |---|---|---|---|
-| Popups don't make the screen behind them inert or keep focus inside | Message boxes, full-screen popups, the accent picker | Tab moves to the page behind | Make the page stack `inert` while the popup layer has content |
-| `aria-modal` missing | OneNote and Photos message boxes, the alarm ringer | Screen readers can wander outside the dialog | Add `aria-modal` |
-| Focus isn't moved in on open | People and Photos message boxes, full-screen popups (including the date and time pickers) | Keyboard and screen reader users start behind the dialog. Messaging, OneNote and Calendar message boxes, the alarm ringer and the accent picker do move focus | Focus the first button, as Messaging does |
-| Focus isn't returned on close | Every popup | Focus falls to the document | Remember `document.activeElement` on open and restore it |
-| Panorama sections other than the current one can't be reached from the keyboard | Music+Videos and Photos hubs | Keyboard users see only the first section | Arrow keys or focusable section headers that move the panorama |
-| Pivot headers are plain buttons | Every pivot | Not announced as tabs; no arrow keys | `tablist`, `tab` and `tabpanel` roles, arrow keys between headers |
-| Tile names are the app title only | Start | Counts and live content (unread mail, next appointment, next alarm) aren't announced | Add the live line to the tile's label |
-| Focus style only on `button` | The volume and seek sliders, the send email link | No visible focus | Extend the `:focus-visible` rule to `[tabindex]` and `a` |
-| Animations that ignore reduced motion | Toggle switch (500 ms slide), list picker expand, Alarms switches and "alarm set" toast, Camera focus ring, Photos viewer snap and zoom, Calendar day view snap-back | Motion under `prefers-reduced-motion: reduce` | Check `prefersReducedMotion()` or add a `@media` block, as Messaging and Calendar do |
 | Light theme subtle, disabled and unselected pivot text; light accents | See [Contrast](#contrast) | Low-vision users | Can't change without changing the phone's palette; a high contrast setting would be the faithful fix |
-| Search on the navigation bar does nothing | Navigation bar | A button that doesn't act | Hide it from assistive technology until it works, or make it work |
 | Browser zoom stops helping below 480 px | Everywhere | Zoom enlarges the phone until the window is 480 CSS px wide; past that the screen scales down to fit | Honour a text size setting, as the phone's ease of access did |
+| Focus isn't placed on a new page | Every page transition | Nothing moves focus after navigating, so it falls back to the document and keyboard users start from the top | Focus the new page's title, or its first control, once the transition ends |
+| Tab can leave the phone while a popup is open | Popups | Tab reaches the navigation bar and the desk's controls, though not the page behind | Acceptable while Back must stay reachable; a full focus trap would need its own Back key |
+| Photos have no text alternative | Photos viewer and albums | Pictures are `alt=""` | Name them by date taken, as the viewer's info line does |
 
 ## Rules for new work
 
 - Use `useTilt` and a real `button` for anything pressable. Never put a click handler on a `div`.
-- Give every popup a role, a label, `aria-modal`, and move focus into it on open.
+- Give every popup a role, a label and `aria-modal`, and call `useModal` on its root element.
 - Guard every animation with `prefersReducedMotion()`, or add a `prefers-reduced-motion` block for CSS animations and transitions.
 - Don't put anything a user must read to finish a task in subtle or disabled text.
 - When you add a deviation or find a gap, add it to this page in the same change.

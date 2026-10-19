@@ -151,11 +151,10 @@ A press at the centre sinks the item 25 px straight back; a press at a corner ti
 When `prefers-reduced-motion: reduce` is set (`prefersReducedMotion()`):
 
 - Pages, Start, full-screen popups (including the date and time pickers), the accent picker, the app bar, the volume band and message boxes appear and disappear without animating.
-- The pivot snaps without its cascade or header fade; the panorama and looping selector jump to their target.
+- The pivot, the panorama and the looping selector jump to their target. Pivot headers and the looping selector's items don't fade.
 - Live tiles don't run at all.
+- The toggle switch, Alarms' switches, the list picker, the Photos viewer (swipe and zoom), Calendar's day view, Camera's focus ring, the alarm-set toast and the Music seek bar jump to their end state.
 - Tilt still happens: it's direct feedback under the finger, not motion across the screen.
-
-Some app screens still animate under reduced motion; see [the gaps](13-web-and-accessibility.md#accessibility-gaps).
 
 ## The motion speed dial
 

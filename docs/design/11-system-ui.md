@@ -34,7 +34,7 @@ The 8.1 on-screen navigation bar stands in for 8.0's hardware keys.
 | Buttons | Back, Start, Search; 120 px wide, evenly spaced; 30 px white glyphs | Estimated |
 | Pressed | 0.5 opacity | Estimated |
 
-Back and Start follow the [navigation model](08-navigation.md#what-each-key-does). Search does nothing yet. Each button has an `aria-label`; the bar is a `nav` labelled "Navigation bar".
+Back and Start follow the [navigation model](08-navigation.md#what-each-key-does). Search does nothing yet, and is `aria-disabled`. Each button has an `aria-label`; the bar is a `nav` labelled "Navigation bar".
 
 ## Volume band
 

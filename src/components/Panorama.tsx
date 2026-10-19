@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react'
 import { EXPO_OUT_6, prefersReducedMotion } from '../motion'
 import { motionMs } from '../motionSpeed'
 import './panorama.css'
@@ -24,6 +24,12 @@ const BACKGROUND_TRAVEL = 160 // px
 const INTRO_OFFSET = { background: 1040, title: 1640, content: 1240 }
 
 const mod = (n: number, m: number) => ((n % m) + m) % m
+
+// Controls that use the arrow keys themselves.
+const ownsArrows = (t: EventTarget) =>
+  t instanceof HTMLInputElement ||
+  t instanceof HTMLTextAreaElement ||
+  (t instanceof HTMLElement && (t.isContentEditable || /^(slider|spinbutton|listbox|tab)$/.test(t.getAttribute('role') ?? '')))
 const expoOut = (t: number) => 1 - (Math.exp(6 * (1 - t)) - 1) / (Math.exp(6) - 1)
 
 interface Drag {
@@ -59,6 +65,14 @@ export function Panorama({
   const drag = useRef<Drag | null>(null)
   const titleRef = useRef<HTMLDivElement>(null)
   const [titleWidth, setTitleWidth] = useState(0)
+  const headers = useRef<(HTMLHeadingElement | null)[]>([])
+  const focusHeader = useRef(false)
+
+  useLayoutEffect(() => {
+    if (!focusHeader.current) return
+    focusHeader.current = false
+    headers.current[selected]?.focus({ preventScroll: true })
+  }, [selected])
 
   useLayoutEffect(() => {
     const measure = () => setTitleWidth(titleRef.current?.offsetWidth ?? 0)
@@ -157,6 +171,17 @@ export function Panorama({
     snapTo((base + direction) * SECTION_WIDTH)
   }
 
+  // Not on the phone: arrow keys move a section at a time, and focus follows
+  // to the new section's header.
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0
+    if (!step || count < 2 || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || ownsArrows(e.target)) return
+    e.preventDefault()
+    if (drag.current) return
+    focusHeader.current = true
+    snapTo((Math.round(offsetRef.current / SECTION_WIDTH) + step) * SECTION_WIDTH)
+  }
+
   // While settling, the title and background glide (with a CSS transition)
   // straight to the target section's position, so wrapping from the last
   // section back to the first slides them back rather than jumping.
@@ -172,6 +197,7 @@ export function Panorama({
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
+      onKeyDown={onKeyDown}
     >
       {background && (
         <div
@@ -209,7 +235,15 @@ export function Panorama({
             inert={i !== selected}
             aria-hidden={i !== selected}
           >
-            <h2 className="pano-header" data-feather>
+            <h2
+              className="pano-header"
+              data-feather
+              ref={(el) => {
+                headers.current[i] = el
+              }}
+              tabIndex={count > 1 ? (i === selected ? 0 : -1) : undefined}
+              aria-keyshortcuts={count > 1 ? 'ArrowLeft ArrowRight' : undefined}
+            >
               {section.header}
             </h2>
             <div className="pano-content">{section.content}</div>

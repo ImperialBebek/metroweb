@@ -165,7 +165,7 @@ function NewMessageForm({ onSent }: { onSent: (threadId: string) => void }) {
         ]}
       />
       {picking && (
-        <FullScreenPopup onClosed={() => setPicking(false)}>
+        <FullScreenPopup label="Choose a contact" onClosed={() => setPicking(false)}>
           <ContactPicker contacts={contacts} onPick={pick} />
         </FullScreenPopup>
       )}

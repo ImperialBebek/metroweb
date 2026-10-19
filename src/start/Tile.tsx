@@ -253,6 +253,30 @@ function MusicContent({ app, size }: { app: AppDef; size: TileSize }) {
   )
 }
 
+// What the tile's live content says, for its accessible name.
+function useLiveLine(app: AppDef, size: TileSize, count: number | undefined): string | undefined {
+  const events = useStore(eventsStore)
+  const alarms = useStore(alarmsStore)
+  const isCalendar = app.live.kind === 'calendar'
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    if (!isCalendar) return
+    const timer = window.setInterval(() => setNow(Date.now()), 60_000)
+    return () => window.clearInterval(timer)
+  }, [isCalendar])
+  if (count) return app.id === 'phone' ? `${count} missed` : `${count} new`
+  if (size === 'small') return undefined
+  if (isCalendar) {
+    const next = upcomingEvents(events, now).find((e) => e.start < now + 7 * DAY)
+    return next ? `next: ${next.title}, ${whenLine(next, new Date(now))}` : undefined
+  }
+  if (app.live.kind === 'alarm') {
+    const face = nextAlarmFace(alarms)
+    return face ? `next alarm ${face.lines.join(' ')}` : undefined
+  }
+  return undefined
+}
+
 // Counts on iconic tiles that come from app data.
 function useBadge(id: string): number | undefined {
   const threads = useStore(threadsStore)
@@ -276,6 +300,7 @@ export function Tile({
   const { ref, handlers } = useTilt<HTMLButtonElement>(onLaunch)
   const badge = useBadge(app.id)
   const live = app.live
+  const liveLine = useLiveLine(app, size, badge ?? (live.kind === 'iconic' ? live.count : undefined))
   let content: ReactNode
   switch (live.kind) {
     case 'flip':
@@ -308,9 +333,10 @@ export function Tile({
       ref={ref}
       {...handlers}
       className="tile"
+      data-app={app.id}
       data-size={size}
       data-feather
-      aria-label={app.title}
+      aria-label={liveLine ? `${app.title}, ${liveLine}` : app.title}
       onClick={(e) => {
         if (e.detail === 0 && ref.current) onLaunch(ref.current)
       }}

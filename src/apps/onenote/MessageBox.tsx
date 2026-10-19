@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { useModal } from '../../components/modal'
 import { usePopupLayer } from '../../components/popupLayer'
 import { useTilt } from '../../components/useTilt'
 import { prefersReducedMotion, swivel } from '../../motion'
@@ -64,9 +65,7 @@ export function MessageBox({
     anim.finished.then(() => anim.cancel()).catch(() => {})
   }, [])
 
-  useEffect(() => {
-    root.current?.querySelector<HTMLButtonElement>('.onenote-msgbox-button')?.focus({ preventScroll: true })
-  }, [])
+  useModal(root)
 
   // Once closing, Back passes through so the owner can navigate in the same tick.
   useEffect(
@@ -80,7 +79,7 @@ export function MessageBox({
   )
 
   const box = (
-    <div className="onenote-msgbox" ref={root} role="alertdialog" aria-labelledby="onenote-msgbox-title">
+    <div className="onenote-msgbox" ref={root} role="alertdialog" aria-modal aria-labelledby="onenote-msgbox-title">
       <div className="onenote-msgbox-panel" ref={panel}>
         <div className="onenote-msgbox-title" id="onenote-msgbox-title">
           {title}

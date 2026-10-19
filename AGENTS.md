@@ -26,7 +26,7 @@ Read [`docs/design/README.md`](docs/design/README.md) and the page for the area 
 - **Motion.** Take easings and durations from `src/motion.ts` and `src/pageMotion.ts`. Guard every animation with `prefersReducedMotion()` or a `prefers-reduced-motion` block. See [Motion](docs/design/07-motion.md).
 - **Pages.** Build app screens with `PageStack` and follow the authoring contract in [Navigation](docs/design/08-navigation.md#authoring-contract): `data-feather`, `data-continuum-target`, `registerBackHandler` for anything Back should close.
 - **Pressables.** A real `button` with `useTilt`. Never a click handler on a `div`.
-- **Popups.** Render into the popup layer, give them a role, a label and `aria-modal`, and move focus in on open.
+- **Popups.** Render into the popup layer, give them a role, a label and `aria-modal`, and call `useModal` (`src/components/modal.ts`) on the root element: it moves focus in, makes the app behind inert, and gives focus back.
 - **Text.** Follow [Writing](docs/design/12-writing.md): lower case for headers and labels, the phone's own wording where the string tables have it, US English. Format times and dates with `src/format.ts`.
 
 ## Assets and evidence

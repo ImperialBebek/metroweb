@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useModal } from '../../components/modal'
 import { useTilt } from '../../components/useTilt'
 import { alarmsStore, nextRing, SNOOZE_MINUTES, type Alarm } from '../../data/alarms'
 import { PhIcon } from '../../icons/PhIcon'
@@ -92,6 +93,7 @@ function RingScreen({ ringing, onFinish }: { ringing: Ringing; onFinish: (ringin
   const el = useRef<HTMLDivElement>(null)
   const leaving = useRef(false)
   const { alarm, at } = ringing
+  useModal(el, '[data-dismiss]')
 
   const leave = useCallback(
     (snooze: boolean) => {
@@ -114,7 +116,6 @@ function RingScreen({ ringing, onFinish }: { ringing: Ringing; onFinish: (ringin
     if (!el.current || prefersReducedMotion()) return
     const anim = swivel(el.current, 'in')
     anim.finished.then(() => anim.cancel()).catch(() => {})
-    el.current.querySelector<HTMLElement>('[data-dismiss]')?.focus({ preventScroll: true })
   }, [])
 
   useEffect(() => {
@@ -139,7 +140,7 @@ function RingScreen({ ringing, onFinish }: { ringing: Ringing; onFinish: (ringin
   const date = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
 
   return (
-    <div className="alarms-ring" ref={el} role="alertdialog" aria-label={`${alarm.name || 'Alarm'}, ${clock}`}>
+    <div className="alarms-ring" ref={el} role="alertdialog" aria-modal aria-label={`${alarm.name || 'Alarm'}, ${clock}`}>
       <div className="alarms-ring-label">
         <PhIcon name="alarm" size={32} />
         <span>alarm</span>

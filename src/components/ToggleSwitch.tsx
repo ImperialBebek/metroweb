@@ -1,5 +1,5 @@
 import { useId, useRef, useState, type PointerEvent } from 'react'
-import { EXPO_OUT_15 } from '../motion'
+import { EXPO_OUT_15, prefersReducedMotion } from '../motion'
 
 interface ToggleSwitchProps {
   header?: string
@@ -66,7 +66,8 @@ export function ToggleSwitch({
     setDragX(null)
   }
 
-  const transition = dragX === null ? `transform 500ms ${EXPO_OUT_15}, width 500ms ${EXPO_OUT_15}` : 'none'
+  const transition =
+    dragX === null && !prefersReducedMotion() ? `transform 500ms ${EXPO_OUT_15}, width 500ms ${EXPO_OUT_15}` : 'none'
 
   return (
     <div className="toggle" data-disabled={disabled}>

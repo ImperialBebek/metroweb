@@ -411,6 +411,12 @@
   transition: none;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .music-seek-fill {
+    transition: none;
+  }
+}
+
 .music-seek-times {
   display: flex;
   justify-content: space-between;

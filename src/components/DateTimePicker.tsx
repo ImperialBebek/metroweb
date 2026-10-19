@@ -84,7 +84,7 @@ export function TimePicker({
     <>
       <Field header={header} text={formatTimeOfDay(hour, minute)} onOpen={() => setOpen(true)} />
       {open && (
-        <FullScreenPopup onClosed={() => setOpen(false)}>
+        <FullScreenPopup label="Choose time" onClosed={() => setOpen(false)}>
           <TimeColumns hour={hour} minute={minute} onDone={onChange} />
         </FullScreenPopup>
       )}
@@ -153,7 +153,7 @@ export function DatePicker({
     <>
       <Field header={header} text={formatShortDate(value)} onOpen={() => setOpen(true)} />
       {open && (
-        <FullScreenPopup onClosed={() => setOpen(false)}>
+        <FullScreenPopup label="Choose date" onClosed={() => setOpen(false)}>
           <DateColumns value={value} onDone={onChange} />
         </FullScreenPopup>
       )}

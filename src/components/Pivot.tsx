@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, type PointerEvent, type ReactNode } from 'react'
+import { useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react'
 import { EXPO_OUT_6, prefersReducedMotion } from '../motion'
 import { motionMs } from '../motionSpeed'
 
@@ -52,6 +52,9 @@ export function Pivot({ title, items, selected: controlled, onSelectedChange }: 
   const headerStrip = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(480)
   const [headerWidths, setHeaderWidths] = useState<number[]>([])
+  const id = useId()
+  const tabId = (index: number) => `${id}-tab-${index}`
+  const panelId = (index: number) => `${id}-panel-${index}`
 
   const prev = mod(selected - 1, count)
   const next = mod(selected + 1, count)
@@ -90,7 +93,6 @@ export function Pivot({ title, items, selected: controlled, onSelectedChange }: 
   }
 
   const cascadeIncoming = (direction: -1 | 1) => {
-    if (prefersReducedMotion()) return
     const target = direction === 1 ? next : prev
     const pane = viewport.current?.querySelector<HTMLElement>(`[data-pivot-index="${target}"]`)
     if (!pane) return
@@ -109,6 +111,10 @@ export function Pivot({ title, items, selected: controlled, onSelectedChange }: 
   }
 
   const startSnap = (direction: -1 | 0 | 1) => {
+    if (prefersReducedMotion()) {
+      finishSnap(direction)
+      return
+    }
     if (direction !== 0) cascadeIncoming(direction)
     setSnap({ direction })
     setDx(-direction * width)
@@ -170,6 +176,14 @@ export function Pivot({ title, items, selected: controlled, onSelectedChange }: 
     startSnap(direction)
   }
 
+  // Headers are keyed by strip position, so the selected one is a new element
+  // after every change; keep keyboard focus on it.
+  useLayoutEffect(() => {
+    if (headerStrip.current?.contains(document.activeElement)) {
+      document.getElementById(tabId(selected))?.focus({ preventScroll: true })
+    }
+  })
+
   const onHeaderTap = (index: number) => {
     if (snap || drag.current?.axis === 'x' || index === selected) return
     // The phone always animates forward to a tapped header.
@@ -179,6 +193,16 @@ export function Pivot({ title, items, selected: controlled, onSelectedChange }: 
     } else {
       select(index, mod(index - selected, count))
     }
+  }
+
+  // Arrow keys move one item, animating as a swipe would.
+  const onHeaderKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    const direction = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0
+    if (!direction || !canSwipe) return
+    e.preventDefault()
+    if (snap || drag.current) return
+    setDx(-direction)
+    requestAnimationFrame(() => startSnap(direction))
   }
 
   // The header strip starts with the previous header hidden off the left edge,
@@ -211,6 +235,9 @@ export function Pivot({ title, items, selected: controlled, onSelectedChange }: 
         <div
           className="pivot-header-strip"
           ref={headerStrip}
+          role="tablist"
+          aria-label={title}
+          onKeyDown={onHeaderKey}
           style={{
             transform: `translateX(${headerShift - headerWidth(prev)}px)`,
             transition,
@@ -219,14 +246,21 @@ export function Pivot({ title, items, selected: controlled, onSelectedChange }: 
           {strip.map(({ slot, index, at }) => {
             const isCurrent = slot === 's0'
             const isTarget = (dx < 0 && slot === 's1') || (dx > 0 && slot === 'prev')
+            // One header per item is the tab; the copies either side of the strip are decoration.
+            const isTab = slot !== 'prev' && Number(slot.slice(1)) < count
             return (
               <button
                 key={at}
                 type="button"
                 className="pivot-header"
-                data-index={slot === 'prev' || Number(slot.slice(1)) < count ? index : undefined}
+                data-index={slot === 'prev' || isTab ? index : undefined}
                 data-selected={switching ? isTarget : isCurrent}
-                tabIndex={canSwipe && slot !== 'prev' && Number(slot.slice(1)) < count ? 0 : -1}
+                role={isTab ? 'tab' : undefined}
+                id={isTab ? tabId(index) : undefined}
+                aria-selected={isTab ? index === selected : undefined}
+                aria-controls={isTab ? panelId(index) : undefined}
+                aria-hidden={isTab ? undefined : true}
+                tabIndex={canSwipe && isTab && index === selected ? 0 : -1}
                 onClick={() => onHeaderTap(index)}
               >
                 {items[index].header}
@@ -243,6 +277,9 @@ export function Pivot({ title, items, selected: controlled, onSelectedChange }: 
             <div
               key={item.key}
               className="pivot-item"
+              role="tabpanel"
+              id={panelId(index)}
+              aria-labelledby={tabId(index)}
               data-pivot-index={index}
               data-visible={offset !== null}
               aria-hidden={index !== selected}

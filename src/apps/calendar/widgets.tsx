@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
+import { useModal } from '../../components/modal'
 import { usePopupLayer } from '../../components/popupLayer'
 import { useTilt } from '../../components/useTilt'
 import { PhIcon } from '../../icons/PhIcon'
@@ -120,9 +121,7 @@ export function MessageBox({
       }),
     [registerBackHandler],
   )
-  useEffect(() => {
-    panel.current?.querySelector<HTMLElement>('button')?.focus({ preventScroll: true })
-  }, [])
+  useModal(panel)
   if (!layer) return null
   return createPortal(
     <div className="calendar-msgbox-scrim">

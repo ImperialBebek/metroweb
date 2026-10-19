@@ -42,6 +42,12 @@
   color: var(--wp-accent);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .camera-focus {
+    animation: none;
+  }
+}
+
 @keyframes camera-focus-in {
   from {
     transform: scale(1.5);

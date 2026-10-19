@@ -37,12 +37,21 @@ export function AppBar({
   const { registerBackHandler } = useNavigation()
   const [expanded, setExpanded] = useState(false)
   const bar = useRef<HTMLDivElement>(null)
+  const ellipsis = useRef<HTMLButtonElement>(null)
   const closing = useRef(false)
   const collapsedHeight = minimized ? MINIMIZED_HEIGHT : HEIGHT
+
+  // The menu is about to unmount; keep focus in the bar rather than losing it to the page.
+  const keepFocus = () => {
+    if (bar.current?.querySelector('.appbar-menu')?.contains(document.activeElement)) {
+      ellipsis.current?.focus({ preventScroll: true })
+    }
+  }
 
   const collapse = useCallback(() => {
     const el = bar.current
     if (!el || closing.current) return
+    keepFocus()
     if (prefersReducedMotion()) {
       setExpanded(false)
       return
@@ -83,6 +92,7 @@ export function AppBar({
 
   const toggle = () => (expanded ? collapse() : setExpanded(true))
   const run = (action: () => void) => {
+    keepFocus()
     setExpanded(false)
     action()
   }
@@ -130,6 +140,7 @@ export function AppBar({
         <button
           type="button"
           className="appbar-ellipsis"
+          ref={ellipsis}
           aria-label={expanded ? 'Fewer options' : 'More options'}
           aria-expanded={expanded}
           onClick={toggle}

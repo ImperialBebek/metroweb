@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
+import { useModal } from '../../components/modal'
 import { usePopupLayer } from '../../components/popupLayer'
 import { prefersReducedMotion, swivel } from '../../motion'
 import { useNavigation } from '../../navigation'
@@ -39,6 +40,7 @@ export function MessageBox({
   useLayoutEffect(() => {
     callbacks.current = { onConfirm, onClosed }
   })
+  useModal(box)
 
   const close = useCallback((confirmed: boolean) => {
     if (closing.current) return

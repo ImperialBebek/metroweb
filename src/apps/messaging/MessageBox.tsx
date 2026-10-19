@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { useModal } from '../../components/modal'
 import { usePopupLayer } from '../../components/popupLayer'
 import { prefersReducedMotion, swivel } from '../../motion'
 import { useNavigation } from '../../navigation'
@@ -26,13 +27,13 @@ export function MessageBox({
   const { registerBackHandler } = useNavigation()
   const box = useRef<HTMLDivElement>(null)
   const scrim = useRef<HTMLDivElement>(null)
-  const first = useRef<HTMLButtonElement>(null)
   const closing = useRef(false)
   const unregisterBack = useRef(() => {})
   const onDismissedRef = useRef(onDismissed)
   useLayoutEffect(() => {
     onDismissedRef.current = onDismissed
   })
+  useModal(box)
 
   const close = useCallback((action?: () => void) => {
     if (closing.current) return
@@ -50,7 +51,6 @@ export function MessageBox({
   }, [])
 
   useLayoutEffect(() => {
-    first.current?.focus({ preventScroll: true })
     if (!box.current || prefersReducedMotion()) return
     scrim.current?.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200 })
     const anim = swivel(box.current, 'in')
@@ -73,10 +73,9 @@ export function MessageBox({
         <div className="messaging-msgbox-caption">{caption}</div>
         {message && <div className="messaging-msgbox-message">{message}</div>}
         <div className="messaging-msgbox-buttons">
-          {buttons.map((b, i) => (
+          {buttons.map((b) => (
             <button
               key={b.label}
-              ref={i === 0 ? first : undefined}
               type="button"
               className="messaging-msgbox-button"
               onClick={() => close(b.onTap)}

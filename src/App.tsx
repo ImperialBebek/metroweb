@@ -3,6 +3,7 @@ import { AlarmRinger } from './apps/alarms/AlarmRinger'
 import { PlaceholderApp } from './apps/PlaceholderApp'
 import { APP_COMPONENTS } from './apps/registry'
 import { SettingsApp } from './apps/SettingsApp'
+import { useModalOpen } from './components/modal'
 import { PopupLayerContext } from './components/popupLayer'
 import type { StackHandle } from './navigation'
 import { APP_BY_ID } from './start/apps'
@@ -92,9 +93,20 @@ function SystemTray({ settings, onTap }: { settings: SettingsState; onTap: () =>
   )
 }
 
-function NavButton({ label, onPress, children }: { label: string; onPress: () => void; children: ReactNode }) {
+function NavButton({
+  label,
+  disabled,
+  onPress,
+  children,
+}: {
+  label: string
+  disabled?: boolean
+  onPress: () => void
+  children: ReactNode
+}) {
+  // A disabled key still looks like the phone's: aria-disabled, not the disabled attribute.
   return (
-    <button type="button" className="nav-button" aria-label={label} onClick={onPress}>
+    <button type="button" className="nav-button" aria-label={label} aria-disabled={disabled} onClick={onPress}>
       {children}
     </button>
   )
@@ -109,7 +121,7 @@ function NavBar({ onBack, onStart }: { onBack: () => void; onStart: () => void }
       <NavButton label="Start" onPress={onStart}>
         <PhIcon name="windows-logo" size={30} />
       </NavButton>
-      <NavButton label="Search" onPress={() => {}}>
+      <NavButton label="Search" disabled onPress={() => {}}>
         <PhIcon name="magnifying-glass" size={30} />
       </NavButton>
     </nav>
@@ -118,6 +130,7 @@ function NavBar({ onBack, onStart }: { onBack: () => void; onStart: () => void }
 export default function App() {
   const { settings } = useSettings()
   const viewport = useViewport()
+  const covered = useModalOpen()
   const [popupLayer, setPopupLayer] = useState<HTMLDivElement | null>(null)
   const [running, setRunning] = useState<{ id: string; key: number } | null>(null)
   const startScreen = useRef<StartHandle>(null)
@@ -256,10 +269,10 @@ export default function App() {
           data-theme={settings.background}
         >
           {!standalone && <SystemTray settings={settings} onTap={() => volumeBand.current?.show()} />}
-          <StartScreen active={!running} onLaunch={launch} onPaneChange={setStartPane} handle={startScreen} />
+          <StartScreen active={!running} covered={covered} onLaunch={launch} onPaneChange={setStartPane} handle={startScreen} />
           <PopupLayerContext.Provider value={popupLayer}>
             {running && runningApp && (
-              <div className="app-host" key={running.key}>
+              <div className="app-host" key={running.key} inert={covered}>
                 {running.id === 'settings' ? (
                   <SettingsApp popupLayer={popupLayer} onExit={exitApp} handle={app} />
                 ) : AppComponent ? (

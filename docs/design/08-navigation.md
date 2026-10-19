@@ -43,6 +43,7 @@ A web page has no Back key of its own, so the recreation borrows the browser's.
 - **Browser Back** (and the Android back gesture) acts as the phone's Back. While anything is open, one extra history entry sits on top so Back stays inside the phone; it is removed again when you return to Start's tiles, so Back from there leaves the site.
 - **Escape**, and **Backspace** when not typing, press Back.
 - **+** / **−** (and the media volume keys) step the volume and show the [volume band](11-system-ui.md#volume-band).
+- **Left** and **right arrows** move a [pivot](09-components.md#pivot) (from its focused header) or a [panorama](09-components.md#panorama) one item.
 
 These are [deviations](13-web-and-accessibility.md#input-and-navigation) from the phone, which has hardware keys.
 

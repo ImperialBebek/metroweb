@@ -307,10 +307,10 @@ if (wanted('shots') || wanted('diagrams')) {
       { box: nav, label: `navigation bar · 480 × ${fmt(nav[3])}`, color: '#ff4fd8', at: 'above' },
       { line: [0, start[1] + start[3] / 2, 480, start[1] + start[3] / 2], label: '480 logical px', color: '#ffd400' },
     ])
-    const phone = await rect(page, '.tile[aria-label="phone"]')
-    const people = await rect(page, '.tile[aria-label="people"]')
-    const calendar = await rect(page, '.tile[aria-label="calendar"]')
-    const title = await rect(page, '.tile[aria-label="phone"] .tile-title')
+    const phone = await rect(page, '.tile[data-app="phone"]')
+    const people = await rect(page, '.tile[data-app="people"]')
+    const calendar = await rect(page, '.tile[data-app="calendar"]')
+    const title = await rect(page, '.tile[data-app="phone"] .tile-title')
     await diagram(page, 'tiles', [
       { line: [0, phone[1] + 40, phone[0], phone[1] + 40], label: fmt(phone[0]), color: '#ffd400' },
       { line: [phone[0] + phone[2], phone[1] + 100, people[0], phone[1] + 100], label: fmt(people[0] - phone[0] - phone[2]), color: '#ffd400' },
@@ -336,7 +336,7 @@ if (wanted('shots') || wanted('diagrams')) {
     await page.waitForTimeout(3500)
     await attempt('tilt', async () => {
       // Press near a tile's corner and hold; the screen sits at the page's top left.
-      const phone = await rect(page, '.tile[aria-label="phone"]')
+      const phone = await rect(page, '.tile[data-app="phone"]')
       await page.mouse.move(phone[0] + 18, phone[1] + 18)
       await page.mouse.down()
       await page.waitForTimeout(100)
@@ -353,7 +353,7 @@ if (wanted('shots') || wanted('diagrams')) {
     })
   }
 
-  await tap(page, '.tile[aria-label="settings"]')
+  await tap(page, '.tile[data-app="settings"]')
   if (wanted('shots')) await shot(page, 'settings-pivot')
   if (wanted('diagrams')) {
     const t = await rect(page, ACTIVE + '.pivot-title')
@@ -464,7 +464,7 @@ if (wanted('shots') || wanted('diagrams')) {
   if (wanted('shots')) {
     const light = await open({ settings: { background: 'light', accent: 5 } })
     await shot(light, 'start-light')
-    await tap(light, '.tile[aria-label="settings"]')
+    await tap(light, '.tile[data-app="settings"]')
     await shot(light, 'settings-pivot-light')
     await light.context().close()
   }
@@ -476,7 +476,7 @@ if (wanted('strips')) {
   console.log('motion strips')
   let page = await open({ motion: true })
   const launch = await film(page, {
-    action: () => page.locator('.tile[aria-label="settings"]').click(),
+    action: () => page.locator('.tile[data-app="settings"]').click(),
     times: every(90, 15),
   })
   await compose(join(OUT.strips, 'launch.jpg'), 'Start → Settings: tiles feather out (tapped tile last), the app feathers in', [{ frames: launch }])

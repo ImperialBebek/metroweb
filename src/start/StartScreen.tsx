@@ -73,11 +73,14 @@ function AppListItem({ app, onLaunch }: { app: AppDef; onLaunch: (source: HTMLEl
 
 export function StartScreen({
   active,
+  covered = false,
   onLaunch,
   onPaneChange,
   handle,
 }: {
   active: boolean
+  // A popup (the alarm ringer) is over the screen.
+  covered?: boolean
   onLaunch: (app: string, source: HTMLElement) => void
   onPaneChange?: (pane: 0 | 1) => void
   handle?: Ref<StartHandle>
@@ -226,7 +229,7 @@ export function StartScreen({
   const launch = (app: string) => (source: HTMLElement) => onLaunch(app, source)
 
   return (
-    <div className="start" ref={root} data-hidden={!active || undefined} inert={!active}>
+    <div className="start" ref={root} data-hidden={!active || undefined} inert={!active || covered}>
       <div
         className="start-panorama"
         style={{
@@ -255,7 +258,7 @@ export function StartScreen({
           </button>
         </div>
         <div className="start-pane applist" ref={listPane} inert={pane !== 1} aria-label="All apps">
-          <button type="button" className="applist-search" data-feather aria-label="Search apps">
+          <button type="button" className="applist-search" data-feather aria-label="Search apps" aria-disabled>
             <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden>
               <circle cx="22" cy="22" r="19.5" fill="none" stroke="currentColor" strokeWidth="3" />
               {ph('magnifying-glass', 22, 22, 22)}

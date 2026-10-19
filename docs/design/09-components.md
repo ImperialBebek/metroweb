@@ -43,6 +43,7 @@ Behaviour:
 - Tapping the next header animates forward to it. Tapping any other header jumps straight there.
 - Incoming rows cascade: each row after the first starts 32 px further along.
 - Items that aren't selected stay mounted but are `inert` and `aria-hidden`, so each keeps its scroll position.
+- The headers are a `tablist` labelled by the title; each item's header is its `tab` and the item its `tabpanel`. The copies of headers at either end of the strip are `aria-hidden`. Only the selected tab is in the tab order; the left and right arrows move one item, animating as a swipe does, and focus follows.
 - The title and header strip are `data-feather`; the title is the page's `data-continuum-target`.
 
 ## Single-page pivot
@@ -73,7 +74,7 @@ Behaviour:
 - A touch during the snap catches the panorama where it is.
 - When wrapping from the last section to the first, the title and background glide back rather than jump.
 - Opens with the [hub intro](07-motion.md#hub-intro).
-- Only the selected section is focusable; the others are `inert`.
+- Only the selected section is focusable; the others are `inert`. Its header is in the tab order, and the left and right arrows anywhere in the panorama move one section and focus the new header (`aria-keyshortcuts` says so). Arrows inside text boxes, sliders, spin buttons, list boxes and tabs are left alone.
 
 ## List item
 
@@ -166,7 +167,7 @@ A field shows the value; tapping it opens a full-screen page of spinning columns
 
 ## Full-screen popup
 
-`FullScreenPopup` renders a page in the popup layer that swivels in over the current page, closes on Back (swivelling out), and gives its content `usePopupClose()`. Pickers and other full-screen choosers use it. It is a `dialog`.
+`FullScreenPopup` renders a page in the popup layer that swivels in over the current page, closes on Back (swivelling out), and gives its content `usePopupClose()`. Pickers and other full-screen choosers use it. It is a `dialog` with a label and `aria-modal`, and takes focus itself on open, so a picker opens with every column closed, as on the phone; Tab then moves into the columns or the list.
 
 ## App bar
 
@@ -209,7 +210,7 @@ The reference is Messaging's (`apps/messaging/MessageBox.tsx`):
 | Buttons | Two equal columns, styled like [Button](#button) | Estimated |
 | Motion | Swivel in and out from the top edge; scrim fades in 200 ms, out 250 ms | Estimated |
 
-The first button takes focus. It is an `alertdialog` with `aria-modal`.
+It is an `alertdialog` with `aria-modal`. `useModal` moves focus to the first button, makes the app behind `inert`, and gives focus back on close.
 
 **There is no shared component yet.** Five apps carry their own copy, and they differ:
 
@@ -217,8 +218,8 @@ The first button takes focus. It is an `alertdialog` with `aria-modal`.
 |---|---|
 | `apps/messaging/MessageBox.tsx` | The reference above; buttons sized by their padding |
 | `apps/people/MessageBox.tsx` | Panel padding 24 12 12; buttons in a flex row; the scrim doesn't fade |
-| `apps/onenote/MessageBox.tsx` | Panel padding 18 24 12; 72 px buttons; no `aria-modal` |
-| `apps/photos/PhotosMessageBox.tsx` | The scrim doesn't fade; no `aria-modal` |
+| `apps/onenote/MessageBox.tsx` | Panel padding 18 24 12; 72 px buttons |
+| `apps/photos/PhotosMessageBox.tsx` | The scrim doesn't fade |
 | `apps/calendar/widgets.tsx` | A CSS drop-in (350 ms, `cubic-bezier(0.1, 0.9, 0.2, 1)`) instead of the swivel; panel padding 24 24 12; 64 px buttons |
 
 Consolidate on the reference into `src/components/` before adding another.

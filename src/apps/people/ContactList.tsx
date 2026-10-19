@@ -122,7 +122,7 @@ export function ContactList({
       ))}
       {groups.length === 0 && <p className="people-empty" data-feather>No contacts yet. Tap new to add someone.</p>}
       {jumping && (
-        <FullScreenPopup onClosed={() => setJumping(false)}>
+        <FullScreenPopup label="Jump to a letter" onClosed={() => setJumping(false)}>
           <JumpList
             available={new Set(groups.map((g) => g.letter))}
             onPick={(letter) => {

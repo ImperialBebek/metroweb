@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEven
 import { AppBar, type AppBarButtonDef } from '../../components/AppBar'
 import { useStore } from '../../data/persist'
 import { deletePhoto, favoritesStore, toggleFavorite, usePhotos } from '../../data/photos'
-import { EXPO_OUT_6 } from '../../motion'
+import { EXPO_OUT_6, prefersReducedMotion } from '../../motion'
 import { motionMs } from '../../motionSpeed'
 import { useNavigation } from '../../navigation'
 import { formatTakenDate, formatTakenTime, useAlbum, type AlbumId } from './albums'
@@ -130,7 +130,7 @@ export function PhotoViewer({
   })
   useEffect(() => {
     if (snap === null) return
-    const timer = window.setTimeout(() => finishSnap.current(), motionMs(SNAP_MS))
+    const timer = window.setTimeout(() => finishSnap.current(), prefersReducedMotion() ? 0 : motionMs(SNAP_MS))
     return () => window.clearTimeout(timer)
   }, [snap])
 
@@ -315,7 +315,8 @@ export function PhotoViewer({
       ]
     : []
 
-  const slideTransition = snap !== null ? `transform ${SNAP_MS}ms ${EXPO_OUT_6}` : 'none'
+  const still = prefersReducedMotion()
+  const slideTransition = snap !== null && !still ? `transform ${SNAP_MS}ms ${EXPO_OUT_6}` : 'none'
 
   return (
     <div className="app-page photos-viewer">
@@ -348,7 +349,7 @@ export function PhotoViewer({
                   current
                     ? {
                         transform: `translate(${zoom.x}px, ${zoom.y}px) scale(${zoom.s})`,
-                        transition: zoomAnimated ? `transform 250ms ${EXPO_OUT_6}` : 'none',
+                        transition: zoomAnimated && !still ? `transform 250ms ${EXPO_OUT_6}` : 'none',
                       }
                     : undefined
                 }

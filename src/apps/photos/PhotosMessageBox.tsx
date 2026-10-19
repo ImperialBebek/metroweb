@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { useModal } from '../../components/modal'
 import { usePopupLayer } from '../../components/popupLayer'
 import { prefersReducedMotion, swivel } from '../../motion'
 import { useNavigation } from '../../navigation'
@@ -28,6 +29,7 @@ export function PhotosMessageBox({
   useLayoutEffect(() => {
     callbacks.current = { onConfirm, onClose }
   })
+  useModal(panel)
 
   const finish = useCallback((confirmed: boolean) => {
     if (closing.current) return
@@ -55,7 +57,7 @@ export function PhotosMessageBox({
   if (!layer) return null
   return createPortal(
     <div className="photos-msg-scrim">
-      <div className="photos-msg" ref={panel} role="alertdialog" aria-label={title}>
+      <div className="photos-msg" ref={panel} role="alertdialog" aria-modal aria-label={title}>
         <div className="photos-msg-title">{title}</div>
         <div className="photos-msg-text">{message}</div>
         <div className="photos-msg-buttons">

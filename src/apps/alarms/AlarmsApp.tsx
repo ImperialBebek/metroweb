@@ -243,7 +243,7 @@ function RepeatField({ days, onChange }: { days: number[]; onChange: (days: numb
         {summary}
       </button>
       {open && (
-        <FullScreenPopup onClosed={() => setOpen(false)}>
+        <FullScreenPopup label="Repeats on" onClosed={() => setOpen(false)}>
           <RepeatDays initial={days} onDone={onChange} />
         </FullScreenPopup>
       )}

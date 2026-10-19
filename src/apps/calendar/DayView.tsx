@@ -188,10 +188,12 @@ export function DayView({
     if (dx < -COMMIT_DISTANCE || d.velocity < -FLICK_VELOCITY) slide(1, dx)
     else if (dx > COMMIT_DISTANCE || d.velocity > FLICK_VELOCITY) slide(-1, dx)
     else {
-      root.current?.animate([{ transform: `translateX(${dx}px)` }, { transform: 'none' }], {
-        duration: 250,
-        easing: EXPO_OUT_6,
-      })
+      if (!prefersReducedMotion()) {
+        root.current?.animate([{ transform: `translateX(${dx}px)` }, { transform: 'none' }], {
+          duration: 250,
+          easing: EXPO_OUT_6,
+        })
+      }
       setDx(0)
     }
   }

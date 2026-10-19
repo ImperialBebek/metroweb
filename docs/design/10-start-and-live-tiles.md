@@ -53,6 +53,8 @@ Intervals are **Estimated**. Each tile picks a random delay in its range (the sh
 
 Counts: messaging shows unread threads and phone shows missed calls, both from app data; Outlook (5) and Store (3) are fixed.
 
+A tile's accessible name is its title plus what it says: its count ("phone, 1 missed"; "messaging, 2 new"), Calendar's next appointment, or the next alarm. The wording is the project's own (**Estimated**). Tests and scripts find tiles by `data-app`, which doesn't change.
+
 Not implemented: `TemplateGames`, `TemplateGroup` and `TemplateDeepLink`, and tile notifications that interrupt a flip (`Template1112_FlipNotificationInterruptDuration`).
 
 ### Rules for live tiles
