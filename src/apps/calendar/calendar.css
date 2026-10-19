@@ -1,0 +1,543 @@
+/* ---------- shared page chrome ---------- */
+
+.calendar-page-title {
+  flex: none;
+  margin: 17px 24px 0;
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-transform: uppercase;
+}
+
+.calendar-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding: 0 12px 36px;
+}
+
+.calendar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.calendar-empty {
+  margin: 0 12px;
+  color: var(--wp-subtle);
+}
+
+/* ---------- text boxes and check boxes ---------- */
+
+.calendar-form {
+  padding-top: 20px;
+}
+
+.calendar-field {
+  display: block;
+  margin-bottom: 24px;
+}
+
+.calendar-field-header {
+  display: block;
+  margin: 0 12px 2px;
+  color: var(--wp-subtle);
+}
+
+/* PhoneTextBox: a filled box that turns white with an accent border while editing. */
+.calendar-textbox {
+  display: block;
+  width: calc(100% - 24px);
+  height: 48px;
+  margin: 0 12px;
+  padding: 0 9px;
+  border: 3px solid transparent;
+  border-radius: 0;
+  background: var(--wp-text-box);
+  color: var(--wp-text-box-foreground);
+  caret-color: var(--wp-text-box-foreground);
+  font: inherit;
+  font-size: var(--size-medium-large);
+  outline: none;
+  appearance: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.calendar-textbox[data-multiline] {
+  height: auto;
+  min-height: 132px;
+  padding: 6px 9px;
+  line-height: 1.3;
+  resize: none;
+}
+
+.calendar-textbox:focus {
+  background: var(--wp-text-box-edit-background);
+  border-color: var(--wp-accent);
+}
+
+.calendar-check {
+  flex: none;
+  padding: 4px 12px 8px;
+  transform-origin: 50% 50%;
+}
+
+.calendar-check-box {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 3px solid var(--wp-foreground);
+  color: var(--wp-foreground);
+}
+
+.calendar-check:active .calendar-check-box {
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+  color: #fff;
+}
+
+/* ---------- day view ---------- */
+
+.calendar-dayview {
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.calendar-allday {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 0 8px 76px;
+  background: var(--wp-background);
+}
+
+.calendar-grid {
+  position: relative;
+}
+
+.calendar-hour {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: block;
+  padding: 2px 0 0;
+  border-top: 1px solid color-mix(in srgb, var(--wp-foreground) 18%, transparent);
+}
+
+.calendar-hour:active {
+  background: color-mix(in srgb, var(--wp-accent) 25%, transparent);
+}
+
+.calendar-hour-label {
+  display: block;
+  width: 72px;
+  padding-left: 12px;
+  color: var(--wp-subtle);
+  font-size: var(--size-small);
+  white-space: nowrap;
+}
+
+.calendar-blocks {
+  position: absolute;
+  inset: 0 0 0 76px;
+  pointer-events: none;
+}
+
+.calendar-block {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 3px 8px 3px 9px;
+  overflow: hidden;
+  border-left: 6px solid var(--wp-accent);
+  background: color-mix(in srgb, var(--wp-accent) 38%, var(--wp-background));
+  color: var(--wp-foreground);
+  line-height: 1.25;
+  pointer-events: auto;
+  transform-origin: 50% 50%;
+}
+
+.calendar-blocks .calendar-block {
+  position: absolute;
+  margin-top: 1px;
+}
+
+/* All-day and short appointments put the location beside the title. */
+.calendar-block[data-allday],
+.calendar-block[data-compact] {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.calendar-block[data-allday] {
+  height: 38px;
+}
+
+.calendar-block[data-compact] {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.calendar-block-title {
+  flex: none;
+  max-width: 100%;
+}
+
+.calendar-block-title,
+.calendar-block-location {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-block-title {
+  font-family: var(--font-semibold);
+  font-size: var(--size-normal);
+}
+
+.calendar-block-location {
+  font-size: var(--size-small);
+  opacity: 0.75;
+}
+
+.calendar-now {
+  position: absolute;
+  left: 70px;
+  right: 0;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--wp-accent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.calendar-now::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: -5px;
+  border: 6px solid transparent;
+  border-left-color: var(--wp-accent);
+}
+
+/* ---------- agenda ---------- */
+
+.calendar-agenda {
+  padding-bottom: 36px;
+}
+
+.calendar-agenda-group {
+  margin-bottom: 14px;
+}
+
+.calendar-agenda-day {
+  margin: 0 12px 8px;
+  font-family: var(--font-semilight);
+  font-size: var(--size-large);
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+.calendar-agenda-day[data-today] {
+  color: var(--wp-accent);
+}
+
+.calendar-agenda-item {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  padding: 0 12px;
+  margin-bottom: 14px;
+  transform-origin: 50% 50%;
+}
+
+.calendar-agenda-bar {
+  flex: none;
+  width: 8px;
+  background: var(--wp-accent);
+}
+
+.calendar-agenda-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.calendar-agenda-title,
+.calendar-agenda-meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-agenda-title {
+  font-size: var(--size-medium-large);
+  line-height: 1.25;
+}
+
+.calendar-agenda-meta {
+  color: var(--wp-subtle);
+}
+
+/* ---------- to-do ---------- */
+
+.calendar-todos {
+  padding-bottom: 36px;
+}
+
+.calendar-todo {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.calendar-todo-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding-right: 12px;
+  transform-origin: 50% 50%;
+}
+
+.calendar-todo-title {
+  font-size: var(--size-medium-large);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.calendar-todo[data-done] .calendar-todo-title {
+  color: var(--wp-subtle);
+  text-decoration: line-through;
+}
+
+.calendar-todo-priority {
+  margin-right: 6px;
+  color: var(--wp-accent);
+  font-family: var(--font-semibold);
+}
+
+.calendar-todo-due {
+  color: var(--wp-subtle);
+}
+
+.calendar-todo-due[data-overdue] {
+  color: var(--wp-accent);
+}
+
+/* ---------- month ---------- */
+
+.calendar-month-header {
+  flex: none;
+  margin: -7px 0 0;
+  padding-left: 21px;
+  font-family: var(--font-semilight);
+  font-size: var(--size-extra-extra-large);
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+.calendar-weekdays {
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin: 8px 12px 4px;
+  color: var(--wp-subtle);
+}
+
+.calendar-weekdays > span {
+  padding-left: 6px;
+}
+
+.calendar-month {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+  gap: 4px;
+  margin: 0 12px 12px;
+  touch-action: none;
+}
+
+.calendar-cell {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 2px 5px 4px;
+  overflow: hidden;
+  background: var(--wp-chrome);
+  transform-origin: 50% 50%;
+}
+
+.calendar-cell[data-outside] {
+  background: color-mix(in srgb, var(--wp-chrome) 45%, transparent);
+  color: var(--wp-subtle);
+}
+
+.calendar-cell[data-today] {
+  background: var(--wp-accent);
+  color: #fff;
+}
+
+.calendar-cell[data-selected]:not([data-today]) {
+  box-shadow: inset 0 0 0 3px var(--wp-accent);
+}
+
+.calendar-cell-day {
+  font-family: var(--font-semilight);
+  font-size: var(--size-medium-large);
+  line-height: 1.2;
+}
+
+.calendar-cell-event {
+  font-size: 12px;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* ---------- appointment details ---------- */
+
+.calendar-details {
+  padding: 0 24px 36px;
+}
+
+.calendar-details-title {
+  margin: 10px 0 14px;
+  font-family: var(--font-semilight);
+  font-size: var(--size-extra-large);
+  font-weight: normal;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.calendar-details-when,
+.calendar-details-location,
+.calendar-details-value {
+  font-size: var(--size-medium-large);
+}
+
+.calendar-details-location {
+  margin-top: 10px;
+}
+
+.calendar-details-label {
+  margin-top: 24px;
+  color: var(--wp-subtle);
+}
+
+.calendar-details-notes {
+  font-size: var(--size-normal);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- message box ---------- */
+
+.calendar-msgbox-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: var(--wp-semitransparent);
+}
+
+.calendar-msgbox {
+  padding: 24px 24px 12px;
+  background: var(--wp-chrome);
+  transform-origin: 50% 0;
+  animation: calendar-drop-in 350ms cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.calendar-msgbox-title {
+  font-family: var(--font-semibold);
+  font-size: var(--size-large);
+  line-height: 1.2;
+}
+
+.calendar-msgbox-text {
+  margin: 14px 0 24px;
+  overflow-wrap: anywhere;
+}
+
+.calendar-msgbox-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.calendar-msgbox-button {
+  flex: 1;
+  height: 64px;
+  border: 3px solid var(--wp-foreground);
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-align: center;
+  transform-origin: 50% 50%;
+}
+
+.calendar-msgbox-button:active {
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+  color: #fff;
+}
+
+/* ---------- reminder toast ---------- */
+
+.calendar-toast {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 60px;
+  padding: 14px 24px 12px 20px;
+  background: var(--wp-accent);
+  color: #fff;
+  transform-origin: 50% 0;
+  animation: calendar-drop-in 350ms cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.calendar-toast svg {
+  flex: none;
+}
+
+.calendar-toast-title {
+  flex: none;
+  max-width: 55%;
+  font-family: var(--font-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-toast-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes calendar-drop-in {
+  from {
+    transform: perspective(1000px) rotateX(-90deg);
+  }
+  to {
+    transform: perspective(1000px) rotateX(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calendar-msgbox,
+  .calendar-toast {
+    animation: none;
+  }
+}

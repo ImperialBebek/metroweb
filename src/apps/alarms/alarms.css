@@ -1,0 +1,326 @@
+/* ---------- alarms list ---------- */
+
+.alarms-title {
+  flex: none;
+  margin: 17px 24px 20px;
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-transform: uppercase;
+}
+
+.alarms-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding: 0 12px 36px;
+}
+
+.alarms-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.alarms-empty {
+  margin: 0 12px;
+  color: var(--wp-subtle);
+}
+
+.alarms-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.alarms-row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px;
+  transform-origin: 50% 50%;
+}
+
+.alarms-row-time {
+  font-family: var(--font-light);
+  font-size: 64px;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.alarms-row-ampm {
+  margin-left: 8px;
+  font-family: var(--font-semilight);
+  font-size: var(--size-large);
+}
+
+.alarms-row-name,
+.alarms-row-repeat {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alarms-row-name {
+  font-size: var(--size-normal);
+}
+
+.alarms-row-repeat {
+  margin-top: -2px;
+  color: var(--wp-subtle);
+  font-size: var(--size-normal);
+}
+
+.alarms-row[data-off='true'] .alarms-row-time,
+.alarms-row[data-off='true'] .alarms-row-name {
+  color: var(--wp-subtle);
+}
+
+/* ---------- compact toggle switch ---------- */
+
+.alarms-switch {
+  flex: none;
+  padding: 20px 12px;
+}
+
+.alarms-switch-track {
+  position: relative;
+  display: block;
+  width: 88px;
+  height: 32px;
+  border: 2px solid var(--wp-foreground);
+}
+
+.alarms-switch-fill {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  height: 20px;
+  width: 0;
+  background: var(--wp-accent);
+  transition: width 300ms ease-out;
+}
+
+.alarms-switch-thumb {
+  position: absolute;
+  left: -2px;
+  top: -4px;
+  width: 20px;
+  height: 36px;
+  background: var(--wp-foreground);
+  box-shadow:
+    -4px 0 0 var(--wp-background),
+    4px 0 0 var(--wp-background);
+  transition: transform 300ms ease-out;
+}
+
+.alarms-switch[data-on='true'] .alarms-switch-fill {
+  width: 62px;
+}
+
+.alarms-switch[data-on='true'] .alarms-switch-thumb {
+  transform: translateX(68px);
+}
+
+/* ---------- edit page ---------- */
+
+.alarms-form {
+  padding-top: 4px;
+}
+
+.alarms-field {
+  display: block;
+  margin-bottom: 24px;
+}
+
+.alarms-field-header {
+  display: block;
+  margin: 0 12px 2px;
+  color: var(--wp-subtle);
+}
+
+/* PhoneTextBox: a filled box that turns white with an accent border while editing. */
+.alarms-textbox {
+  display: block;
+  width: calc(100% - 24px);
+  height: 48px;
+  margin: 0 12px;
+  padding: 0 9px;
+  border: 3px solid transparent;
+  border-radius: 0;
+  background: var(--wp-text-box);
+  color: var(--wp-text-box-foreground);
+  caret-color: var(--wp-text-box-foreground);
+  font: inherit;
+  font-size: var(--size-medium-large);
+  outline: none;
+  appearance: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.alarms-textbox:focus {
+  background: var(--wp-text-box-edit-background);
+  border-color: var(--wp-accent);
+}
+
+.alarms-repeat-box {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- repeat days popup ---------- */
+
+.alarms-days {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 28px 12px 24px;
+}
+
+.alarms-check {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 7px 12px;
+  transform-origin: 50% 50%;
+}
+
+.alarms-check-box {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 3px solid var(--wp-foreground);
+  color: var(--wp-foreground);
+}
+
+.alarms-check:active .alarms-check-box {
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+  color: #fff;
+}
+
+.alarms-check-label {
+  font-family: var(--font-semilight);
+  font-size: var(--size-extra-large);
+  line-height: 1.2;
+}
+
+/* ---------- "alarm set" toast ---------- */
+
+.alarms-toast {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 4;
+  min-height: 60px;
+  padding: 18px 24px 16px;
+  background: var(--wp-accent);
+  color: #fff;
+  font-size: var(--size-normal);
+  line-height: 1.3;
+  animation: alarms-toast-in 350ms cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.alarms-toast-title {
+  font-family: var(--font-semibold);
+}
+
+@keyframes alarms-toast-in {
+  from {
+    transform: perspective(1000px) rotateX(-90deg);
+    transform-origin: 50% 0;
+  }
+  to {
+    transform: perspective(1000px) rotateX(0deg);
+    transform-origin: 50% 0;
+  }
+}
+
+/* ---------- ringing alarm ---------- */
+
+/* Covers the whole screen, the navigation bar included. */
+.alarms-ring {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  padding: 56px 24px 40px;
+  background: var(--wp-accent);
+  color: #fff;
+  transform-origin: 50% 50%;
+}
+
+.alarms-ring-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-transform: uppercase;
+}
+
+.alarms-ring-name {
+  margin-top: 28px;
+  font-family: var(--font-semilight);
+  font-size: var(--size-extra-large);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.alarms-ring-time {
+  margin-top: 4px;
+  font-family: var(--font-light);
+  font-size: 128px;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.alarms-ring-ampm {
+  margin-left: 12px;
+  font-family: var(--font-semilight);
+  font-size: var(--size-extra-large);
+}
+
+.alarms-ring-date {
+  font-size: var(--size-medium-large);
+}
+
+.alarms-ring-spacer {
+  flex: 1;
+}
+
+.alarms-ring-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.alarms-ring-button {
+  flex: 1;
+  height: 88px;
+  border: 3px solid #fff;
+  font-family: var(--font-semibold);
+  font-size: var(--size-large);
+  text-align: center;
+  transform-origin: 50% 50%;
+}
+
+.alarms-ring-button:active {
+  background: #fff;
+  color: var(--wp-accent);
+}
+
+.alarms-ring-button:focus-visible {
+  outline-color: #fff;
+}
+
+.alarms-ring-hint {
+  margin-top: 14px;
+  text-align: center;
+  opacity: 0.8;
+}

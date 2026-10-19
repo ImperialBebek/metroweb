@@ -1,0 +1,321 @@
+/* Phone: history, keypad and the in-call screen. */
+
+.phone-page > .pivot {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---------- history ---------- */
+
+.phone-history {
+  padding-bottom: 12px;
+}
+
+.phone-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.phone-row-main {
+  flex: 1;
+  min-width: 0;
+  display: block;
+  padding: 0 12px;
+  transform-origin: 50% 50%;
+}
+
+.phone-row-title {
+  display: block;
+  font-family: var(--font-semilight);
+  font-size: var(--size-large);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.phone-row[data-missed] .phone-row-title {
+  color: var(--wp-accent);
+}
+
+.phone-row-count {
+  font-size: var(--size-medium-large);
+}
+
+.phone-row-detail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--wp-subtle);
+  white-space: nowrap;
+}
+
+.phone-row[data-missed] .phone-direction {
+  color: var(--wp-accent);
+}
+
+.phone-direction {
+  flex: none;
+}
+
+.phone-row-more {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  color: var(--wp-subtle);
+  transform-origin: 50% 50%;
+}
+
+.phone-row-more svg {
+  display: block;
+}
+
+/* ---------- keypad ---------- */
+
+.phone-keypad {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px 12px;
+}
+
+.phone-display {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 0 0 14px 12px;
+}
+
+.phone-display-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.phone-display-name {
+  color: var(--wp-accent);
+  font-size: var(--size-medium-large);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.phone-display-number {
+  font-family: var(--font-light);
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  /* Long numbers keep their latest digits in view. */
+  direction: rtl;
+  text-align: left;
+  unicode-bidi: plaintext;
+}
+
+.phone-backspace {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  touch-action: manipulation;
+}
+
+.phone-backspace:active {
+  color: var(--wp-accent);
+}
+
+.phone-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 88px;
+  gap: 6px;
+}
+
+.phone-key {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--wp-chrome);
+  touch-action: manipulation;
+}
+
+.phone-key:active {
+  background: var(--wp-accent);
+  color: #fff;
+}
+
+.phone-key-digit {
+  font-family: var(--font-semilight);
+  font-size: 40px;
+  line-height: 1;
+}
+
+.phone-key-letters {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  color: var(--wp-subtle);
+  font-size: var(--size-small);
+  letter-spacing: 1px;
+}
+
+.phone-key:active .phone-key-letters {
+  color: inherit;
+}
+
+.phone-keys-small {
+  width: 100%;
+  grid-auto-rows: 62px;
+}
+
+.phone-keys-small .phone-key-digit {
+  font-size: 30px;
+}
+
+.phone-keys-small .phone-key-letters {
+  height: 18px;
+  font-size: 14px;
+}
+
+.phone-keypad-actions {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.phone-dial-call,
+.phone-dial-save {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: var(--size-medium-large);
+  transform-origin: 50% 50%;
+}
+
+.phone-dial-call {
+  background: var(--wp-accent);
+  color: #fff;
+}
+
+.phone-dial-save {
+  background: var(--wp-chrome);
+}
+
+/* ---------- in call ---------- */
+
+.phone-call {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 12px 6px;
+}
+
+.phone-call-top {
+  flex: none;
+  padding: 0 12px;
+}
+
+.phone-call-status {
+  font-size: var(--size-medium-large);
+  font-variant-numeric: tabular-nums;
+}
+
+.phone-call-name {
+  font-family: var(--font-light);
+  font-size: 54px;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.phone-call-number {
+  color: var(--wp-subtle);
+  font-size: var(--size-medium-large);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.phone-call-tones {
+  color: var(--wp-foreground);
+}
+
+.phone-call-middle {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+}
+
+.phone-call[data-ended] .phone-call-middle,
+.phone-call[data-ended] .phone-call-top {
+  opacity: 0.6;
+}
+
+.phone-call-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.phone-call-toggle {
+  height: 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--wp-chrome);
+  font-size: var(--size-small);
+  line-height: 1.1;
+  transform-origin: 50% 50%;
+}
+
+.phone-call-toggle svg {
+  display: block;
+  margin: -6px 0 -2px;
+}
+
+.phone-call-toggle[aria-pressed='true'] {
+  background: var(--wp-accent);
+  color: #fff;
+}
+
+.phone-call-toggle[aria-pressed='true'] .appbar-glyph,
+.phone-call-toggle[aria-pressed='true'] svg {
+  color: #fff;
+}
+
+.phone-call-toggle:disabled {
+  color: var(--wp-disabled);
+}
+
+.phone-call-end {
+  height: 72px;
+  width: 100%;
+  background: #e51400;
+  color: #fff;
+  font-size: var(--size-medium-large);
+  text-align: center;
+  transform-origin: 50% 50%;
+}
+
+.phone-call-end:disabled {
+  opacity: 0.6;
+}
+
+.phone-call-tel {
+  align-self: center;
+  margin-top: 8px;
+  padding: 4px 12px;
+  color: var(--wp-subtle);
+  font-size: var(--size-small);
+}

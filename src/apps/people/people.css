@@ -1,0 +1,416 @@
+/* People: hub, contact card, edit page, and pieces Phone reuses. */
+
+.people-page > .pivot {
+  flex: 1;
+  min-height: 0;
+}
+
+.people-pic {
+  flex: none;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #fff;
+  font-family: var(--font-semilight);
+  line-height: 1;
+  background: color-mix(in srgb, var(--wp-accent) 70%, #000);
+}
+
+.people-pic[data-shade='1'] {
+  background: color-mix(in srgb, var(--wp-accent) 85%, #fff);
+}
+
+.people-pic[data-shade='2'] {
+  background: color-mix(in srgb, var(--wp-accent) 55%, #000);
+}
+
+.people-pic[data-shade='3'] {
+  background: var(--wp-accent);
+}
+
+.people-pic[data-fill] {
+  width: 100%;
+  height: 100%;
+}
+
+.people-pic svg {
+  width: 56%;
+  height: 56%;
+  margin-top: 18%;
+}
+
+/* ---------- lists ---------- */
+
+.people-list {
+  padding: 0 12px 36px;
+}
+
+.people-list-flat {
+  padding-bottom: 12px;
+}
+
+.people-section-label {
+  margin-bottom: 8px;
+  color: var(--wp-subtle);
+}
+
+.people-fav-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.people-fav {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  transform-origin: 50% 50%;
+}
+
+.people-fav .people-pic {
+  font-size: 36px;
+}
+
+.people-fav-name {
+  position: absolute;
+  left: 8px;
+  right: 6px;
+  bottom: 3px;
+  color: #fff;
+  font-size: var(--size-small);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.people-group {
+  margin-bottom: 18px;
+}
+
+.people-letter {
+  display: flex;
+  align-items: flex-end;
+  width: 62px;
+  height: 62px;
+  margin-bottom: 12px;
+  padding: 0 0 4px 7px;
+  background: var(--wp-accent);
+  color: #fff;
+  font-family: var(--font-semilight);
+  font-size: 38px;
+  line-height: 1;
+  transform-origin: 50% 50%;
+}
+
+.people-row,
+.people-group-row,
+.people-update {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 12px;
+  transform-origin: 50% 50%;
+}
+
+.people-row-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.people-row-name {
+  font-family: var(--font-semilight);
+  font-size: var(--size-large);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.people-row-sub,
+.people-action-sub {
+  display: block;
+  color: var(--wp-subtle);
+  font-size: var(--size-normal);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.people-empty {
+  margin: 0 0 24px;
+  color: var(--wp-subtle);
+}
+
+.people-card .people-empty {
+  margin: 0 12px 24px;
+}
+
+.people-update {
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.people-update-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.people-update-name {
+  font-family: var(--font-semibold);
+  font-size: var(--size-normal);
+  line-height: 1.2;
+}
+
+.people-update-body {
+  font-size: var(--size-normal);
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+.people-group-row {
+  margin-bottom: 18px;
+}
+
+.people-group-tile {
+  flex: none;
+  width: 99px;
+  height: 99px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  background: var(--wp-accent);
+}
+
+.people-group-tile .people-pic {
+  font-size: 18px;
+}
+
+/* ---------- jump list ---------- */
+
+.people-jump {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 24px;
+  background: var(--wp-background);
+}
+
+.people-jump-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.people-jump-tile {
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 1;
+  padding: 0 0 6px 10px;
+  background: var(--wp-accent);
+  color: #fff;
+  font-family: var(--font-semilight);
+  font-size: 54px;
+  line-height: 1;
+  transform-origin: 50% 50%;
+}
+
+.people-jump-tile:disabled {
+  background: var(--wp-chrome);
+  color: var(--wp-disabled);
+}
+
+/* ---------- text box ---------- */
+
+.people-field {
+  margin: 0 12px 18px;
+}
+
+.people-field-header {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--wp-subtle);
+}
+
+.people-textbox {
+  display: block;
+  width: 100%;
+  height: 50px;
+  margin: 0;
+  padding: 0 9px;
+  border: 3px solid transparent;
+  border-radius: 0;
+  outline: none;
+  background: var(--wp-text-box);
+  color: var(--wp-text-box-foreground);
+  caret-color: var(--wp-accent);
+  font-family: var(--font-normal);
+  font-size: var(--size-medium-large);
+  user-select: text;
+  -webkit-user-select: text;
+  appearance: none;
+}
+
+.people-textbox:focus {
+  background: var(--wp-text-box-edit-background);
+  border-color: var(--wp-accent);
+}
+
+.people-textbox::-webkit-search-cancel-button {
+  display: none;
+}
+
+.people-search-box {
+  flex: none;
+  padding: 0 12px 6px;
+}
+
+/* ---------- message box ---------- */
+
+.people-msgbox-scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--wp-semitransparent);
+}
+
+.people-msgbox {
+  padding: 24px 12px 12px;
+  background: var(--wp-chrome);
+  transform-origin: 50% 0;
+}
+
+.people-msgbox-title {
+  margin: 0 12px 12px;
+  font-family: var(--font-semibold);
+  font-size: var(--size-large);
+  line-height: 1.2;
+}
+
+.people-msgbox-text {
+  margin: 0 12px 12px;
+}
+
+.people-msgbox-buttons {
+  display: flex;
+}
+
+.people-msgbox-button {
+  flex: 1;
+  margin: 12px;
+  padding: 5px 10px 6px;
+  border: 3px solid var(--wp-foreground);
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-align: center;
+  transform-origin: 50% 50%;
+}
+
+.people-msgbox-button:active {
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+  color: #fff;
+}
+
+/* ---------- contact card ---------- */
+
+.people-card {
+  padding-bottom: 36px;
+}
+
+.people-card-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  margin: 0 12px 30px;
+}
+
+.people-card-name {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-semilight);
+  font-size: var(--size-extra-large);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.people-action,
+.people-history {
+  display: block;
+  width: 100%;
+  padding: 0 12px;
+  margin-bottom: 18px;
+  color: inherit;
+  text-decoration: none;
+  transform-origin: 50% 50%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.people-action-title {
+  display: block;
+  font-family: var(--font-semilight);
+  font-size: var(--size-large);
+  line-height: 1.2;
+}
+
+.people-history-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-family: var(--font-semilight);
+  font-size: var(--size-medium-large);
+  line-height: 1.25;
+}
+
+.people-history[data-missed] .people-history-title {
+  color: var(--wp-accent);
+}
+
+/* ---------- edit page ---------- */
+
+.people-small-title {
+  flex: none;
+  margin: 17px 24px 22px;
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-transform: uppercase;
+}
+
+.people-scroll {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding: 0 12px;
+}
+
+.people-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.people-edit {
+  padding-bottom: 36px;
+}
+
+.people-edit-pic {
+  margin: 0 12px 24px;
+}
+
+.people-add-link {
+  display: block;
+  margin: -6px 12px 24px;
+  color: var(--wp-accent);
+  font-size: var(--size-medium-large);
+  text-decoration: none;
+  transform-origin: 0 50%;
+}
+
+

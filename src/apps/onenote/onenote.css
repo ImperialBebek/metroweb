@@ -1,0 +1,255 @@
+.onenote-fill {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---------- page lists ---------- */
+
+.onenote-item {
+  display: block;
+  width: 100%;
+  padding: 0 12px;
+  margin-bottom: 18px;
+  transform-origin: 50% 50%;
+}
+
+.onenote-item-title,
+.onenote-item-snippet,
+.onenote-item-date {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.onenote-item-title {
+  font-family: var(--font-semilight);
+  font-size: var(--size-extra-large);
+  line-height: 1.2;
+}
+
+.onenote-item-snippet {
+  margin-top: -2px;
+  font-size: var(--size-normal);
+}
+
+.onenote-item-date {
+  color: var(--wp-subtle);
+  font-size: var(--size-small);
+}
+
+.onenote-match {
+  background: none;
+  color: var(--wp-accent);
+}
+
+/* ---------- WP TextBox ---------- */
+
+.onenote-textbox {
+  display: block;
+  width: calc(100% - 24px);
+  height: 52px;
+  margin: 0 12px 24px;
+  padding: 0 9px;
+  border: 3px solid transparent;
+  border-radius: 0;
+  outline: none;
+  background: var(--wp-text-box);
+  color: var(--wp-text-box-foreground);
+  font-family: var(--font-normal);
+  font-size: var(--size-medium-large);
+  appearance: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.onenote-textbox:focus {
+  background: var(--wp-text-box-edit-background);
+  border-color: var(--wp-accent);
+}
+
+.onenote-textbox::-webkit-search-decoration,
+.onenote-textbox::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+/* ---------- about ---------- */
+
+.onenote-about {
+  margin: 0 12px 24px;
+}
+
+.onenote-about-name {
+  font-family: var(--font-semilight);
+  font-size: var(--size-large);
+}
+
+.onenote-about-line {
+  color: var(--wp-subtle);
+}
+
+/* ---------- note page ---------- */
+
+.onenote-note-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding: 18px 24px 48px;
+}
+
+.onenote-note-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.onenote-title,
+.onenote-block-text {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: none;
+  color: inherit;
+  caret-color: var(--wp-accent);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.onenote-title {
+  font-family: var(--font-semilight);
+  font-size: var(--size-extra-large);
+  line-height: 1.25;
+}
+
+.onenote-title::placeholder,
+.onenote-block-text::placeholder {
+  color: var(--wp-subtle);
+  opacity: 1;
+}
+
+.onenote-note-date {
+  margin-bottom: 20px;
+  color: var(--wp-subtle);
+  font-size: var(--size-small);
+}
+
+.onenote-blocks {
+  min-height: 200px;
+}
+
+.onenote-block {
+  display: flex;
+  align-items: flex-start;
+  min-height: 30px;
+}
+
+.onenote-block + .onenote-block[data-kind='text'],
+.onenote-block[data-kind='text'] + .onenote-block {
+  margin-top: 10px;
+}
+
+.onenote-block[data-kind='todo'] + .onenote-block[data-kind='todo'] {
+  margin-top: 6px;
+}
+
+.onenote-block-text {
+  flex: 1;
+  min-width: 0;
+  min-height: 30px;
+  overflow: hidden;
+  resize: none;
+  font-family: var(--font-normal);
+  font-size: var(--size-medium);
+  line-height: 30px;
+}
+
+.onenote-block[data-checked] .onenote-block-text {
+  color: var(--wp-subtle);
+  text-decoration: line-through;
+}
+
+.onenote-check {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  margin-right: 12px;
+  border: 2px solid var(--wp-foreground);
+  display: grid;
+  place-items: center;
+}
+
+.onenote-check svg {
+  display: block;
+  color: transparent;
+}
+
+.onenote-check[aria-checked='true'] {
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+}
+
+.onenote-check[aria-checked='true'] svg {
+  color: #fff;
+}
+
+.onenote-bullet {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin: 12px 18px 0 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ---------- message box ---------- */
+
+.onenote-msgbox {
+  position: absolute;
+  inset: 0;
+  background: var(--wp-semitransparent);
+}
+
+.onenote-msgbox-panel {
+  padding: 18px 24px 12px;
+  background: var(--wp-chrome);
+  color: var(--wp-foreground);
+  transform-origin: 50% 0;
+}
+
+.onenote-msgbox-title {
+  margin-bottom: 12px;
+  font-family: var(--font-semibold);
+  font-size: var(--size-large);
+  line-height: 1.2;
+}
+
+.onenote-msgbox-text {
+  margin-bottom: 18px;
+  font-size: var(--size-normal);
+}
+
+.onenote-msgbox-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.onenote-msgbox-button {
+  flex: 1;
+  height: 72px;
+  border: 3px solid var(--wp-foreground);
+  text-align: center;
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  transform-origin: 50% 50%;
+}
+
+.onenote-msgbox-button:active {
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+  color: #fff;
+}

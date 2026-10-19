@@ -1,0 +1,435 @@
+/* ---------- conversation list ---------- */
+
+.messaging-main {
+  flex: 1;
+  min-height: 0;
+}
+
+.messaging-list {
+  padding-bottom: 36px;
+}
+
+.messaging-thread {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0 12px;
+  margin-bottom: 20px;
+}
+
+.messaging-check {
+  flex: none;
+  width: 0;
+  height: 32px;
+  margin-top: 13px;
+  display: grid;
+  place-items: center;
+  border: 0 solid var(--wp-foreground);
+  color: var(--wp-foreground);
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    width 200ms ease-out,
+    margin-right 200ms ease-out,
+    opacity 150ms linear;
+}
+
+.messaging-thread[data-selecting] .messaging-check {
+  width: 32px;
+  margin-right: 24px;
+  border-width: 3px;
+  opacity: 1;
+}
+
+.messaging-check svg {
+  flex: none;
+  visibility: hidden;
+}
+
+.messaging-check[data-checked] svg {
+  visibility: visible;
+}
+
+.messaging-thread-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.messaging-thread-top {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.messaging-thread-name,
+.messaging-thread-snippet {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.messaging-thread-name {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-semilight);
+  font-size: var(--size-extra-large);
+  line-height: 1.2;
+}
+
+.messaging-thread-time {
+  flex: none;
+  color: var(--wp-subtle);
+  font-size: var(--size-small);
+}
+
+.messaging-thread-snippet {
+  margin-top: -3px;
+  color: var(--wp-subtle);
+  font-size: var(--size-normal);
+}
+
+.messaging-thread[data-unread] .messaging-thread-snippet,
+.messaging-thread[data-unread] .messaging-thread-time {
+  color: var(--wp-accent);
+}
+
+/* ---------- conversation ---------- */
+
+.messaging-title {
+  flex: none;
+  margin: 17px 24px 0;
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  line-height: 1.33;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.messaging-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.messaging-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.messaging-bubbles {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px 0 10px;
+}
+
+.messaging-day {
+  margin: 14px 24px 2px;
+  color: var(--wp-subtle);
+  font-size: var(--size-small);
+}
+
+.messaging-bubble {
+  position: relative;
+  flex: none;
+  padding: 7px 12px 6px;
+  color: #fff;
+  font-size: var(--size-normal);
+  line-height: 1.3;
+}
+
+/* The tail is a right triangle in the bubble's own colour: up from the top-left
+   edge for received messages, down from the bottom-right edge for sent ones. */
+.messaging-bubble::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 14px;
+  background: inherit;
+}
+
+.messaging-bubble[data-from='them'] {
+  margin: 22px 72px 6px 24px;
+  background: var(--wp-accent);
+}
+
+.messaging-bubble[data-from='them']::before {
+  left: 18px;
+  top: -14px;
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+}
+
+.messaging-bubble[data-from='me'] {
+  margin: 6px 24px 22px 72px;
+  background: color-mix(in srgb, var(--wp-accent) 72%, #fff);
+}
+
+.messaging-bubble[data-from='me']::before {
+  right: 18px;
+  bottom: -14px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+.messaging-bubble-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.messaging-bubble-time {
+  margin-top: 2px;
+  font-size: 16px;
+  opacity: 0.75;
+}
+
+.messaging-typing {
+  display: flex;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 16px 16px 14px;
+}
+
+.messaging-typing i {
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  animation: messaging-typing-dot 1.2s linear infinite;
+}
+
+.messaging-typing i:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.messaging-typing i:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes messaging-typing-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+
+/* ---------- text boxes ---------- */
+
+.messaging-textbox {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 5px 9px;
+  border: 3px solid transparent;
+  border-radius: 0;
+  outline: none;
+  background: var(--wp-text-box);
+  color: var(--wp-text-box-foreground);
+  font-family: var(--font-normal);
+  font-size: var(--size-medium-large);
+  line-height: 1.3;
+  user-select: text;
+  -webkit-user-select: text;
+  appearance: none;
+}
+
+.messaging-textbox::placeholder {
+  color: color-mix(in srgb, var(--wp-text-box-foreground) 55%, transparent);
+  opacity: 1;
+}
+
+.messaging-textbox:focus {
+  background: var(--wp-text-box-edit-background);
+  border-color: var(--wp-accent);
+}
+
+.messaging-compose {
+  position: relative;
+  flex: none;
+  margin: 6px 24px 22px;
+}
+
+.messaging-compose::after {
+  content: '';
+  position: absolute;
+  right: 18px;
+  bottom: -14px;
+  width: 20px;
+  height: 14px;
+  background: var(--wp-text-box);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+.messaging-compose:focus-within::after {
+  background: var(--wp-accent);
+}
+
+.messaging-compose-input {
+  max-height: 150px;
+  overflow-y: auto;
+  resize: none;
+  scrollbar-width: none;
+}
+
+.messaging-counter {
+  position: absolute;
+  left: 0;
+  bottom: -21px;
+  color: var(--wp-subtle);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+/* ---------- new message ---------- */
+
+.messaging-to {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 14px 0 24px;
+}
+
+.messaging-to-label {
+  color: var(--wp-subtle);
+  font-size: var(--size-medium-large);
+}
+
+.messaging-to-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.messaging-to-input[data-picked] {
+  color: var(--wp-accent);
+}
+
+.messaging-round {
+  flex: none;
+  width: 48px;
+  height: 48px;
+}
+
+.messaging-round svg {
+  display: block;
+}
+
+.messaging-round:active circle {
+  fill: var(--wp-foreground);
+}
+
+.messaging-round:active path {
+  fill: var(--wp-background);
+}
+
+.messaging-suggestions {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 18px 12px 0;
+}
+
+.messaging-contact {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 12px;
+  margin-bottom: 14px;
+}
+
+.messaging-contact-name {
+  font-family: var(--font-semilight);
+  font-size: var(--size-large);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.messaging-contact-number {
+  color: var(--wp-subtle);
+  font-size: var(--size-normal);
+}
+
+.messaging-picker {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.messaging-picker-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 24px 12px 24px;
+}
+
+/* ---------- message box ---------- */
+
+.messaging-msgbox-scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--wp-semitransparent);
+  z-index: 1;
+}
+
+.messaging-msgbox {
+  padding: 18px 12px 6px;
+  background: var(--wp-chrome);
+  color: var(--wp-foreground);
+  transform-origin: 50% 0;
+}
+
+.messaging-msgbox-caption {
+  margin: 0 12px 10px;
+  font-family: var(--font-semibold);
+  font-size: var(--size-large);
+  line-height: 1.2;
+}
+
+.messaging-msgbox-message {
+  margin: 0 12px 12px;
+  font-size: var(--size-medium);
+  line-height: 1.33;
+}
+
+.messaging-msgbox-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.messaging-msgbox-button {
+  margin: 12px;
+  padding: 5px 10px 6px;
+  border: 3px solid var(--wp-foreground);
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-align: center;
+}
+
+.messaging-msgbox-button:active {
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .messaging-check {
+    transition: none;
+  }
+
+  .messaging-typing i {
+    animation: none;
+    opacity: 0.8;
+  }
+}

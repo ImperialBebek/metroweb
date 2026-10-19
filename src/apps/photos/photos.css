@@ -1,0 +1,240 @@
+/* ---------- hub ---------- */
+
+.photos-collection .list-item {
+  transform-origin: 50% 50%;
+}
+
+/* ---------- thumbnail grids ---------- */
+
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 105px);
+  gap: 4px;
+}
+
+.photos-grid[data-variant='small'] {
+  grid-template-columns: repeat(3, 130px);
+  gap: 6px;
+  margin-left: 12px;
+}
+
+.photos-grid[data-variant='large'] {
+  grid-template-columns: repeat(2, 198px);
+  gap: 6px;
+  margin-left: 12px;
+}
+
+.photos-thumb {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--wp-chrome);
+  transform-origin: 50% 50%;
+}
+
+.photos-thumb img,
+.photos-album-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.photos-empty {
+  margin: 0 12px;
+  color: var(--wp-subtle);
+  font-size: var(--size-medium);
+  line-height: 1.33;
+}
+
+/* ---------- album page ---------- */
+
+.photos-album {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.photos-album-title {
+  flex: none;
+  margin: 17px 24px 24px;
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-transform: uppercase;
+}
+
+.photos-album-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 0 24px 36px;
+}
+
+.photos-album-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.photos-album-scroll .photos-empty {
+  margin: 0;
+}
+
+/* ---------- albums and date pages ---------- */
+
+.photos-album-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, 204px);
+  gap: 18px 24px;
+  margin: 0 12px;
+}
+
+.photos-album-tile {
+  display: flex;
+  flex-direction: column;
+  transform-origin: 50% 50%;
+}
+
+.photos-album-cover {
+  display: block;
+  width: 204px;
+  height: 204px;
+  background: var(--wp-accent);
+}
+
+.photos-album-name {
+  margin-top: 6px;
+  font-size: var(--size-normal);
+  line-height: 1.2;
+}
+
+.photos-album-count {
+  color: var(--wp-subtle);
+  font-size: var(--size-normal);
+  line-height: 1.3;
+}
+
+.photos-month {
+  margin: 0 12px 30px;
+}
+
+.photos-month-label {
+  margin-bottom: 10px;
+  font-family: var(--font-semilight);
+  font-size: var(--size-large);
+  line-height: 1.2;
+}
+
+.photos-month-count {
+  margin-left: 12px;
+  color: var(--wp-subtle);
+  font-family: var(--font-normal);
+  font-size: var(--size-normal);
+}
+
+/* ---------- photo viewer ---------- */
+
+/* The viewer is always black, whatever the theme. */
+.photos-viewer {
+  --wp-foreground: #fff;
+  --wp-background: #000;
+  --wp-chrome: #1f1f1f;
+  --wp-subtle: rgba(255, 255, 255, 0.6);
+  --wp-disabled: rgba(255, 255, 255, 0.4);
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+}
+
+.photos-viewer-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.photos-viewer-slide {
+  position: absolute;
+  inset: 0;
+}
+
+.photos-viewer-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.photos-viewer-info {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 24px 12px;
+  background: rgba(0, 0, 0, 0.6);
+  font-size: var(--size-normal);
+  line-height: 1.3;
+  pointer-events: none;
+}
+
+.photos-viewer-time {
+  color: var(--wp-subtle);
+}
+
+.photos-viewer-spacer {
+  flex: 1;
+}
+
+.photos-viewer .appbar {
+  background: rgba(31, 31, 31, 0.9);
+}
+
+/* ---------- message box ---------- */
+
+.photos-msg-scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--wp-semitransparent);
+}
+
+.photos-msg {
+  padding: 18px 12px 6px;
+  background: var(--wp-chrome);
+  color: var(--wp-foreground);
+  transform-origin: 50% 0;
+}
+
+.photos-msg-title {
+  margin: 0 12px 12px;
+  font-family: var(--font-semibold);
+  font-size: var(--size-large);
+  line-height: 1.2;
+}
+
+.photos-msg-text {
+  margin: 0 12px 12px;
+  font-size: var(--size-normal);
+}
+
+.photos-msg-buttons {
+  display: flex;
+}
+
+.photos-msg-button {
+  flex: 1;
+  margin: 12px;
+  padding: 5px 10px 6px;
+  border: 3px solid var(--wp-foreground);
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-align: center;
+}
+
+.photos-msg-button:active {
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+  color: #fff;
+}
