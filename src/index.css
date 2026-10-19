@@ -505,6 +505,55 @@ a:focus-visible,
   color: #fff;
 }
 
+/* ---------- message box (shell MessageBox) ---------- */
+
+.msgbox-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--wp-semitransparent);
+}
+
+.msgbox {
+  padding: 18px 12px 6px;
+  background: var(--wp-chrome);
+  color: var(--wp-foreground);
+  transform-origin: 50% 0;
+}
+
+.msgbox-caption {
+  margin: 0 12px 10px;
+  font-family: var(--font-semibold);
+  font-size: var(--size-large);
+  line-height: 1.2;
+}
+
+.msgbox-message {
+  margin: 0 12px 12px;
+  font-size: var(--size-medium);
+  line-height: 1.33;
+  overflow-wrap: anywhere;
+}
+
+.msgbox-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.msgbox-button {
+  margin: 12px;
+  padding: 5px 10px 6px;
+  border: 3px solid var(--wp-foreground);
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-align: center;
+}
+
+.msgbox-button:active {
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+  color: #fff;
+}
 @media (prefers-reduced-motion: reduce) {
   .pivot-header,
   .ls-item {

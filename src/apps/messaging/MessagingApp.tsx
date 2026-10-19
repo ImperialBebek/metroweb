@@ -11,7 +11,7 @@ import { PageStack, useNavigation } from '../../navigation'
 import type { AppProps } from '../types'
 import { Conversation } from './Conversation'
 import { listTime, threadName } from './format'
-import { MessageBox } from './MessageBox'
+import { MessageBox } from '../../components/MessageBox'
 import { NewMessagePage } from './NewMessage'
 import './messaging.css'
 

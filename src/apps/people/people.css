@@ -269,52 +269,6 @@
   padding: 0 12px 6px;
 }
 
-/* ---------- message box ---------- */
-
-.people-msgbox-scrim {
-  position: absolute;
-  inset: 0;
-  background: var(--wp-semitransparent);
-}
-
-.people-msgbox {
-  padding: 24px 12px 12px;
-  background: var(--wp-chrome);
-  transform-origin: 50% 0;
-}
-
-.people-msgbox-title {
-  margin: 0 12px 12px;
-  font-family: var(--font-semibold);
-  font-size: var(--size-large);
-  line-height: 1.2;
-}
-
-.people-msgbox-text {
-  margin: 0 12px 12px;
-}
-
-.people-msgbox-buttons {
-  display: flex;
-}
-
-.people-msgbox-button {
-  flex: 1;
-  margin: 12px;
-  padding: 5px 10px 6px;
-  border: 3px solid var(--wp-foreground);
-  font-family: var(--font-semibold);
-  font-size: var(--size-medium);
-  text-align: center;
-  transform-origin: 50% 50%;
-}
-
-.people-msgbox-button:active {
-  background: var(--wp-accent);
-  border-color: var(--wp-accent);
-  color: #fff;
-}
-
 /* ---------- contact card ---------- */
 
 .people-card {

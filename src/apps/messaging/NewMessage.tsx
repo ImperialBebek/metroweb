@@ -7,7 +7,7 @@ import { contactsStore, digits, displayName, type Contact } from '../../data/con
 import { useStore } from '../../data/persist'
 import { ph } from '../../icons/ph'
 import { ComposeBox, Conversation } from './Conversation'
-import { MessageBox } from './MessageBox'
+import { MessageBox } from '../../components/MessageBox'
 import { sendMessage } from './replies'
 
 interface Recipient {

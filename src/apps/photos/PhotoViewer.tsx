@@ -6,7 +6,7 @@ import { EXPO_OUT_6, prefersReducedMotion } from '../../motion'
 import { motionMs } from '../../motionSpeed'
 import { useNavigation } from '../../navigation'
 import { formatTakenDate, formatTakenTime, useAlbum, type AlbumId } from './albums'
-import { PhotosMessageBox } from './PhotosMessageBox'
+import { MessageBox } from '../../components/MessageBox'
 import './photos.css'
 
 interface Point {
@@ -292,7 +292,6 @@ export function PhotoViewer({
   }
 
   const confirmDelete = () => {
-    setConfirming(false)
     if (!photo) return
     moveOffCurrent()
     deletePhoto(photo.id).catch(() => {})
@@ -367,12 +366,11 @@ export function PhotoViewer({
       <div className="photos-viewer-spacer" />
       {chrome && photo && <AppBar minimized buttons={buttons} />}
       {confirming && photo && (
-        <PhotosMessageBox
-          title="Delete?"
+        <MessageBox
+          caption="Delete?"
           message="This picture will be deleted."
-          confirmLabel="delete"
-          onConfirm={confirmDelete}
-          onClose={() => setConfirming(false)}
+          buttons={[{ label: 'delete', onTap: confirmDelete }, { label: 'cancel' }]}
+          onDismissed={() => setConfirming(false)}
         />
       )}
     </div>

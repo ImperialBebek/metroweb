@@ -8,7 +8,7 @@ import { PH } from '../../icons/phosphor'
 import { useNavigation } from '../../navigation'
 import { ContactList } from '../people/ContactList'
 import { PEOPLE_GLYPHS } from '../people/glyphs'
-import { MessageBox } from '../people/MessageBox'
+import { MessageBox } from '../../components/MessageBox'
 import { TextBox } from '../people/TextBox'
 import { useTap } from '../people/useTap'
 import { nameOf, numberKind, route, whenLabel } from '../people/util'
@@ -124,11 +124,10 @@ export function HistoryPage() {
       />
       {confirming && (
         <MessageBox
-          title="Delete call history"
+          caption="Delete call history"
           message="Are you sure you want to delete the entire call history list?"
-          confirmLabel="delete"
-          onConfirm={clearCalls}
-          onClosed={() => setConfirming(false)}
+          buttons={[{ label: 'delete', onTap: clearCalls }, { label: 'cancel' }]}
+          onDismissed={() => setConfirming(false)}
         />
       )}
     </div>

@@ -68,6 +68,13 @@ export function swivel(element: HTMLElement, direction: 'in' | 'out'): Animation
   })
 }
 
+// The dimmed screen behind a message box: in 200 ms, out 250 ms (Estimated).
+export function scrimFade(element: HTMLElement, direction: 'in' | 'out'): Animation {
+  return direction === 'in'
+    ? element.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200 })
+    : element.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 250, fill: 'forwards' })
+}
+
 // Toolkit TurnstileFeatherEffect: each element swings on the screen's left
 // edge (not its own), while its PlaneProjection camera stays on the element's
 // centre. `hinge` is the distance from the element's centre to that edge.

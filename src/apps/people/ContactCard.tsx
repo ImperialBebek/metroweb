@@ -8,7 +8,7 @@ import { useStore } from '../../data/persist'
 import { useNavigation } from '../../navigation'
 import { ContactPicture } from './ContactPicture'
 import { PEOPLE_GLYPHS } from './glyphs'
-import { MessageBox } from './MessageBox'
+import { MessageBox } from '../../components/MessageBox'
 import { useTap } from './useTap'
 import { formatBirthday, nameOf, numberKind, route, whenLabel } from './util'
 import './people.css'
@@ -172,14 +172,19 @@ export function ContactCardPage({ id }: { id: string }) {
       />
       {confirming && (
         <MessageBox
-          title="Delete contact?"
+          caption="Delete contact?"
           message={`${nameOf(contact)} will be deleted from your phone.`}
-          confirmLabel="delete"
-          onClosed={() => setConfirming(false)}
-          onConfirm={() => {
-            contactsStore.set((cs) => cs.filter((c) => c.id !== contact.id))
-            back()
-          }}
+          buttons={[
+            {
+              label: 'delete',
+              onTap: () => {
+                contactsStore.set((cs) => cs.filter((c) => c.id !== contact.id))
+                back()
+              },
+            },
+            { label: 'cancel' },
+          ]}
+          onDismissed={() => setConfirming(false)}
         />
       )}
     </div>

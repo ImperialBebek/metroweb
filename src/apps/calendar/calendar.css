@@ -440,54 +440,6 @@
   overflow-wrap: anywhere;
 }
 
-/* ---------- message box ---------- */
-
-.calendar-msgbox-scrim {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  background: var(--wp-semitransparent);
-}
-
-.calendar-msgbox {
-  padding: 24px 24px 12px;
-  background: var(--wp-chrome);
-  transform-origin: 50% 0;
-  animation: calendar-drop-in 350ms cubic-bezier(0.1, 0.9, 0.2, 1);
-}
-
-.calendar-msgbox-title {
-  font-family: var(--font-semibold);
-  font-size: var(--size-large);
-  line-height: 1.2;
-}
-
-.calendar-msgbox-text {
-  margin: 14px 0 24px;
-  overflow-wrap: anywhere;
-}
-
-.calendar-msgbox-buttons {
-  display: flex;
-  gap: 12px;
-}
-
-.calendar-msgbox-button {
-  flex: 1;
-  height: 64px;
-  border: 3px solid var(--wp-foreground);
-  font-family: var(--font-semibold);
-  font-size: var(--size-medium);
-  text-align: center;
-  transform-origin: 50% 50%;
-}
-
-.calendar-msgbox-button:active {
-  background: var(--wp-accent);
-  border-color: var(--wp-accent);
-  color: #fff;
-}
-
 /* ---------- reminder toast ---------- */
 
 .calendar-toast {
@@ -536,7 +488,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .calendar-msgbox,
   .calendar-toast {
     animation: none;
   }

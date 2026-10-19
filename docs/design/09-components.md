@@ -19,7 +19,7 @@ The shared building blocks. Each entry gives what it is, its metrics and states,
 | [Date and time pickers](#date-and-time-pickers) | `DateTimePicker.tsx`, `LoopingSelector.tsx` | Toolkit `DatePicker`, `TimePicker`, `LoopingSelector` |
 | [Full-screen popup](#full-screen-popup) | `popup.tsx`, `popupLayer.ts` | Toolkit full-mode picker page |
 | [App bar](#app-bar) | `AppBar.tsx`, `glyphs.tsx` | Shell `ApplicationBar` |
-| [Message box](#message-box) | per app (see below) | Shell `MessageBox` |
+| [Message box](#message-box) | `MessageBox.tsx` | Shell `MessageBox` |
 | [Text box](#text-box) | per app (see below) | `PhoneTextBox` |
 
 ## Pivot
@@ -199,7 +199,7 @@ A chrome-coloured panel that drops down from the top of the page over a dimmed s
 
 <!-- demo: message-box -->
 
-The reference is Messaging's (`apps/messaging/MessageBox.tsx`):
+`MessageBox` takes a `caption`, an optional `message`, up to two `buttons` (`{ label, onTap }`) and `onDismissed`. When a button is tapped the box closes, then `onDismissed` runs, then the button's `onTap`; so an action that presses Back (delete, then leave the page) reaches the page.
 
 | Part | Value | Source |
 |---|---|---|
@@ -210,19 +210,9 @@ The reference is Messaging's (`apps/messaging/MessageBox.tsx`):
 | Buttons | Two equal columns, styled like [Button](#button) | Estimated |
 | Motion | Swivel in and out from the top edge; scrim fades in 200 ms, out 250 ms | Estimated |
 
-It is an `alertdialog` with `aria-modal`. `useModal` moves focus to the first button, makes the app behind `inert`, and gives focus back on close.
+It is an `alertdialog` with `aria-modal`, labelled by the caption and described by the message. `useModal` moves focus to the first button, makes the app behind `inert`, and gives focus back on close. The buttons tilt.
 
-**There is no shared component yet.** Five apps carry their own copy, and they differ:
-
-| Copy | Differences |
-|---|---|
-| `apps/messaging/MessageBox.tsx` | The reference above; buttons sized by their padding |
-| `apps/people/MessageBox.tsx` | Panel padding 24 12 12; buttons in a flex row; the scrim doesn't fade |
-| `apps/onenote/MessageBox.tsx` | Panel padding 18 24 12; 72 px buttons |
-| `apps/photos/PhotosMessageBox.tsx` | The scrim doesn't fade |
-| `apps/calendar/widgets.tsx` | A CSS drop-in (350 ms, `cubic-bezier(0.1, 0.9, 0.2, 1)`) instead of the swivel; panel padding 24 24 12; 64 px buttons |
-
-Consolidate on the reference into `src/components/` before adding another.
+Every app's message box is this component. Don't copy it into an app.
 
 ## Text box
 

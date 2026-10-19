@@ -130,7 +130,7 @@ A press at the centre sinks the item 25 px straight back; a press at a corner ti
 | What | Motion | Duration and easing | Source |
 |---|---|---|---|
 | Full-screen popups and pickers (`SwivelTransition` FullScreenIn/Out) | `rotateX` −45° → 0° in, 0° → 45° out, `perspective(1000px)`, origin centre | 350 ms `EXPO_OUT_6` / 250 ms `EXPO_IN_6` | Toolkit |
-| Message boxes | Swivel as above, origin top centre; scrim fades | Swivel; scrim 200 ms in, 250 ms out | Estimated |
+| Message boxes | Swivel as above, origin top centre; scrim fades | Swivel; scrim 200 ms in, 250 ms out (`scrimFade`) | Estimated |
 | Phone keypad sheet (`[data-sheet]`) | Slides up from the bottom | 400 ms in, 270 ms out, `EXPO_OUT_6` | Estimated |
 | Pivot swipe | Items and headers snap | 300 ms `EXPO_OUT_6` | Estimated |
 | Pivot content cascade | Each row after the first starts 32 px further along | with the snap | Estimated from 8.1 footage |

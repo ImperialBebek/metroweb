@@ -14,7 +14,7 @@ import { useNavigation } from '../../navigation'
 import { longDate } from './format'
 import { PhIcon } from '../../icons/PhIcon'
 import { BULLETS_GLYPH, TODO_GLYPH } from './glyphs'
-import { MessageBox } from './MessageBox'
+import { MessageBox } from '../../components/MessageBox'
 
 type Field = HTMLInputElement | HTMLTextAreaElement
 
@@ -295,15 +295,19 @@ export function NotePage({ id, isNew = false }: { id: string; isNew?: boolean })
       />
       {confirming && (
         <MessageBox
-          title="Delete page?"
+          caption="Delete page?"
           message={`"${note.title.trim() || 'Untitled page'}" will be deleted from ${note.notebook}.`}
-          buttons={['delete', 'cancel']}
-          onClose={(result) => {
-            setConfirming(false)
-            if (result !== 'delete') return
-            deleteNote(id)
-            back()
-          }}
+          buttons={[
+            {
+              label: 'delete',
+              onTap: () => {
+                deleteNote(id)
+                back()
+              },
+            },
+            { label: 'cancel' },
+          ]}
+          onDismissed={() => setConfirming(false)}
         />
       )}
     </div>

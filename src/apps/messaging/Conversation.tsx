@@ -6,7 +6,7 @@ import { useStore } from '../../data/persist'
 import { motionMs } from '../../motionSpeed'
 import { useNavigation } from '../../navigation'
 import { dayLabel, sameDay, threadName, timeOfDay } from './format'
-import { MessageBox } from './MessageBox'
+import { MessageBox } from '../../components/MessageBox'
 import { sendMessage, useTyping, useViewingThread } from './replies'
 
 const SMS_LENGTH = 160

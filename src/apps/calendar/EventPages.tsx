@@ -27,7 +27,8 @@ import {
   timeRange,
   todayStart,
 } from './dates'
-import { MessageBox, TextBox } from './widgets'
+import { MessageBox } from '../../components/MessageBox'
+import { TextBox } from './widgets'
 
 // Deleting only after Back has turned the page away keeps it from going blank mid-transition.
 const AFTER_BACK = 300
@@ -69,14 +70,19 @@ export function EventDetails({ id }: { id: string }) {
       />
       {confirming && (
         <MessageBox
-          title="Delete appointment"
+          caption="Delete appointment"
           message="This appointment will be deleted."
-          confirm="delete"
-          onClose={() => setConfirming(false)}
-          onConfirm={() => {
-            back()
-            window.setTimeout(() => eventsStore.set((list) => list.filter((e) => e.id !== id)), motionMs(AFTER_BACK))
-          }}
+          buttons={[
+            {
+              label: 'delete',
+              onTap: () => {
+                back()
+                window.setTimeout(() => eventsStore.set((list) => list.filter((e) => e.id !== id)), motionMs(AFTER_BACK))
+              },
+            },
+            { label: 'cancel' },
+          ]}
+          onDismissed={() => setConfirming(false)}
         />
       )}
     </div>
@@ -264,14 +270,19 @@ export function TodoEditor({ id }: { id?: string }) {
       />
       {confirming && (
         <MessageBox
-          title="Delete to-do"
+          caption="Delete to-do"
           message="This to-do will be deleted."
-          confirm="delete"
-          onClose={() => setConfirming(false)}
-          onConfirm={() => {
-            back()
-            window.setTimeout(() => todosStore.set((list) => list.filter((t) => t.id !== todoId)), motionMs(AFTER_BACK))
-          }}
+          buttons={[
+            {
+              label: 'delete',
+              onTap: () => {
+                back()
+                window.setTimeout(() => todosStore.set((list) => list.filter((t) => t.id !== todoId)), motionMs(AFTER_BACK))
+              },
+            },
+            { label: 'cancel' },
+          ]}
+          onDismissed={() => setConfirming(false)}
         />
       )}
     </div>
