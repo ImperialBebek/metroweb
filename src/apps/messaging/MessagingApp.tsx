@@ -138,8 +138,12 @@ function ConversationsPage() {
       <AppBar buttons={buttons} />
       {confirming && (
         <MessageBox
-          caption={chosen.length === 1 ? 'delete thread?' : `delete ${chosen.length} threads?`}
-          message="All the messages in the selected conversations will be deleted from your phone."
+          caption={chosen.length === 1 ? 'Delete thread?' : 'Delete threads?'}
+          message={
+            chosen.length === 1
+              ? 'All the messages in this thread will be deleted from your phone.'
+              : 'All the messages in these threads will be deleted from your phone.'
+          }
           buttons={[
             {
               label: 'delete',

@@ -179,7 +179,7 @@ function AgendaView({ onOpen }: { onOpen: (id: string) => void }) {
     else groups.push({ day: groupDay, events: [event] })
   }
   groups.sort((a, b) => a.day - b.day)
-  if (groups.length === 0) return <p className="calendar-empty">No upcoming appointments.</p>
+  if (groups.length === 0) return <p className="calendar-empty">No appointments</p>
   return (
     <div className="calendar-agenda">
       {groups.map((group) => (
@@ -233,7 +233,7 @@ function TodoView({ onOpen }: { onOpen: (id: string) => void }) {
       (a.due ?? Infinity) - (b.due ?? Infinity) ||
       Number(b.priority === 'high') - Number(a.priority === 'high'),
   )
-  if (sorted.length === 0) return <p className="calendar-empty">No tasks. Tap new to add one.</p>
+  if (sorted.length === 0) return <p className="calendar-empty">No to-dos. Tap new to add one.</p>
   const toggle = (id: string) => todosStore.set((list) => list.map((t) => (t.id === id ? { ...t, done: !t.done } : t)))
   return (
     <div className="calendar-todos">

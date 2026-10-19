@@ -367,8 +367,8 @@ export function PhotoViewer({
       {chrome && photo && <AppBar minimized buttons={buttons} />}
       {confirming && photo && (
         <PhotosMessageBox
-          title="delete photo?"
-          message="This photo will be permanently removed from your phone."
+          title="Delete?"
+          message="This picture will be deleted."
           confirmLabel="delete"
           onConfirm={confirmDelete}
           onClose={() => setConfirming(false)}

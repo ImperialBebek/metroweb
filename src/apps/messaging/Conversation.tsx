@@ -68,7 +68,7 @@ function MessageList({ messages, typing }: { messages: Message[]; typing: boolea
       <div className="messaging-bubbles" ref={content} aria-live="polite">
         {items}
         {typing && (
-          <div className="messaging-bubble messaging-typing" data-from="them" aria-label="typing">
+          <div className="messaging-bubble messaging-typing" data-from="them" aria-label="Typing">
             <i />
             <i />
             <i />
@@ -188,15 +188,15 @@ export function Conversation({ threadId: id, number, autoFocus }: { threadId?: s
       />
       {dialog === 'delete' && (
         <MessageBox
-          caption="delete thread?"
-          message="All the messages in this conversation will be deleted from your phone."
+          caption="Delete thread?"
+          message="All the messages in this thread will be deleted from your phone."
           buttons={[{ label: 'delete', onTap: deleteThread }, { label: 'cancel' }]}
           onDismissed={() => setDialog(null)}
         />
       )}
       {dialog === 'attach' && (
         <MessageBox
-          caption="can't attach"
+          caption="Can't attach"
           message="Pictures, voice notes and other attachments aren't available yet. You can still send text."
           buttons={[{ label: 'ok' }]}
           onDismissed={() => setDialog(null)}

@@ -39,9 +39,11 @@ function collapse(calls: Call[]): Entry[] {
   return entries
 }
 
+const DIRECTION_NAMES: Record<Call['kind'], string> = { incoming: 'Incoming', outgoing: 'Outgoing', missed: 'Missed' }
+
 function Direction({ kind }: { kind: Call['kind'] }) {
   return (
-    <svg className="phone-direction" width="18" height="18" viewBox="0 0 256 256" aria-label={kind}>
+    <svg className="phone-direction" width="18" height="18" viewBox="0 0 256 256" role="img" aria-label={DIRECTION_NAMES[kind]}>
       <path fill="currentColor" d={PH[kind === 'outgoing' ? 'arrow-up-right' : 'arrow-down-left']} />
     </svg>
   )
@@ -75,7 +77,7 @@ function HistoryRow({ entry, contacts }: { entry: Entry; contacts: Contact[] }) 
         type="button"
         className="phone-row-more"
         {...more}
-        aria-label={contact ? `view ${nameOf(contact)}` : `save ${call.number}`}
+        aria-label={contact ? `View ${nameOf(contact)}` : `Save ${call.number}`}
       >
         <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden>
           {contact ? PEOPLE_GLYPHS.person : PEOPLE_GLYPHS.addPerson}
@@ -122,8 +124,8 @@ export function HistoryPage() {
       />
       {confirming && (
         <MessageBox
-          title="delete all?"
-          message="Your whole call history will be deleted."
+          title="Delete call history"
+          message="Are you sure you want to delete the entire call history list?"
           confirmLabel="delete"
           onConfirm={clearCalls}
           onClosed={() => setConfirming(false)}
@@ -149,7 +151,7 @@ export function PhoneSearchPage() {
     <div className="app-page phone-page">
       <div className="people-small-title">phone</div>
       <div className="people-search-box">
-        <TextBox type="search" aria-label="search history" autoFocus value={query} onChange={setQuery} />
+        <TextBox type="search" aria-label="Search history" autoFocus value={query} onChange={setQuery} />
       </div>
       <div className="people-scroll">
         <div className="phone-history">

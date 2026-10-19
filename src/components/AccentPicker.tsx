@@ -51,7 +51,7 @@ export function AccentPicker({ value, onPick, onClose, container }: AccentPicker
   if (!container) return null
   return createPortal(
     <div className="full-picker" ref={root} role="dialog" aria-label="Accents">
-      <div className="full-picker-header">ACCENTS</div>
+      <div className="full-picker-header">accents</div>
       <div className="accent-grid" role="radiogroup" aria-label="Accent color">
         {ACCENTS.map((accent, index) => (
           <AccentSwatch

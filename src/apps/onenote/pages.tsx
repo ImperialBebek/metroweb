@@ -92,7 +92,7 @@ export function NotebookPage({ notebook }: { notebook: string }) {
   return (
     <div className="app-page">
       <div className="onenote-fill">
-        <SettingsPage app={notebook.toUpperCase()} title={SECTION.toLowerCase()}>
+        <SettingsPage app={notebook} title={SECTION.toLowerCase()}>
           <NoteList notes={notes} empty="This section is empty. Tap new to start a page." />
         </SettingsPage>
       </div>

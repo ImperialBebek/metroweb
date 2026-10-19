@@ -44,7 +44,7 @@ export function EventDetails({ id }: { id: string }) {
 
   return (
     <div className="app-page">
-      <div className="calendar-page-title">APPOINTMENT</div>
+      <div className="calendar-page-title">appointment</div>
       <div className="calendar-scroll calendar-details">
         <h1 className="calendar-details-title">{event.title}</h1>
         <div className="calendar-details-when">
@@ -69,8 +69,8 @@ export function EventDetails({ id }: { id: string }) {
       />
       {confirming && (
         <MessageBox
-          title="delete appointment?"
-          message={`"${event.title}" will be deleted from your calendar.`}
+          title="Delete appointment"
+          message="This appointment will be deleted."
           confirm="delete"
           onClose={() => setConfirming(false)}
           onConfirm={() => {
@@ -166,7 +166,7 @@ export function EventEditor({
 
   return (
     <div className="app-page">
-      <div className="calendar-page-title">{id ? 'EDIT APPOINTMENT' : 'NEW APPOINTMENT'}</div>
+      <div className="calendar-page-title">{id ? 'edit appointment' : 'new appointment'}</div>
       <div className="calendar-scroll calendar-form">
         <TextBox header="Subject" value={draft.title} onChange={(title) => update({ title })} />
         <TextBox header="Location" value={draft.location} onChange={(location) => update({ location })} />
@@ -235,7 +235,7 @@ export function TodoEditor({ id }: { id?: string }) {
 
   return (
     <div className="app-page">
-      <div className="calendar-page-title">{id ? 'EDIT TASK' : 'NEW TASK'}</div>
+      <div className="calendar-page-title">{id ? 'edit to-do' : 'new to-do'}</div>
       <div className="calendar-scroll calendar-form">
         <TextBox header="Subject" value={draft.title} onChange={(title) => update({ title })} />
         <ToggleSwitch
@@ -264,8 +264,8 @@ export function TodoEditor({ id }: { id?: string }) {
       />
       {confirming && (
         <MessageBox
-          title="delete task?"
-          message={`"${draft.title || '(No subject)'}" will be deleted.`}
+          title="Delete to-do"
+          message="This to-do will be deleted."
           confirm="delete"
           onClose={() => setConfirming(false)}
           onConfirm={() => {

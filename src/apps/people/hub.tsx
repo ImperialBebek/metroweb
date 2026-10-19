@@ -170,7 +170,7 @@ export function PeopleSearchPage() {
         people
       </div>
       <div className="people-search-box" data-feather>
-        <TextBox type="search" aria-label="search people" autoFocus value={query} onChange={setQuery} enterKeyHint="search" />
+        <TextBox type="search" aria-label="Search people" autoFocus value={query} onChange={setQuery} enterKeyHint="search" />
       </div>
       <div className="people-scroll">
         <div className="people-list people-list-flat">

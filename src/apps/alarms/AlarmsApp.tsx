@@ -78,7 +78,7 @@ function AlarmList({ onEnabled }: { onEnabled: (alarm: Alarm) => void }) {
 
   return (
     <div className="app-page">
-      <div className="alarms-title">ALARMS</div>
+      <div className="alarms-title">alarms</div>
       <div className="alarms-scroll">
         {sorted.length === 0 && <p className="alarms-empty">Tap new to add an alarm.</p>}
         {sorted.map((alarm) => (
@@ -186,7 +186,7 @@ function AlarmEditor({ id, onSaved }: { id: string; onSaved: (alarm: Alarm) => v
 
   return (
     <div className="app-page">
-      <div className="alarms-title">{isNew ? 'NEW ALARM' : 'EDIT ALARM'}</div>
+      <div className="alarms-title">{isNew ? 'new alarm' : 'edit alarm'}</div>
       <div className="alarms-scroll alarms-form">
         <TimePicker header="Time" hour={draft.hour} minute={draft.minute} onChange={(hour, minute) => update({ hour, minute })} />
         <RepeatField days={draft.days} onChange={(days) => update({ days })} />
@@ -263,7 +263,7 @@ function RepeatDays({ initial, onDone }: { initial: number[]; onDone: (days: num
     })
   return (
     <div className="app-page">
-      <div className="dt-page-title">REPEATS ON</div>
+      <div className="dt-page-title">repeats on</div>
       <div className="alarms-days">
         {WEEKDAYS.map((name, day) => (
           <DayCheck key={name} label={name} checked={selected.has(day)} onToggle={() => toggle(day)} />

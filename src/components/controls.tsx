@@ -48,7 +48,7 @@ export function Paragraph({ children, subtle = false }: { children: ReactNode; s
 
 // Settings sub-pages are UIX SinglePivotPages: the same title and header
 // layout as the main pivot, with one item.
-export function SettingsPage({ app = 'SETTINGS', title, children }: { app?: string; title: string; children: ReactNode }) {
+export function SettingsPage({ app = 'settings', title, children }: { app?: string; title: string; children: ReactNode }) {
   return (
     <div className="pivot">
       <div className="pivot-title" data-feather>

@@ -154,7 +154,7 @@ export function KeypadPage() {
         </div>
         {raw && (
           <Key
-            label="backspace"
+            label="Backspace"
             className="phone-backspace"
             onPress={() => setRaw((r) => r.slice(0, -1))}
             onLong={() => setRaw('')}

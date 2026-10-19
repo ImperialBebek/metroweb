@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState, type PointerEvent, type Ref } from 'react'
+import { useCallback, useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useState, type PointerEvent, type Ref } from 'react'
 import { flushSync } from 'react-dom'
 import { GLYPHS, type GlyphName } from './components/glyphs'
 import { ARTIST_BY_ID } from './data/music'
@@ -22,7 +22,7 @@ function MediaButton({ icon, label, onTap }: { icon: GlyphName; label: string; o
   )
 }
 
-function VolumeSlider({ volume }: { volume: number }) {
+function VolumeSlider({ volume, labelledBy }: { volume: number; labelledBy: string }) {
   const set = (e: PointerEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect()
     if (r.width) setVolume(((e.clientX - r.left) / r.width) * VOLUME_STEPS)
@@ -32,7 +32,7 @@ function VolumeSlider({ volume }: { volume: number }) {
       className="volume-slider"
       role="slider"
       tabIndex={0}
-      aria-label="volume"
+      aria-labelledby={labelledBy}
       aria-valuemin={0}
       aria-valuemax={VOLUME_STEPS}
       aria-valuenow={volume}
@@ -65,6 +65,7 @@ export function VolumeBand({ handle }: { handle: Ref<VolumeBandHandle> }) {
   const state = usePlayer()
   const { playing } = usePlayback()
   const track = currentTrack(state)
+  const labelId = useId()
 
   const close = useCallback(() => {
     const el = band.current
@@ -121,19 +122,21 @@ export function VolumeBand({ handle }: { handle: Ref<VolumeBandHandle> }) {
     <div className="volume-band" ref={band} role="group" aria-label="Volume" onPointerDownCapture={keepOpen} onKeyDownCapture={keepOpen}>
       <div className="volume-row">
         <PhIcon name={state.volume ? 'speaker-simple-high' : 'speaker-simple-x'} size={28} />
-        <span className="volume-label">volume</span>
+        <span className="volume-label" id={labelId}>
+          volume
+        </span>
         <span className="volume-value">{state.volume}</span>
       </div>
-      <VolumeSlider volume={state.volume} />
+      <VolumeSlider volume={state.volume} labelledBy={labelId} />
       {track && (
         <div className="volume-media">
           <div className="volume-media-text">
             <span className="volume-media-title">{track.title}</span>
             <span className="volume-media-artist">{ARTIST_BY_ID.get(track.artist)?.name}</span>
           </div>
-          <MediaButton icon="previous" label="previous" onTap={previous} />
-          <MediaButton icon={playing ? 'pause' : 'play'} label={playing ? 'pause' : 'play'} onTap={togglePlay} />
-          <MediaButton icon="next" label="next" onTap={next} />
+          <MediaButton icon="previous" label="Previous" onTap={previous} />
+          <MediaButton icon={playing ? 'pause' : 'play'} label={playing ? 'Pause' : 'Play'} onTap={togglePlay} />
+          <MediaButton icon="next" label="Next" onTap={next} />
         </div>
       )}
     </div>

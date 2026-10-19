@@ -153,7 +153,7 @@ function AlbumsPage() {
   const { cameraRoll } = usePhotos()
   const favorites = useAlbum('favorites')
   return (
-    <SettingsPage app="PHOTOS" title="albums">
+    <SettingsPage app="photos" title="albums">
       <div className="photos-album-tiles">
         <AlbumTile album="camera-roll" cover={cameraRoll[0]} count={cameraRoll.length} />
         <AlbumTile album="samples" cover={SAMPLE_PHOTOS[0]} count={SAMPLE_PHOTOS.length} />
@@ -173,7 +173,7 @@ function DatePage() {
     else groups.push({ label, photos: [photo] })
   }
   return (
-    <SettingsPage app="PHOTOS" title="date">
+    <SettingsPage app="photos" title="date">
       {groups.map((group) => (
         <div key={group.label} className="photos-month">
           <div className="photos-month-label" data-feather>

@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useStore } from '../../data/persist'
 import { favoritesStore, SAMPLE_PHOTOS, usePhotos, type Photo } from '../../data/photos'
+import { formatTimeOfDay } from '../../format'
 
 export type AlbumId = 'camera-roll' | 'samples' | 'favorites' | 'all'
 
@@ -42,8 +43,10 @@ export const photoCount = (n: number) => `${n} ${n === 1 ? 'photo' : 'photos'}`
 export const formatTakenDate = (ms: number) =>
   new Date(ms).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
 
-export const formatTakenTime = (ms: number) =>
-  new Date(ms).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+export const formatTakenTime = (ms: number) => {
+  const d = new Date(ms)
+  return formatTimeOfDay(d.getHours(), d.getMinutes())
+}
 
 export const monthLabel = (ms: number) =>
   new Date(ms).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase()

@@ -70,7 +70,7 @@ function SeekBar({ time, duration }: { time: number; duration: number }) {
         className="music-seek-track"
         role="slider"
         tabIndex={0}
-        aria-label="position"
+        aria-label="Position"
         aria-valuemin={0}
         aria-valuemax={Math.round(duration)}
         aria-valuenow={Math.round(time)}
@@ -119,7 +119,7 @@ export function NowPlaying() {
           <button
             type="button"
             className="music-np-art-hit"
-            aria-label={details ? 'hide playback options' : 'show playback options'}
+            aria-label={details ? 'Hide playback options' : 'Show playback options'}
             aria-expanded={details}
             onClick={() => setDetails((d) => !d)}
           >
@@ -130,14 +130,14 @@ export function NowPlaying() {
               <RoundButton
                 className="music-np-toggle music-np-shuffle"
                 icon="shuffle"
-                label="shuffle"
+                label="Shuffle"
                 pressed={state.shuffle}
                 onTap={() => setShuffle(!state.shuffle)}
               />
               <RoundButton
                 className="music-np-toggle music-np-repeat"
                 icon={state.repeat === 'one' ? 'repeatOnce' : 'repeat'}
-                label={state.repeat === 'one' ? 'repeat one' : 'repeat'}
+                label={state.repeat === 'one' ? 'Repeat one' : 'Repeat'}
                 pressed={state.repeat !== 'off'}
                 onTap={cycleRepeat}
               />
@@ -145,7 +145,7 @@ export function NowPlaying() {
             </>
           )}
         </div>
-        <ol className="music-np-next" data-feather aria-label="up next">
+        <ol className="music-np-next" data-feather aria-label="Up next">
           {upcoming.map((t, i) => (
             <li key={`${i}:${t.id}`}>{t.title}</li>
           ))}
@@ -159,9 +159,9 @@ export function NowPlaying() {
       </div>
       <div className="music-np-spacer" />
       <div className="music-np-controls" data-feather>
-        <RoundButton icon="previous" label="previous" onTap={previous} />
-        <RoundButton icon={playing ? 'pause' : 'play'} label={playing ? 'pause' : 'play'} onTap={togglePlay} />
-        <RoundButton icon="next" label="next" onTap={next} />
+        <RoundButton icon="previous" label="Previous" onTap={previous} />
+        <RoundButton icon={playing ? 'pause' : 'play'} label={playing ? 'Pause' : 'Play'} onTap={togglePlay} />
+        <RoundButton icon="next" label="Next" onTap={next} />
       </div>
     </div>
   )

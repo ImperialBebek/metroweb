@@ -171,7 +171,7 @@ function NewMessageForm({ onSent }: { onSent: (threadId: string) => void }) {
       )}
       {notice && (
         <MessageBox
-          caption="can't attach"
+          caption="Can't attach"
           message="Pictures, voice notes and other attachments aren't available yet. You can still send text."
           buttons={[{ label: 'ok' }]}
           onDismissed={() => setNotice(false)}

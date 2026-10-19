@@ -34,6 +34,7 @@
 | Alarm tones from the phone | Tones synthesised with Web Audio ([`sounds.ts`](../../src/apps/alarms/sounds.ts)) | The phone's sounds can't ship |
 | UIX animation engine | Web Animations and CSS transitions; easing curves are fits or estimates. See [Motion](07-motion.md) | The browser's animation engines |
 | Text can't be selected outside text boxes | The same: `user-select: none` on the whole desk | Follows the phone, against web convention |
+| App and page titles are stored in capitals (`CalendarRes` NEW TO-DO, `PhoneRes` PHONE) | The same on screen, but written lower case in source and upper-cased with CSS. See [Writing](12-writing.md#casing) | Screen readers read the source text, and some spell out words in capitals |
 
 ## Platform features
 

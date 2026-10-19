@@ -11,7 +11,7 @@ export function PlaceholderApp({ app, onExit, handle }: { app: AppDef; onExit: (
       onExit={onExit}
       handle={handle}
       render={() => (
-        <SettingsPage app={app.title.toUpperCase()} title={app.title.toLowerCase()}>
+        <SettingsPage app={app.title} title={app.title.toLowerCase()}>
           <Paragraph subtle>This app is a placeholder. Press Back or Start to return.</Paragraph>
         </SettingsPage>
       )}

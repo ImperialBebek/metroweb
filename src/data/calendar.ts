@@ -1,3 +1,4 @@
+import { formatTimeOfDay } from '../format'
 import { at, dayStart, persistentStore } from './persist'
 
 export interface CalendarEvent {
@@ -31,8 +32,10 @@ export function upcomingEvents(events: CalendarEvent[], now = Date.now()): Calen
   return events.filter((e) => e.end > now).sort((a, b) => a.start - b.start)
 }
 
-export const formatTime = (ms: number) =>
-  new Date(ms).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+export const formatTime = (ms: number) => {
+  const d = new Date(ms)
+  return formatTimeOfDay(d.getHours(), d.getMinutes())
+}
 
 export const DAY_MS = 86_400_000
 

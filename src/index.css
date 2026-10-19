@@ -466,6 +466,7 @@ button:focus-visible {
   font-family: var(--font-semibold);
   font-size: var(--size-normal);
   margin-bottom: 36px;
+  text-transform: uppercase;
 }
 
 .accent-grid {
@@ -938,6 +939,7 @@ button:focus-visible {
   margin: 20px 24px 0;
   font-family: var(--font-semibold);
   font-size: var(--size-normal);
+  text-transform: uppercase;
 }
 
 .dt-columns {

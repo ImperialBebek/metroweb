@@ -172,7 +172,7 @@ export function ContactCardPage({ id }: { id: string }) {
       />
       {confirming && (
         <MessageBox
-          title="delete contact?"
+          title="Delete contact?"
           message={`${nameOf(contact)} will be deleted from your phone.`}
           confirmLabel="delete"
           onClosed={() => setConfirming(false)}

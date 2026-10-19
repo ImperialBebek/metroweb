@@ -47,7 +47,7 @@ Behaviour:
 
 ## Single-page pivot
 
-`SettingsPage` is a Settings sub-page: the same title and header layout as the pivot, with one item and no swiping. The header is the page's `data-continuum-target`. The title defaults to `SETTINGS`.
+`SettingsPage` is a Settings sub-page: the same title and header layout as the pivot, with one item and no swiping. The header is the page's `data-continuum-target`. The title defaults to `settings`, which CSS shows in capitals.
 
 ![Wi-Fi settings page](assets/screenshots/settings-wifi.png)
 
@@ -138,7 +138,7 @@ Shows the current choice in a box. Tapping it opens the options inline, or (in f
 | Opening | Grows from one row to all rows over 250 ms | Estimated |
 
 - Back closes an open picker without changing the value.
-- `onOpenFullMode` replaces inline opening. The accent picker uses it: a swatch grid (4 columns, 12 px gaps) under an `ACCENTS` header, swivelling in over the page. The current swatch takes focus.
+- `onOpenFullMode` replaces inline opening. The accent picker uses it: a swatch grid (4 columns, 12 px gaps) under an accents header (shown in capitals), swivelling in over the page. The current swatch takes focus.
 
 ![Accent picker](assets/screenshots/accent-picker.png)
 
@@ -153,7 +153,7 @@ A field shows the value; tapping it opens a full-screen page of spinning columns
 | Part | Value | Source |
 |---|---|---|
 | Field | 48 px tall, `--wp-text-box` fill, text box foreground, MediumLarge; pressed: accent fill, white text | Estimated |
-| Page title | `CHOOSE TIME` / `CHOOSE DATE`, SemiBold 20, 20 px from the top, 24 px in | Estimated |
+| Page title | CHOOSE TIME / CHOOSE DATE (written lower case, upper-cased by CSS), SemiBold 20, 20 px from the top, 24 px in | Estimated |
 | Columns | 148 px wide, centred, 12 px apart | Estimated |
 | Items | 148 × 148 squares on a 160 px step, 3 px subtle border; primary SemiLight 54, secondary Normal 20 | Estimated |
 | Selected item | Accent fill and border, white text | Estimated |
@@ -194,7 +194,7 @@ Up to four round icon buttons and an ellipsis at the bottom of a page, with an o
 
 A chrome-coloured panel that drops down from the top of the page over a dimmed scrim, with a caption, an optional message and one or two buttons. Back dismisses it as if the last button had been pressed, without running its action.
 
-![Messaging: delete thread?](assets/screenshots/message-box.png)
+![Messaging: Delete thread?](assets/screenshots/message-box.png)
 
 <!-- demo: message-box -->
 

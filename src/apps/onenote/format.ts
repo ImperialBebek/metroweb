@@ -11,13 +11,13 @@ const midnight = (t: number) => {
 }
 
 // How the lists date a page: the time today, then "yesterday", the weekday
-// for the past week, and the short date after that.
+// for the past week, and the short date after that, all lower case.
 export function listDate(t: number, now = Date.now()): string {
   const days = Math.round((midnight(now) - midnight(t)) / DAY)
   const d = new Date(t)
   if (days <= 0) return timeOf(d)
   if (days === 1) return 'yesterday'
-  if (days < 7) return d.toLocaleDateString('en-US', { weekday: 'long' })
+  if (days < 7) return d.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase()
   return formatShortDate(d)
 }
 

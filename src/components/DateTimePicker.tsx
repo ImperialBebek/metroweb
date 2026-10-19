@@ -106,7 +106,7 @@ function TimeColumns({
   const [column, setColumn] = useState(-1)
   const pm = h >= 12
   return (
-    <PickerPage title="CHOOSE TIME" onDone={() => onDone(h, m)}>
+    <PickerPage title="choose time" onDone={() => onDone(h, m)}>
       <LoopingSelector
         label="Hour"
         count={12}
@@ -170,7 +170,7 @@ function DateColumns({ value, onDone }: { value: Date; onDone: (date: Date) => v
   const shownDay = Math.min(day, days)
   return (
     <PickerPage
-      title="CHOOSE DATE"
+      title="choose date"
       onDone={() => {
         // Keep the time of day of the original value.
         const next = new Date(value)

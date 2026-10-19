@@ -31,7 +31,7 @@ export function SettingsHome() {
 
   return (
     <Pivot
-      title="SETTINGS"
+      title="settings"
       selected={selected}
       onSelectedChange={(index) => {
         homePivotIndex = index
