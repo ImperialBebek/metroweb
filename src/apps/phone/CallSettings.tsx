@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Paragraph, SettingsPage } from '../../components/controls'
 import { ListPicker } from '../../components/ListPicker'
 import { ToggleSwitch } from '../../components/ToggleSwitch'
-import { TextBox } from '../people/TextBox'
+import { TextBox } from '../../components/TextBox'
 
 type CallerId = 'everyone' | 'contacts' | 'nobody'
 

@@ -4,6 +4,7 @@ import { TimePicker } from '../../components/DateTimePicker'
 import { ListPicker } from '../../components/ListPicker'
 import { FullScreenPopup } from '../../components/popup'
 import { usePopupClose } from '../../components/popupLayer'
+import { TextBox } from '../../components/TextBox'
 import { useTilt } from '../../components/useTilt'
 import { ALARM_SOUNDS, alarmsStore, durationText, nextRing, repeatSummary, type Alarm } from '../../data/alarms'
 import { newId, useStore } from '../../data/persist'
@@ -199,18 +200,7 @@ function AlarmEditor({ id, onSaved }: { id: string; onSaved: (alarm: Alarm) => v
             preview(sound)
           }}
         />
-        <label className="alarms-field">
-          <span className="alarms-field-header">Name</span>
-          <input
-            className="alarms-textbox"
-            value={draft.name}
-            maxLength={40}
-            onChange={(e) => update({ name: e.target.value })}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') e.currentTarget.blur()
-            }}
-          />
-        </label>
+        <TextBox header="Name" value={draft.name} maxLength={40} blurOnEnter onChange={(name) => update({ name })} />
       </div>
       <AppBar
         buttons={[

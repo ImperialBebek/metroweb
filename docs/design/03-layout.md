@@ -13,12 +13,12 @@ Windows Phone spaces everything in multiples of 12 logical px. Text starts **24 
 | `PhoneMargin` | 12 | `--wp-margin`: the side margin of text blocks (paragraphs, headers above controls, toggle rows, message box text, panorama sections) | Decoded |
 | `PhoneHorizontalMargin` | 12, 0 | `--wp-margin` on each side (`.paragraph`, `.toggle-row`) | Decoded |
 | `PhoneVerticalMargin` | 0, 12 | `--wp-margin` above and below; not used yet | Decoded |
-| `PhoneTouchTargetOverhang` | 12 | `--wp-touch-target-overhang`: the margin around touch targets (list items, buttons, list picker and date boxes, message box buttons) | Decoded |
+| `PhoneTouchTargetOverhang` | 12 | `--wp-touch-target-overhang`: the margin around touch targets (list items, buttons, text boxes, list picker and date boxes, message box buttons) | Decoded |
 | `PhoneTouchTargetLargeOverhang` | 12, 20 | not used yet | Decoded |
 | `PivotItemMargin` | 12, 28, 12, 0 | `.pivot-item { inset: 28px 12px 0 }` | Decoded |
 | `PhoneBorderThickness` | 3 | `--wp-border-thickness`: every 3 px border (buttons, message boxes, text boxes, check boxes, the looping selector) | Decoded |
 | `PhoneStrokeThickness` | 3 | `--wp-stroke-thickness`: the ring on app bar buttons, the Start arrow, app list search and the Messaging contact button, and the Camera buttons and shutter | Decoded |
-| `PhoneTextBoxInnerMargin` | 1, 2 | `--wp-text-box-inner-margin`; not used yet, text boxes use `0 9px` padding | Decoded |
+| `PhoneTextBoxInnerMargin` | 1, 2 | Part of the `.textbox` padding, 4 px 3 px: the template's `Padding` 2 inside this margin | Decoded |
 
 The variables live in `:root` in `src/index.css`. Use one when a value means that resource. A 12 px that is its own measurement (the gap between tiles, the tile title inset) stays a literal.
 

@@ -43,35 +43,6 @@
   color: var(--wp-accent);
 }
 
-/* ---------- WP TextBox ---------- */
-
-.onenote-textbox {
-  display: block;
-  width: calc(100% - 24px);
-  height: 52px;
-  margin: 0 12px 24px;
-  padding: 0 9px;
-  border: var(--wp-border-thickness) solid transparent;
-  border-radius: 0;
-  outline: none;
-  background: var(--wp-text-box);
-  color: var(--wp-text-box-foreground);
-  font-family: var(--font-normal);
-  font-size: var(--size-medium-large);
-  appearance: none;
-  user-select: text;
-  -webkit-user-select: text;
-}
-
-.onenote-textbox:focus {
-  background: var(--wp-text-box-edit-background);
-  border-color: var(--wp-accent);
-}
-
-.onenote-textbox::-webkit-search-decoration,
-.onenote-textbox::-webkit-search-cancel-button {
-  appearance: none;
-}
 
 /* ---------- about ---------- */
 

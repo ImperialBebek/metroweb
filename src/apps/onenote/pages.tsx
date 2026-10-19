@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { AppBar } from '../../components/AppBar'
 import { ListItem, Paragraph, SettingsPage } from '../../components/controls'
 import { Pivot } from '../../components/Pivot'
+import { TextBox } from '../../components/TextBox'
 import { ToggleSwitch } from '../../components/ToggleSwitch'
 import { useTilt } from '../../components/useTilt'
 import {
@@ -146,18 +147,7 @@ export function SearchPage() {
   const results = q ? notes.filter((n) => noteText(n).toLowerCase().includes(q.toLowerCase())) : []
   return (
     <SettingsPage app="OneNote" title="search">
-      <input
-        className="onenote-textbox"
-        type="search"
-        value={query}
-        autoFocus
-        aria-label="Search pages"
-        enterKeyHint="search"
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') e.currentTarget.blur()
-        }}
-      />
+      <TextBox type="search" value={query} autoFocus aria-label="Search pages" enterKeyHint="search" blurOnEnter onChange={setQuery} />
       {q && !results.length && <Paragraph subtle>No pages contain "{q}".</Paragraph>}
       <div className="list">
         {results.map((note) => (

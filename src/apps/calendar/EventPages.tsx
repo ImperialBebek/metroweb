@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { AppBar } from '../../components/AppBar'
 import { DatePicker, TimePicker } from '../../components/DateTimePicker'
 import { ListPicker } from '../../components/ListPicker'
+import { TextBox } from '../../components/TextBox'
 import { ToggleSwitch } from '../../components/ToggleSwitch'
 import {
   addDays,
@@ -28,7 +29,6 @@ import {
   todayStart,
 } from './dates'
 import { MessageBox } from '../../components/MessageBox'
-import { TextBox } from './widgets'
 
 // Deleting only after Back has turned the page away keeps it from going blank mid-transition.
 const AFTER_BACK = 300
@@ -174,8 +174,8 @@ export function EventEditor({
     <div className="app-page">
       <div className="calendar-page-title">{id ? 'edit appointment' : 'new appointment'}</div>
       <div className="calendar-scroll calendar-form">
-        <TextBox header="Subject" value={draft.title} onChange={(title) => update({ title })} />
-        <TextBox header="Location" value={draft.location} onChange={(location) => update({ location })} />
+        <TextBox header="Subject" value={draft.title} blurOnEnter onChange={(title) => update({ title })} />
+        <TextBox header="Location" value={draft.location} blurOnEnter onChange={(location) => update({ location })} />
         <DatePicker header="When" value={new Date(draft.date)} onChange={(d) => update({ date: startOfDay(d.getTime()) })} />
         {!allDay && (
           <TimePicker
@@ -197,7 +197,7 @@ export function EventEditor({
           value={draft.reminder}
           onChange={(reminder) => update({ reminder })}
         />
-        <TextBox header="Notes" multiline value={draft.notes} onChange={(notes) => update({ notes })} />
+        <TextBox header="Notes" multiline rows={4} value={draft.notes} onChange={(notes) => update({ notes })} />
       </div>
       <AppBar
         buttons={[
@@ -243,7 +243,7 @@ export function TodoEditor({ id }: { id?: string }) {
     <div className="app-page">
       <div className="calendar-page-title">{id ? 'edit to-do' : 'new to-do'}</div>
       <div className="calendar-scroll calendar-form">
-        <TextBox header="Subject" value={draft.title} onChange={(title) => update({ title })} />
+        <TextBox header="Subject" value={draft.title} blurOnEnter onChange={(title) => update({ title })} />
         <ToggleSwitch
           header="Due date"
           checked={draft.due !== undefined}
@@ -258,7 +258,7 @@ export function TodoEditor({ id }: { id?: string }) {
           value={draft.priority ?? 'normal'}
           onChange={(priority) => update({ priority })}
         />
-        <TextBox header="Notes" multiline value={draft.notes ?? ''} onChange={(notes) => update({ notes })} />
+        <TextBox header="Notes" multiline rows={4} value={draft.notes ?? ''} onChange={(notes) => update({ notes })} />
       </div>
       <AppBar
         buttons={[

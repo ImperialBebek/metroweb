@@ -33,6 +33,9 @@ XAML colours are `#AARRGGBB`; the recreation converts them to `rgba()`. All valu
 | `PhoneTextBoxColor` | `--wp-text-box` | `#BFFFFFFF` | `#26000000` | Text box fill at rest, list picker border |
 | `PhoneTextBoxForegroundColor` | `--wp-text-box-foreground` | `#FF000000` | `#DE000000` | Text in text boxes |
 | `PhoneTextBoxEditBackgroundColor` | `--wp-text-box-edit-background` | `#FFFFFFFF` | `#00000000` | Text box and open picker while editing |
+| `PhoneTextBoxReadOnlyColor` | `--wp-text-box-read-only` | `#77000000` | `#2E000000` | Text in a read-only text box |
+| `PhoneTextBoxSelectionForegroundColor` | `--wp-text-box-selection-foreground` | `#FFFFFFFF` | `#FFFFFFFF` | Selected text in a text box, on the accent |
+| `PhoneTextCaretColor` | `--wp-text-caret` | `#FF000000` | `#DE000000` | Text box caret |
 | `PhoneButtonBasePressedForegroundColor` | `--wp-button-base-pressed-foreground` | `#FFFFFFFF` | `#FFFFFFFF` | Text and glyphs on accent: pressed buttons, tiles, selected items, accent toasts and bubbles |
 | `PhonePivotUnselectedItemOpacity` | `--wp-pivot-unselected-opacity` | 0.4 | 0.23144 | Pivot headers that aren't selected |
 | `PhoneAccentColor` | `--wp-accent` | the accent | the accent | Tiles, toggles, selection, pressed states |
@@ -42,9 +45,6 @@ Resources in the XAML that the recreation doesn't use yet:
 | Microsoft name | Dark | Light |
 |---|---|---|
 | `PhoneProgressBarBackgroundColor` | `#19FFFFFF` | `#19000000` |
-| `PhoneTextCaretColor` | `#FF000000` | `#DE000000` |
-| `PhoneTextBoxReadOnlyColor` | `#77000000` | `#2E000000` |
-| `PhoneTextBoxSelectionForegroundColor` | `#FFFFFFFF` | `#FFFFFFFF` |
 | `PhoneTextHighContrastColor` | `#FFFFFFFF` | `#DE000000` |
 | `PhoneTextMidContrastColor` | `#99FFFFFF` | `#73000000` |
 | `PhoneTextLowContrastColor` | `#73FFFFFF` | `#40000000` |
@@ -108,7 +108,7 @@ Colours the recreation mixes itself. All **Estimated**.
 | People tile cells | accent mixed with 30% or 45% black, or 15% white | Contacts have no photos, so cells are shaded initials cards |
 | Panorama background dim | background at 55% over the picture | Keeps hub text readable over photos |
 | Volume slider track | `--wp-subtle` at 0.4 opacity | Matched to footage |
-| Text box placeholder (Messaging) | text box foreground at 55% | |
+| Text box placeholder | text box foreground at 55% | `PhoneTextBox` has no placeholder; Messaging's compose box shows one |
 | Music tile title | `text-shadow: 0 0 6px rgba(0,0,0,0.6)` | White title over album art |
 | Navigation bar and safe areas | `#000` in both themes | The 8.1 navigation bar is black |
 | Photos viewer info bar | black at 60% over the picture | Keeps the date and time readable over any photo |

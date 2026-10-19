@@ -54,7 +54,6 @@
   --wp-touch-target-overhang: 12px; /* PhoneTouchTargetOverhang */
   --wp-border-thickness: 3px; /* PhoneBorderThickness */
   --wp-stroke-thickness: 3px; /* PhoneStrokeThickness */
-  --wp-text-box-inner-margin: 2px 1px; /* PhoneTextBoxInnerMargin (1,2) */
 }
 
 *,
@@ -521,6 +520,78 @@ a:focus-visible,
   color: var(--wp-button-base-pressed-foreground);
 }
 
+/* ---------- text box (PhoneTextBox) ---------- */
+
+.textbox-field {
+  margin-bottom: 24px;
+}
+
+.textbox-header {
+  display: block;
+  margin: 0 var(--wp-margin) 2px;
+  color: var(--wp-subtle);
+}
+
+/* The border is drawn in the fill colour, as the template does, so the fill
+   stops at the padding box: semi-transparent fills would double under it. */
+.textbox {
+  display: block;
+  width: calc(100% - 2 * var(--wp-touch-target-overhang));
+  height: 48px;
+  margin: 0 var(--wp-touch-target-overhang);
+  padding: 4px 3px; /* Padding 2 inside PhoneTextBoxInnerMargin (1,2) */
+  border: var(--wp-border-thickness) solid var(--wp-text-box);
+  border-radius: 0;
+  outline: none;
+  background: var(--wp-text-box);
+  background-clip: padding-box;
+  color: var(--wp-text-box-foreground);
+  caret-color: var(--wp-text-caret);
+  font-family: var(--font-normal);
+  font-size: var(--size-medium-large);
+  user-select: text;
+  -webkit-user-select: text;
+  appearance: none;
+}
+
+.textbox[data-multiline] {
+  height: auto;
+  line-height: 1.3;
+  resize: none;
+}
+
+.textbox::selection {
+  background: var(--wp-accent);
+  color: var(--wp-text-box-selection-foreground);
+}
+
+.textbox::placeholder {
+  color: color-mix(in srgb, var(--wp-text-box-foreground) 55%, transparent);
+  opacity: 1;
+}
+
+.textbox::-webkit-search-decoration,
+.textbox::-webkit-search-cancel-button {
+  display: none;
+}
+
+.textbox:focus {
+  background-color: var(--wp-text-box-edit-background);
+  border-color: var(--wp-accent);
+}
+
+.textbox:disabled {
+  background-color: transparent;
+  border-color: var(--wp-disabled);
+  color: var(--wp-disabled);
+}
+
+/* Read-only swaps in a border that the focused state doesn't touch. */
+.textbox[readonly] {
+  background-color: var(--wp-text-box);
+  border-color: var(--wp-text-box);
+  color: var(--wp-text-box-read-only);
+}
 /* ---------- message box (shell MessageBox) ---------- */
 
 .msgbox-scrim {

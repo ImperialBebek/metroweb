@@ -88,6 +88,7 @@ Sizes used by shared components that are not one of the styles above. Values off
 | Pivot title | SemiBold, uppercase | 22.667 | `--size-medium` | Decoded size; uppercase Estimated from screenshots |
 | Toggle state (On/Off) | Light | 32 | `--size-large` | Estimated |
 | Button face | SemiBold | 22.667 | `--size-medium` | Decoded (`PhoneButtonBase`) |
+| Text box | Normal | 25.333 | `--size-medium-large` | Decoded (`PhoneTextBox`) |
 | Tile title | Normal | 18.667 | `--size-small` | Estimated |
 | Tile count | Normal | 53.333 (26.667 on small tiles) | `--size-tile-count`, `--size-tile-count-small` | Estimated |
 | Calendar tile day number | Normal | 32 (42.667 on small tiles) | `--size-large`, `--size-extra-large` | Estimated |

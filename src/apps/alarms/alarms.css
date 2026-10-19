@@ -129,41 +129,6 @@
   padding-top: 4px;
 }
 
-.alarms-field {
-  display: block;
-  margin-bottom: 24px;
-}
-
-.alarms-field-header {
-  display: block;
-  margin: 0 12px 2px;
-  color: var(--wp-subtle);
-}
-
-/* PhoneTextBox: a filled box that turns white with an accent border while editing. */
-.alarms-textbox {
-  display: block;
-  width: calc(100% - 24px);
-  height: 48px;
-  margin: 0 12px;
-  padding: 0 9px;
-  border: var(--wp-border-thickness) solid transparent;
-  border-radius: 0;
-  background: var(--wp-text-box);
-  color: var(--wp-text-box-foreground);
-  caret-color: var(--wp-text-box-foreground);
-  font: inherit;
-  font-size: var(--size-medium-large);
-  outline: none;
-  appearance: none;
-  user-select: text;
-  -webkit-user-select: text;
-}
-
-.alarms-textbox:focus {
-  background: var(--wp-text-box-edit-background);
-  border-color: var(--wp-accent);
-}
 
 .alarms-repeat-box {
   overflow: hidden;

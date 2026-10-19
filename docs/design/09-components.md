@@ -20,7 +20,7 @@ The shared building blocks. Each entry gives what it is, its metrics and states,
 | [Full-screen popup](#full-screen-popup) | `popup.tsx`, `popupLayer.ts` | Toolkit full-mode picker page |
 | [App bar](#app-bar) | `AppBar.tsx`, `glyphs.tsx` | Shell `ApplicationBar` |
 | [Message box](#message-box) | `MessageBox.tsx` | Shell `MessageBox` |
-| [Text box](#text-box) | per app (see below) | `PhoneTextBox` |
+| [Text box](#text-box) | `TextBox.tsx` | `PhoneTextBox` (`System.Windows.xaml`) |
 
 ## Pivot
 
@@ -215,13 +215,30 @@ Every app's message box is this component. Don't copy it into an app.
 
 ## Text box
 
-`PhoneTextBox`: a filled box at rest that turns into the edit background with an accent border while focused.
+`TextBox` is `PhoneTextBox` from `System.Windows.xaml`: a filled box at rest that turns into the edit background with an accent border while focused. It renders a single-line `input`, or a `textarea` with `multiline`, and an optional header above it as a `label`.
 
 | State | Fill | Border | Text |
 |---|---|---|---|
-| Rest | `--wp-text-box` | 3 px transparent | `--wp-text-box-foreground` |
+| Rest | `--wp-text-box` | 3 px `--wp-text-box` | `--wp-text-box-foreground` |
 | Focused | `--wp-text-box-edit-background` | 3 px accent | `--wp-text-box-foreground` |
+| Read-only | `--wp-text-box` | 3 px `--wp-text-box` | `--wp-text-box-read-only`; focus changes nothing |
+| Disabled | none | 3 px `--wp-disabled` | `--wp-disabled` |
 
-Colours and border thickness are **Decoded**; size and padding are **Estimated** (MediumLarge text, 0 9 px padding).
+The states are **Decoded** from the template.
 
-**There is no shared component yet.** Copies live in `people.css` (`.people-textbox`, 50 px, accent caret), `alarms.css` (48 px, text-coloured caret), `calendar.css` (48 px, plus a multiline variant), `messaging.css` (auto height, 5 9 px padding, a speech-bubble tail) and `onenote.css` (52 px). Heights vary between 48, 50 and 52 px, and the caret colour varies. `PhoneTextCaretColor` says the caret should match the text box foreground. Consolidate before adding another.
+| Part | Value | Source |
+|---|---|---|
+| Text | Normal, MediumLarge (25.333) | Decoded |
+| Box | 12 px in from each side (`PhoneTouchTargetOverhang`), so on a page it lines up with text at 24 px | Decoded |
+| Text inset | 4 px top and bottom, 3 px at the sides: the template's `Padding` 2 inside `PhoneTextBoxInnerMargin` (1, 2) | Decoded |
+| Caret | `--wp-text-caret` (`PhoneTextCaretColor`), the same colour as the text | Decoded |
+| Selection | accent fill, `--wp-text-box-selection-foreground` text | Decoded |
+| Height | 48 px single-line; a multi-line box is as tall as its `rows` at a 1.3 line height | Estimated |
+| Header | `PhoneTextSubtleStyle`, 12 px in, 2 px above the box; 24 px below the field | Decoded style; spacing Estimated |
+| Placeholder | text box foreground at 55%; the template has none, Messaging's compose box shows one | Estimated |
+
+The template draws the border in the fill colour, so the fill stops at the padding box (`background-clip: padding-box`). Otherwise the light theme's semi-transparent fill would show darker under the border.
+
+`blurOnEnter` makes Enter leave a single-line box, which closes a phone's keyboard; forms and search boxes use it. `className` goes on the field, for pages that place the box in their own layout: Messaging's To row and compose bubble (with its tail), and the search strips in People and Phone.
+
+Every text box is this component. Don't style an `input` in an app.

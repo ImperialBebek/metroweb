@@ -7,6 +7,7 @@ import { motionMs } from '../../motionSpeed'
 import { useNavigation } from '../../navigation'
 import { dayLabel, sameDay, threadName, timeOfDay } from './format'
 import { MessageBox } from '../../components/MessageBox'
+import { TextBox } from '../../components/TextBox'
 import { sendMessage, useTyping, useViewingThread } from './replies'
 
 const SMS_LENGTH = 160
@@ -114,14 +115,14 @@ export function ComposeBox({
 
   return (
     <div className="messaging-compose" data-feather>
-      <textarea
+      <TextBox
+        multiline
         ref={inputRef}
-        className="messaging-textbox messaging-compose-input"
         rows={1}
         value={value}
         placeholder="type a message"
         aria-label="Message"
-        onChange={(e) => onChange(e.target.value)}
+        onChange={onChange}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
             e.preventDefault()

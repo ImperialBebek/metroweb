@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import { AppBar } from '../../components/AppBar'
 import { FullScreenPopup } from '../../components/popup'
 import { usePopupClose } from '../../components/popupLayer'
+import { TextBox } from '../../components/TextBox'
 import { useTilt } from '../../components/useTilt'
 import { contactsStore, digits, displayName, type Contact } from '../../data/contacts'
 import { useStore } from '../../data/persist'
@@ -125,18 +126,15 @@ function NewMessageForm({ onSent }: { onSent: (threadId: string) => void }) {
         <label className="messaging-to-label" htmlFor="messaging-to-input">
           To:
         </label>
-        <input
+        <TextBox
           id="messaging-to-input"
           ref={toInput}
-          className="messaging-textbox messaging-to-input"
           data-picked={picked ? true : undefined}
           value={query}
           autoFocus
-          autoComplete="off"
-          spellCheck={false}
-          onChange={(e) => {
+          onChange={(value) => {
             setPicked(null)
-            setQuery(e.target.value)
+            setQuery(value)
           }}
           onKeyDown={(e) => {
             if (e.key !== 'Enter') return
