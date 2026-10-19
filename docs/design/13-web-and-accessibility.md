@@ -1,0 +1,125 @@
+# 13 · Web and accessibility deviations
+
+> **Status** Draft · **Baseline** Windows Phone 8.0 · **Last reviewed** 2026-10-19
+> **Code** [`src/App.tsx`](../../src/App.tsx) (history, keys, viewport), [`src/navigation.tsx`](../../src/navigation.tsx) (`inert` pages), [`src/motion.ts`](../../src/motion.ts) (`prefersReducedMotion`), [`src/index.css`](../../src/index.css) (focus style), [`src/theme.ts`](../../src/theme.ts)
+> **Sources** Source review; contrast computed with the WCAG 2 formula from the palette in `theme.ts`
+
+[The phone wins](01-principles.md#rules-this-project-adds), except where a browser can't do what the phone does or where copying the phone would shut people out. This page lists both kinds of exception:
+
+- A **deviation** is something the recreation does differently from the phone because it runs in a browser. Deviations are deliberate.
+- A **gap** is a place where the recreation leaves some users out, whether by copying the phone or by falling short of it. Gaps are bugs. If fixing one would change how the phone looks, the fix needs a note here first.
+
+## Input and navigation
+
+| The phone | The recreation | Why |
+|---|---|---|
+| Hardware or capacitive Back, Start and Search keys | The 8.1 on-screen [navigation bar](11-system-ui.md#navigation-bar), always shown | A browser has no keys below the screen |
+| Back key | Also browser Back and the Android back gesture, Escape, and Backspace when not typing. See [Browser and keyboard](08-navigation.md#browser-and-keyboard) | People expect browser Back to work; keyboard users need a Back key |
+| Search key opens Bing | Does nothing | Out of scope |
+| Volume rocker | The desk's volume keys (at 1100 px and wider), **+** / **−** (also **=** / **_**), and the media volume keys | Phones' browsers don't pass the hardware keys to the page |
+| Tapping the system tray shows all its indicators | Opens the [volume band](11-system-ui.md#volume-band). In a home-screen web app, tapping the top safe area does the same | Otherwise the volume band can't be reached on a phone |
+| Touch only | Pointer events: mouse and pen drag pivots, panoramas and sliders, and tilt on press. Buttons also work from the keyboard | Desktop browsers |
+| Press and hold (context menus, moving tiles) | Not implemented | Not built yet |
+| The phone's on-screen keyboard and word suggestions | The device's own keyboard | A web page can't replace it |
+| Calculator and the phone keypad take taps only | Both also take typed digits (and Calculator, operators) | Keyboard users |
+
+## Rendering
+
+| The phone | The recreation | Why |
+|---|---|---|
+| A 480 × 800 logical screen, scaled to the panel | 480 px wide; narrower windows scale the whole screen down with a CSS transform, never up. Height follows the window. See [Canvas](02-canvas.md) | Fits every browser window |
+| Segoe WP | Segoe WP or Segoe UI if installed, otherwise Selawik. See [Typography](04-typography.md#families) | Segoe WP can't ship |
+| Segoe WP symbols and the SDK app bar icons | Phosphor icons. See [Iconography](06-iconography.md) | Microsoft's icons can't ship |
+| Contact photos | Initials on a shaded accent square, in contact pictures and on the People tile | The sample contacts have no photos |
+| Alarm tones from the phone | Tones synthesised with Web Audio ([`sounds.ts`](../../src/apps/alarms/sounds.ts)) | The phone's sounds can't ship |
+| UIX animation engine | Web Animations and CSS transitions; easing curves are fits or estimates. See [Motion](07-motion.md) | The browser's animation engines |
+| Text can't be selected outside text boxes | The same: `user-select: none` on the whole desk | Follows the phone, against web convention |
+
+## Platform features
+
+- **Storage.** Settings, contacts, messages, notes, alarms, events and photos are kept in `localStorage`. Clearing the site's data resets the phone.
+- **Sound.** Browsers block audio until the user has tapped or pressed a key, so the alarm ringer unlocks audio on the first interaction. An alarm that rings before then can be silent.
+- **Vibration.** The alarm ringer vibrates through `navigator.vibrate` where the browser supports it (Android, not iOS), and only after the user has interacted with the page.
+- **Camera.** Uses `getUserMedia` and needs permission; without it the viewfinder shows a message instead.
+- **Calls, texts and email.** Calls and texts are simulated. "send email" on a contact card opens a `mailto:` link.
+
+## Contrast
+
+Measured with the WCAG 2 contrast ratio. The thresholds that matter here: 4.5:1 for normal text, 3:1 for large text (24 px and up, or 18.67 px bold) and for the edges of controls.
+
+The phone's colours are kept as they are. That leaves these failures, all in the light theme or with light accents:
+
+| Pair | Dark | Light | Used for |
+|---|---|---|---|
+| Subtle text on background | 7.37 | **2.85** | Subtitles, secondary lines (Normal 20, so 4.5:1 applies) |
+| Disabled text on background | 3.66 | **2.12** | Disabled list items and buttons (exempt from WCAG, but still hard to read) |
+| Unselected pivot headers | 3.66 | **1.61** | SemiLight 53.333, so 3:1 applies |
+
+Full palette contrast is in [Colour and theme](05-colour-and-theme.md#contrast-of-the-theme-colours).
+
+### Accents
+
+White text on an accent (tiles, pressed buttons) and accent text on the light background give the same ratio. Accent text on the dark background is the other column. Tile titles are Normal 18.667, so 4.5:1 applies.
+
+| Accent | White on accent, or accent on white | Accent on black |
+|---|---|---|
+| Lime | **2.00** | 10.47 |
+| Green | **2.92** | 7.18 |
+| Emerald | 4.53 | 4.64 |
+| Teal | **2.84** | 7.40 |
+| Cyan | **2.90** | 7.24 |
+| Cobalt | 6.19 | 3.39 |
+| Indigo | 6.87 | 3.06 |
+| Violet | 5.06 | 4.15 |
+| Pink | **2.57** | 8.16 |
+| Magenta | 5.04 | 4.17 |
+| Crimson | 8.19 | **2.56** |
+| Red (default) | 4.74 | 4.43 |
+| Orange | **2.98** | 7.04 |
+| Amber | **2.11** | 9.95 |
+| Yellow | **1.68** | 12.53 |
+| Brown | 6.09 | 3.45 |
+| Olive | 3.96 | 5.30 |
+| Steel | 4.68 | 4.48 |
+| Mauve | 5.51 | 3.81 |
+| Taupe | 4.31 | 4.88 |
+
+Bold values are below 3:1. Below 4.5:1 there are more: Olive and Taupe on white; Cobalt, Indigo, Violet, Magenta, Red, Brown, Steel and Mauve on black.
+
+Accent text appears in message snippets, missed calls, selected list picker rows, Calendar's today header and OneNote's list dates, among others.
+
+The phone's own answer was its ease of access settings (high contrast and text size). The recreation's ease of access page is a placeholder, and `forced-colors` and `prefers-contrast` aren't handled.
+
+## What the recreation already does
+
+- Pages under the top one, unselected pivot items, panorama sections other than the current one, and the hidden Start pane are `inert` and `aria-hidden`.
+- Buttons get a 2 px dashed accent outline on keyboard focus (`button:focus-visible`). The looping selector, the speed dial and the alarm ringer's buttons have their own.
+- Controls carry roles: `switch` (toggle switch), `listbox` and `option` (list picker), `spinbutton` (looping selector), `slider` (volume, seek), `radiogroup` (accent picker), `menu` (app bar menu), `alertdialog` (message boxes, alarm ringer), `grid` (Calendar month).
+- Live regions announce the alarm-set toast (`status`), calendar reminders (`alert`), the calculator display, the phone keypad, in-call state, and new messages in a Messaging thread.
+- Reduced motion is respected by the shell and most components. See [Motion](07-motion.md#reduced-motion).
+- The system tray is `aria-hidden`, since it duplicates nothing a screen reader user can act on.
+
+## Accessibility gaps
+
+| Gap | Where | Effect | Fix |
+|---|---|---|---|
+| Popups don't make the screen behind them inert or keep focus inside | Message boxes, full-screen popups, the accent picker | Tab moves to the page behind | Make the page stack `inert` while the popup layer has content |
+| `aria-modal` missing | OneNote and Photos message boxes, the alarm ringer | Screen readers can wander outside the dialog | Add `aria-modal` |
+| Focus isn't moved in on open | People and Photos message boxes, full-screen popups (including the date and time pickers) | Keyboard and screen reader users start behind the dialog. Messaging, OneNote and Calendar message boxes, the alarm ringer and the accent picker do move focus | Focus the first button, as Messaging does |
+| Focus isn't returned on close | Every popup | Focus falls to the document | Remember `document.activeElement` on open and restore it |
+| Panorama sections other than the current one can't be reached from the keyboard | Music+Videos and Photos hubs | Keyboard users see only the first section | Arrow keys or focusable section headers that move the panorama |
+| Pivot headers are plain buttons | Every pivot | Not announced as tabs; no arrow keys | `tablist`, `tab` and `tabpanel` roles, arrow keys between headers |
+| Tile names are the app title only | Start | Counts and live content (unread mail, next appointment, next alarm) aren't announced | Add the live line to the tile's label |
+| Focus style only on `button` | The volume and seek sliders, the send email link | No visible focus | Extend the `:focus-visible` rule to `[tabindex]` and `a` |
+| Animations that ignore reduced motion | Toggle switch (500 ms slide), list picker expand, Alarms switches and "alarm set" toast, Camera focus ring, Photos viewer snap and zoom, Calendar day view snap-back | Motion under `prefers-reduced-motion: reduce` | Check `prefersReducedMotion()` or add a `@media` block, as Messaging and Calendar do |
+| Light theme subtle, disabled and unselected pivot text; light accents | See [Contrast](#contrast) | Low-vision users | Can't change without changing the phone's palette; a high contrast setting would be the faithful fix |
+| Search on the navigation bar does nothing | Navigation bar | A button that doesn't act | Hide it from assistive technology until it works, or make it work |
+| Browser zoom stops helping below 480 px | Everywhere | Zoom enlarges the phone until the window is 480 CSS px wide; past that the screen scales down to fit | Honour a text size setting, as the phone's ease of access did |
+
+## Rules for new work
+
+- Use `useTilt` and a real `button` for anything pressable. Never put a click handler on a `div`.
+- Give every popup a role, a label, `aria-modal`, and move focus into it on open.
+- Guard every animation with `prefersReducedMotion()`, or add a `prefers-reduced-motion` block for CSS animations and transitions.
+- Don't put anything a user must read to finish a task in subtle or disabled text.
+- When you add a deviation or find a gap, add it to this page in the same change.
