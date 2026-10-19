@@ -51,7 +51,7 @@
   height: 48px;
   margin: 0 12px;
   padding: 0 9px;
-  border: 3px solid transparent;
+  border: var(--wp-border-thickness) solid transparent;
   border-radius: 0;
   background: var(--wp-text-box);
   color: var(--wp-text-box-foreground);
@@ -88,14 +88,14 @@
   height: 32px;
   display: grid;
   place-items: center;
-  border: 3px solid var(--wp-foreground);
+  border: var(--wp-border-thickness) solid var(--wp-foreground);
   color: var(--wp-foreground);
 }
 
 .calendar-check:active .calendar-check-box {
   background: var(--wp-accent);
   border-color: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
 }
 
 /* ---------- day view ---------- */
@@ -384,7 +384,7 @@
 
 .calendar-cell[data-today] {
   background: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
 }
 
 .calendar-cell[data-selected]:not([data-today]) {
@@ -453,7 +453,7 @@
   min-height: 60px;
   padding: 14px 24px 12px 20px;
   background: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
   transform-origin: 50% 0;
   animation: calendar-drop-in 350ms cubic-bezier(0.1, 0.9, 0.2, 1);
 }

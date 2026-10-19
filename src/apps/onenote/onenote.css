@@ -51,7 +51,7 @@
   height: 52px;
   margin: 0 12px 24px;
   padding: 0 9px;
-  border: 3px solid transparent;
+  border: var(--wp-border-thickness) solid transparent;
   border-radius: 0;
   outline: none;
   background: var(--wp-text-box);
@@ -194,7 +194,7 @@
 }
 
 .onenote-check[aria-checked='true'] svg {
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
 }
 
 .onenote-bullet {

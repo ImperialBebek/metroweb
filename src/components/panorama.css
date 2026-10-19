@@ -29,7 +29,7 @@
   top: -22px;
   left: 14px;
   font-family: var(--font-light);
-  font-size: 133.333px;
+  font-size: var(--size-panorama-title);
   line-height: 1.2;
   white-space: nowrap;
   pointer-events: none;
@@ -45,16 +45,16 @@
   bottom: 0;
   left: 0;
   width: 432px;
-  padding-left: 12px;
+  padding-left: var(--wp-margin);
   display: flex;
   flex-direction: column;
 }
 
 .pano-header {
   flex: none;
-  margin: 0 0 18px 12px;
+  margin: 0 0 18px var(--wp-margin);
   font-family: var(--font-semilight);
-  font-size: 53.333px;
+  font-size: var(--size-panorama-header);
   font-weight: normal;
   line-height: 1.2;
   white-space: nowrap;

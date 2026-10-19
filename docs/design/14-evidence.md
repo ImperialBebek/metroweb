@@ -9,7 +9,7 @@ Where every value in these pages came from, what is still unknown, and what only
 
 | Source | What it gave | Label | Kept in |
 |---|---|---|---|
-| Windows Phone SDK 8.0 emulator image | Theme XAML (palettes, type ramp, margins, text styles); registry (accents, default theme and accent, Settings order); app manifests (tile templates); en-US string tables (Settings titles, accent names, app names, confirmations); UIX markup in `ShellControls.dll` and others (tile flip keyframes, motion value names) | Decoded | [`theme/`](../evidence/theme), [`uix/`](../evidence/uix), [`strings/`](../evidence/strings) |
+| Windows Phone SDK 8.0 emulator image | Theme XAML (palettes, type ramp, margins, text styles); `System.Windows.xaml` (default button and text box templates); registry (accents, default theme and accent, Settings order); app manifests (tile templates); en-US string tables (Settings titles, accent names, app names, confirmations); UIX markup in `ShellControls.dll` and others (tile flip keyframes, motion value names) | Decoded | [`theme/`](../evidence/theme), [`uix/`](../evidence/uix), [`strings/`](../evidence/strings) |
 | Windows Phone Toolkit (Silverlight) source | `TurnstileTransition`, `TurnstileFeatherEffect`, `SwivelTransition`, `TiltEffect`, `ToggleSwitch`, `ListPicker`, `DatePicker`, `TimePicker`, `LoopingSelector` | Toolkit | Not copied; cite the class |
 | YouTube `38SziMGTUiw` (Windows Phone 8.0) | The Games hub intro | Fitted | [`footage/`](../evidence/footage/README.md) |
 | YouTube `RNSggiWpmxM` (Windows Phone 8.1) | Start and app list feather, app launch, Office hub intro, Settings pivot, drill in and back, Music and Games hubs | Fitted, Estimated | [`footage/`](../evidence/footage/README.md) |

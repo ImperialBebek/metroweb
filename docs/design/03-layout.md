@@ -2,7 +2,7 @@
 
 > **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
 > **Code** [`src/index.css`](../../src/index.css), [`src/components/panorama.css`](../../src/components/panorama.css), [`src/components/AppBar.tsx`](../../src/components/AppBar.tsx)
-> **Sources** `0100_ThemeResources.xaml` (copied to [`docs/evidence/theme`](../evidence/theme)); emulator screenshots
+> **Sources** `0100_ThemeResources.xaml` and `System.Windows.xaml` (copied to [`docs/evidence/theme`](../evidence/theme)); emulator screenshots
 
 ## The 12 px grid
 
@@ -10,17 +10,17 @@ Windows Phone spaces everything in multiples of 12 logical px. Text starts **24 
 
 | Microsoft name | Value | In the recreation | Source |
 |---|---|---|---|
-| `PhoneMargin` | 12 | literal `12px` | Decoded |
-| `PhoneHorizontalMargin` | 12, 0 | literal (`.paragraph`, `.list-item`, `.toggle-row`) | Decoded |
-| `PhoneVerticalMargin` | 0, 12 | literal | Decoded |
-| `PhoneTouchTargetOverhang` | 12 | literal (the 12 px padding on list items and buttons) | Decoded |
+| `PhoneMargin` | 12 | `--wp-margin`: the side margin of text blocks (paragraphs, headers above controls, toggle rows, message box text, panorama sections) | Decoded |
+| `PhoneHorizontalMargin` | 12, 0 | `--wp-margin` on each side (`.paragraph`, `.toggle-row`) | Decoded |
+| `PhoneVerticalMargin` | 0, 12 | `--wp-margin` above and below; not used yet | Decoded |
+| `PhoneTouchTargetOverhang` | 12 | `--wp-touch-target-overhang`: the margin around touch targets (list items, buttons, list picker and date boxes, message box buttons) | Decoded |
 | `PhoneTouchTargetLargeOverhang` | 12, 20 | not used yet | Decoded |
 | `PivotItemMargin` | 12, 28, 12, 0 | `.pivot-item { inset: 28px 12px 0 }` | Decoded |
-| `PhoneBorderThickness` | 3 | literal (`.wp-button-face`, message boxes, text boxes) | Decoded |
-| `PhoneStrokeThickness` | 3 | app bar ring and Start arrow stroke | Decoded |
-| `PhoneTextBoxInnerMargin` | 1, 2 | not used; text boxes use `0 9px` padding | Decoded |
+| `PhoneBorderThickness` | 3 | `--wp-border-thickness`: every 3 px border (buttons, message boxes, text boxes, check boxes, the looping selector) | Decoded |
+| `PhoneStrokeThickness` | 3 | `--wp-stroke-thickness`: the ring on app bar buttons, the Start arrow, app list search and the Messaging contact button, and the Camera buttons and shutter | Decoded |
+| `PhoneTextBoxInnerMargin` | 1, 2 | `--wp-text-box-inner-margin`; not used yet, text boxes use `0 9px` padding | Decoded |
 
-None of these have CSS variables yet. They are the first candidates for token consolidation.
+The variables live in `:root` in `src/index.css`. Use one when a value means that resource. A 12 px that is its own measurement (the gap between tiles, the tile title inset) stays a literal.
 
 ## Pages
 

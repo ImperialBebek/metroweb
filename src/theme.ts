@@ -62,6 +62,7 @@ const PALETTES: Record<Background, Record<string, string>> = {
     chrome: argb('#FF1F1F1F'),
     border: argb('#BFFFFFFF'),
     semitransparent: argb('#AA000000'),
+    buttonBasePressedForeground: argb('#FFFFFFFF'),
     pivotUnselectedOpacity: '0.4',
   },
   light: {
@@ -77,6 +78,7 @@ const PALETTES: Record<Background, Record<string, string>> = {
     chrome: argb('#FFDDDDDD'),
     border: argb('#99000000'),
     semitransparent: argb('#AAFFFFFF'),
+    buttonBasePressedForeground: argb('#FFFFFFFF'),
     pivotUnselectedOpacity: '0.23144',
   },
 }

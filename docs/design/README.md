@@ -47,7 +47,7 @@ Where Windows Phone 8.0 and 8.1 differ, or where only 8.1 footage was available,
 ## Ground rules
 
 - **The phone wins.** When the phone's behaviour and a web convention disagree, the recreation follows the phone. Every exception is listed in [Web and accessibility deviations](13-web-and-accessibility.md).
-- **Microsoft names are canonical.** Tokens keep the names from `ThemeResources.xaml` and the UIX markup. The CSS variables (`--wp-*`, `--size-*`, `--font-*`) are the current implementation. Consolidating the remaining literal values into tokens happens after these docs, using these tables as the spec.
+- **Microsoft names are canonical.** Tokens keep the names from `ThemeResources.xaml` and the UIX markup. The CSS variables (`--wp-*`, `--size-*`, `--font-*`) are the current implementation. Shared values use those variables; a value only one app uses stays in that app's stylesheet and is listed on the page for its area.
 - **No Microsoft assets ship.** Fonts, icons and images from the phone stay out of the build. See [Typography](04-typography.md) and [Iconography](06-iconography.md) for the substitutes.
 
 ## Version baseline

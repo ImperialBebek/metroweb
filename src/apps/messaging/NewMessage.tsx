@@ -147,7 +147,7 @@ function NewMessageForm({ onSent }: { onSent: (threadId: string) => void }) {
         />
         <button type="button" className="messaging-round" aria-label="Choose a contact" onClick={() => setPicking(true)}>
           <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden>
-            <circle cx="24" cy="24" r="21.5" fill="none" stroke="currentColor" strokeWidth="3" />
+            <circle className="appbar-ring" cx="24" cy="24" r="21.5" />
             {ph('plus')}
           </svg>
         </button>

@@ -78,7 +78,7 @@
 
 .calculator-key[data-kind='equals'] {
   background: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
 }
 
 .calculator-key[data-wide] {
@@ -87,5 +87,5 @@
 
 .calculator-key:active {
   background: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
 }

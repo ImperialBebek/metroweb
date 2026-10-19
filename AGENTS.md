@@ -21,8 +21,9 @@ Read [`docs/design/README.md`](docs/design/README.md) and the page for the area 
 
 ## Code rules
 
-- **Colour.** Use the `--wp-*` variables from `src/theme.ts`. Never write an accent hex in a component; use `var(--wp-accent)`. See [Colour and theme](docs/design/05-colour-and-theme.md).
-- **Type.** Use `--font-*` families and `--size-*` sizes from `src/index.css`. See [Typography](docs/design/04-typography.md).
+- **Colour.** Use the `--wp-*` variables from `src/theme.ts`. Never write an accent hex in a component; use `var(--wp-accent)`, and `var(--wp-button-base-pressed-foreground)` for text on it. See [Colour and theme](docs/design/05-colour-and-theme.md).
+- **Spacing.** Use `--wp-margin`, `--wp-touch-target-overhang` and `--wp-border-thickness` from `src/index.css` where a value means that resource. See [Layout](docs/design/03-layout.md).
+- **Type.** Use `--font-*` families and `--size-*` sizes from `src/index.css`. A size only one app uses may stay in its stylesheet; list it in [Typography](docs/design/04-typography.md#app-specific-sizes).
 - **Motion.** Take easings and durations from `src/motion.ts` and `src/pageMotion.ts`. Guard every animation with `prefersReducedMotion()` or a `prefers-reduced-motion` block. See [Motion](docs/design/07-motion.md).
 - **Pages.** Build app screens with `PageStack` and follow the authoring contract in [Navigation](docs/design/08-navigation.md#authoring-contract): `data-feather`, `data-continuum-target`, `registerBackHandler` for anything Back should close.
 - **Pressables.** A real `button` with `useTilt`. Never a click handler on a `div`.

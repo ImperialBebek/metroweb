@@ -96,11 +96,10 @@ Body text: Normal 20, 12 px side margins, 24 px below. `subtle` uses `--wp-subtl
 
 | State | Look |
 |---|---|
-| Rest | 3 px foreground border, SemiBold 22.667, padding 5 10 6, 12 px margin |
-| Pressed | Accent fill and border, white text, plus tilt |
+| Rest | `PhoneBorderThickness` (3 px) foreground border, SemiBold `PhoneFontSizeMedium` (22.667), padding 5 10 6, `PhoneTouchTargetOverhang` (12 px) margin |
+| Pressed | Accent fill and border, `PhoneButtonBasePressedForegroundColor` (white) text, plus tilt |
 
-Border thickness is Decoded (`PhoneBorderThickness`); the rest is Estimated.
-
+These are **Decoded** from the `PhoneButtonBase` style in `System.Windows.xaml` (copied to [`docs/evidence/theme`](../evidence/theme)); the tilt is the Toolkit's `TiltEffect`. The extra 12 px below each button (`.wp-button`) is Estimated.
 ## Toggle switch
 
 A header, the current state in words, and the switch.

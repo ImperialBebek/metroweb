@@ -39,6 +39,22 @@
   --size-large: 32px;
   --size-extra-large: 42.667px;
   --size-extra-extra-large: 72px;
+
+  /* Sizes off the ramp that shared components use (Estimated) */
+  --size-panorama-title: 133.333px;
+  --size-panorama-header: 53.333px;
+  --size-tile-count: 53.333px;
+  --size-tile-count-small: 26.667px;
+  --size-tile-initials: 26.667px;
+  --size-app-bar-label: 16px;
+  --size-picker-item: 54px;
+
+  /* Thickness resources from ThemeResources.xaml */
+  --wp-margin: 12px; /* PhoneMargin; each side of PhoneHorizontalMargin and PhoneVerticalMargin */
+  --wp-touch-target-overhang: 12px; /* PhoneTouchTargetOverhang */
+  --wp-border-thickness: 3px; /* PhoneBorderThickness */
+  --wp-stroke-thickness: 3px; /* PhoneStrokeThickness */
+  --wp-text-box-inner-margin: 2px 1px; /* PhoneTextBoxInnerMargin (1,2) */
 }
 
 *,
@@ -290,8 +306,8 @@ a:focus-visible,
 .list-item {
   display: block;
   width: 100%;
-  padding: 0 12px;
-  margin-bottom: 12px;
+  padding: 0 var(--wp-touch-target-overhang);
+  margin-bottom: var(--wp-touch-target-overhang);
 }
 
 .list-item-title {
@@ -311,7 +327,7 @@ a:focus-visible,
 /* ---------- text ---------- */
 
 .paragraph {
-  margin: 0 12px 24px;
+  margin: 0 var(--wp-margin) 24px;
   font-size: var(--size-normal);
 }
 
@@ -324,7 +340,7 @@ a:focus-visible,
 }
 
 .info-lines {
-  margin: 0 12px 24px;
+  margin: 0 var(--wp-margin) 24px;
 }
 
 /* ---------- toggle switch ---------- */
@@ -334,14 +350,14 @@ a:focus-visible,
 }
 
 .toggle-header {
-  margin: 0 12px;
+  margin: 0 var(--wp-margin);
   color: var(--wp-subtle);
 }
 
 .toggle-row {
   width: 100%;
   height: 72px;
-  padding: 0 12px;
+  padding: 0 var(--wp-margin);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -402,14 +418,14 @@ a:focus-visible,
 }
 
 .picker-header {
-  margin: 0 12px 2px;
+  margin: 0 var(--wp-margin) 2px;
   color: var(--wp-subtle);
 }
 
 .picker-box {
   display: block;
   width: calc(100% - 28px);
-  margin: 0 12px;
+  margin: 0 var(--wp-touch-target-overhang);
   overflow: hidden;
   border: 2px solid var(--wp-text-box);
   box-sizing: content-box;
@@ -492,9 +508,9 @@ a:focus-visible,
 
 .wp-button-face {
   display: inline-block;
-  margin: 12px;
+  margin: var(--wp-touch-target-overhang);
   padding: 5px 10px 6px;
-  border: 3px solid var(--wp-foreground);
+  border: var(--wp-border-thickness) solid var(--wp-foreground);
   font-family: var(--font-semibold);
   font-size: var(--size-medium);
 }
@@ -502,7 +518,7 @@ a:focus-visible,
 .wp-button:active .wp-button-face {
   background: var(--wp-accent);
   border-color: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
 }
 
 /* ---------- message box (shell MessageBox) ---------- */
@@ -515,21 +531,21 @@ a:focus-visible,
 }
 
 .msgbox {
-  padding: 18px 12px 6px;
+  padding: 18px var(--wp-margin) 6px;
   background: var(--wp-chrome);
   color: var(--wp-foreground);
   transform-origin: 50% 0;
 }
 
 .msgbox-caption {
-  margin: 0 12px 10px;
+  margin: 0 var(--wp-margin) 10px;
   font-family: var(--font-semibold);
   font-size: var(--size-large);
   line-height: 1.2;
 }
 
 .msgbox-message {
-  margin: 0 12px 12px;
+  margin: 0 var(--wp-margin) 12px;
   font-size: var(--size-medium);
   line-height: 1.33;
   overflow-wrap: anywhere;
@@ -541,9 +557,9 @@ a:focus-visible,
 }
 
 .msgbox-button {
-  margin: 12px;
+  margin: var(--wp-touch-target-overhang);
   padding: 5px 10px 6px;
-  border: 3px solid var(--wp-foreground);
+  border: var(--wp-border-thickness) solid var(--wp-foreground);
   font-family: var(--font-semibold);
   font-size: var(--size-medium);
   text-align: center;
@@ -552,7 +568,7 @@ a:focus-visible,
 .msgbox-button:active {
   background: var(--wp-accent);
   border-color: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
 }
 @media (prefers-reduced-motion: reduce) {
   .pivot-header,
@@ -608,7 +624,7 @@ a:focus-visible,
 .tile {
   position: relative;
   display: block;
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
   transform-origin: 50% 50%;
 }
 
@@ -656,12 +672,12 @@ a:focus-visible,
 
 .tile-count {
   font-family: var(--font-normal);
-  font-size: 53.333px;
+  font-size: var(--size-tile-count);
   line-height: 1;
 }
 
 .tile[data-size='small'] .tile-count {
-  font-size: 26.667px;
+  font-size: var(--size-tile-count-small);
 }
 
 .tile[data-size='small'] .tile-iconic {
@@ -708,7 +724,7 @@ a:focus-visible,
 }
 
 .calendar-day {
-  font-size: 32px;
+  font-size: var(--size-large);
   line-height: 1;
 }
 
@@ -718,7 +734,7 @@ a:focus-visible,
   display: grid;
   place-items: center;
   font-family: var(--font-normal);
-  font-size: 42.667px;
+  font-size: var(--size-extra-large);
 }
 
 .people-grid {
@@ -732,7 +748,7 @@ a:focus-visible,
   display: grid;
   place-items: center;
   font-family: var(--font-semilight);
-  font-size: 26.667px;
+  font-size: var(--size-tile-initials);
   background: color-mix(in srgb, var(--wp-accent) 70%, #000);
 }
 
@@ -811,7 +827,7 @@ a:focus-visible,
 }
 
 .applist-icon {
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
 }
 
 .applist-title {
@@ -879,7 +895,7 @@ a:focus-visible,
 .appbar-ring {
   fill: none;
   stroke: currentColor;
-  stroke-width: 3;
+  stroke-width: var(--wp-stroke-thickness);
 }
 
 .appbar-glyph {
@@ -900,7 +916,7 @@ a:focus-visible,
 
 .appbar-label {
   margin-top: 4px;
-  font-size: 16px;
+  font-size: var(--size-app-bar-label);
   line-height: 1.2;
   white-space: nowrap;
   text-transform: lowercase;
@@ -968,7 +984,7 @@ a:focus-visible,
 }
 
 .dt-header {
-  margin: 0 12px 2px;
+  margin: 0 var(--wp-margin) 2px;
   color: var(--wp-subtle);
 }
 
@@ -976,7 +992,7 @@ a:focus-visible,
   display: block;
   width: calc(100% - 24px);
   height: 48px;
-  margin: 0 12px;
+  margin: 0 var(--wp-touch-target-overhang);
   padding: 0 12px;
   background: var(--wp-text-box);
   color: var(--wp-text-box-foreground);
@@ -987,7 +1003,7 @@ a:focus-visible,
 
 .dt-box:active {
   background: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
 }
 
 .dt-page-title {
@@ -1030,7 +1046,7 @@ a:focus-visible,
   flex-direction: column;
   justify-content: flex-end;
   padding: 0 10px 6px;
-  border: 3px solid var(--wp-subtle);
+  border: var(--wp-border-thickness) solid var(--wp-subtle);
   opacity: 0;
   transition: opacity 200ms linear;
 }
@@ -1043,12 +1059,12 @@ a:focus-visible,
   opacity: 1;
   background: var(--wp-accent);
   border-color: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
 }
 
 .ls-primary {
   font-family: var(--font-semilight);
-  font-size: 54px;
+  font-size: var(--size-picker-item);
   line-height: 1.1;
 }
 

@@ -51,10 +51,10 @@ Other sizes in the theme resources:
 | `PivotTitleFontSize` | 22.667 | `.pivot-title` uses `--size-medium` | Decoded |
 | `PanoramaItemHeaderFontSize` | 66 | **not followed**: `.pano-header` is 53.333 px, matched to footage of native hubs | Decoded; see [open questions](14-evidence.md#open-questions) |
 | `PanoramaItemCharacterSpacing` | −35 (thousandths of an em) | not applied | Decoded |
-| `LongListSelectorGroupHeaderFontSize` | 29.333 | not used (no letter groups yet) | Decoded |
-| `LongListSelectorGroupHeaderLetterTileFontSize` | 42.667 | not used | Decoded |
+| `LongListSelectorGroupHeaderFontSize` | 29.333 | not used | Decoded |
+| `LongListSelectorGroupHeaderLetterTileFontSize` | 42.667 | not used: People's letter tiles are 38 px (Estimated) | Decoded |
 | `JumpListStringFontSize` | 26.667 | not used | Decoded |
-| `JumpListAlphabetFontSize` / `…SmallFontSize` | 48 / 37.333 | not used | Decoded |
+| `JumpListAlphabetFontSize` / `…SmallFontSize` | 48 / 37.333 | not used: People's jump list letters are 54 px (Estimated) | Decoded |
 | `EmptyListHeaderFontSize` | 32 | not used | Decoded |
 
 ## Text styles
@@ -81,26 +81,25 @@ All style values are **Decoded**.
 
 ## Text in components
 
-Sizes used by components that are not one of the styles above. Values not on the ramp are candidates for new tokens.
+Sizes used by shared components that are not one of the styles above. Values off the ramp have their own `--size-*` variables in `index.css`.
 
-| Where | Family | Size | Source |
-|---|---|---|---|
-| Pivot title | SemiBold, uppercase | 22.667 | Decoded size; uppercase Estimated from screenshots |
-| Toggle state (On/Off) | Light | 32 | Estimated |
-| Button face | SemiBold | 22.667 | Estimated |
-| Tile title | Normal | 18.667 | Estimated |
-| Tile count | Normal | 53.333 (26.667 on small tiles) | Estimated |
-| Calendar tile day number | Normal | 32 (42.667 on small tiles) | Estimated |
-| People tile initials | SemiLight | 26.667 | Estimated |
-| App list title | Normal | 25.333 | Estimated |
-| Panorama title | Light | 133.333 | Estimated |
-| Panorama section header | SemiLight | 53.333 | Estimated |
-| App bar button label | Normal, lowercase | 16 | Estimated |
-| App bar menu item | Normal, lowercase | 25.333 | Estimated |
-| Date and time picker item | SemiLight | 54 (secondary line Normal 20) | Estimated |
-| Picker page title (CHOOSE TIME) | SemiBold | 20 | Estimated |
-| Message box caption | SemiBold | 32 | Estimated |
-
+| Where | Family | Size | CSS variable | Source |
+|---|---|---|---|---|
+| Pivot title | SemiBold, uppercase | 22.667 | `--size-medium` | Decoded size; uppercase Estimated from screenshots |
+| Toggle state (On/Off) | Light | 32 | `--size-large` | Estimated |
+| Button face | SemiBold | 22.667 | `--size-medium` | Decoded (`PhoneButtonBase`) |
+| Tile title | Normal | 18.667 | `--size-small` | Estimated |
+| Tile count | Normal | 53.333 (26.667 on small tiles) | `--size-tile-count`, `--size-tile-count-small` | Estimated |
+| Calendar tile day number | Normal | 32 (42.667 on small tiles) | `--size-large`, `--size-extra-large` | Estimated |
+| People tile initials | SemiLight | 26.667 | `--size-tile-initials` | Estimated |
+| App list title | Normal | 25.333 | `--size-medium-large` | Estimated |
+| Panorama title | Light | 133.333 | `--size-panorama-title` | Estimated |
+| Panorama section header | SemiLight | 53.333 | `--size-panorama-header` | Estimated |
+| App bar button label | Normal, lowercase | 16 | `--size-app-bar-label` | Estimated |
+| App bar menu item | Normal, lowercase | 25.333 | `--size-medium-large` | Estimated |
+| Date and time picker item | SemiLight | 54 (secondary line Normal 20) | `--size-picker-item` (`--size-normal`) | Estimated |
+| Picker page title (CHOOSE TIME) | SemiBold | 20 | `--size-normal` | Estimated |
+| Message box caption | SemiBold | 32 | `--size-large` | Estimated |
 ## Line height
 
 | Where | Value | Source |
@@ -111,12 +110,28 @@ Sizes used by components that are not one of the styles above. Values not on the
 
 ## Rules
 
-- Use the four `--font-*` families and the `--size-*` ramp. Don't set `font-weight`; pick the family.
+- Use the four `--font-*` families and the `--size-*` variables. Don't set `font-weight`; pick the family.
 - Don't add a size without a source. If a component needs one, add it to the table above with its label.
 - Headings and labels are left-aligned. Nothing is centred except tile glyphs and picker items.
 - Letter case is part of the type system: see [Writing](12-writing.md).
 - The desk controls beside the phone (13–15 px) are outside the phone and not part of the ramp.
 
-## To consolidate
+## App-specific sizes
 
-Literal sizes that should become tokens: 53.333, 26.667, 133.333, 54 and 16 px in `index.css` and `panorama.css`, and 64, 128, 36, 30, 16, 15, 14 and 12 px in app stylesheets.
+Sizes that only one app uses stay in that app's stylesheet. All are **Estimated**. If a second component needs one, move it to a `--size-*` variable in `index.css`.
+
+| App | Where | Size |
+|---|---|---|
+| Alarms | Alarm time in the list | 64 |
+| Alarms | Time on the ringer | 128 |
+| Phone | Keypad digits | 40 (30 on the in-call keypad, its letters 14) |
+| Phone | Caller name during a call | 54 |
+| People | Initials on favourites | 36 |
+| People | Letter tiles in the contact list | 38 |
+| People | Initials on group tiles | 18 |
+| People | Jump list letters | 54 |
+| Calculator | Digit keys | 36 (operators and functions 30) |
+| Calendar | Appointments in month cells | 12 |
+| Messaging | Time under a bubble | 16 |
+| Messaging | Character counter | 15 |
+| Camera | Labels on the bar | 14 |

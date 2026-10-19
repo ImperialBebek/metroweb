@@ -252,7 +252,7 @@ export function StartScreen({
           </div>
           <button type="button" className="start-arrow" data-feather aria-label="All apps" onClick={() => setPane(1)}>
             <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden>
-              <circle cx="22" cy="22" r="19.5" fill="none" stroke="currentColor" strokeWidth="3" />
+              <circle className="appbar-ring" cx="22" cy="22" r="19.5" />
               {ph('arrow-right', 22, 22, 22)}
             </svg>
           </button>
@@ -260,7 +260,7 @@ export function StartScreen({
         <div className="start-pane applist" ref={listPane} inert={pane !== 1} aria-label="All apps">
           <button type="button" className="applist-search" data-feather aria-label="Search apps" aria-disabled>
             <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden>
-              <circle cx="22" cy="22" r="19.5" fill="none" stroke="currentColor" strokeWidth="3" />
+              <circle className="appbar-ring" cx="22" cy="22" r="19.5" />
               {ph('magnifying-glass', 22, 22, 22)}
             </svg>
           </button>

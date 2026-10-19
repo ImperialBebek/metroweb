@@ -73,7 +73,7 @@
   display: flex;
   align-items: flex-end;
   background: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
   font-family: var(--font-semilight);
   font-size: var(--size-extra-large);
   line-height: 1;
@@ -328,7 +328,7 @@
   height: 72px;
   display: grid;
   place-items: center;
-  border: 3px solid var(--wp-foreground);
+  border: var(--wp-border-thickness) solid var(--wp-foreground);
   border-radius: 50%;
 }
 
@@ -350,7 +350,7 @@
   height: 56px;
   display: grid;
   place-items: center;
-  border: 3px solid #fff;
+  border: var(--wp-border-thickness) solid #fff;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.45);
   color: #fff;

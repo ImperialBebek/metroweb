@@ -147,7 +147,7 @@
   height: 48px;
   margin: 0 12px;
   padding: 0 9px;
-  border: 3px solid transparent;
+  border: var(--wp-border-thickness) solid transparent;
   border-radius: 0;
   background: var(--wp-text-box);
   color: var(--wp-text-box-foreground);
@@ -195,14 +195,14 @@
   height: 36px;
   display: grid;
   place-items: center;
-  border: 3px solid var(--wp-foreground);
+  border: var(--wp-border-thickness) solid var(--wp-foreground);
   color: var(--wp-foreground);
 }
 
 .alarms-check:active .alarms-check-box {
   background: var(--wp-accent);
   border-color: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
 }
 
 .alarms-check-label {
@@ -220,7 +220,7 @@
   min-height: 60px;
   padding: 18px 24px 16px;
   background: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
   font-size: var(--size-normal);
   line-height: 1.3;
   animation: alarms-toast-in 350ms cubic-bezier(0.1, 0.9, 0.2, 1);
@@ -263,7 +263,7 @@
   flex-direction: column;
   padding: 56px 24px 40px;
   background: var(--wp-accent);
-  color: #fff;
+  color: var(--wp-button-base-pressed-foreground);
   transform-origin: 50% 50%;
 }
 
@@ -314,7 +314,7 @@
 .alarms-ring-button {
   flex: 1;
   height: 88px;
-  border: 3px solid #fff;
+  border: var(--wp-border-thickness) solid var(--wp-button-base-pressed-foreground);
   font-family: var(--font-semibold);
   font-size: var(--size-large);
   text-align: center;
@@ -322,12 +322,12 @@
 }
 
 .alarms-ring-button:active {
-  background: #fff;
+  background: var(--wp-button-base-pressed-foreground);
   color: var(--wp-accent);
 }
 
 .alarms-ring-button:focus-visible {
-  outline-color: #fff;
+  outline-color: var(--wp-button-base-pressed-foreground);
 }
 
 .alarms-ring-hint {

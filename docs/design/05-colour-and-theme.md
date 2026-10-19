@@ -33,6 +33,7 @@ XAML colours are `#AARRGGBB`; the recreation converts them to `rgba()`. All valu
 | `PhoneTextBoxColor` | `--wp-text-box` | `#BFFFFFFF` | `#26000000` | Text box fill at rest, list picker border |
 | `PhoneTextBoxForegroundColor` | `--wp-text-box-foreground` | `#FF000000` | `#DE000000` | Text in text boxes |
 | `PhoneTextBoxEditBackgroundColor` | `--wp-text-box-edit-background` | `#FFFFFFFF` | `#00000000` | Text box and open picker while editing |
+| `PhoneButtonBasePressedForegroundColor` | `--wp-button-base-pressed-foreground` | `#FFFFFFFF` | `#FFFFFFFF` | Text and glyphs on accent: pressed buttons, tiles, selected items, accent toasts and bubbles |
 | `PhonePivotUnselectedItemOpacity` | `--wp-pivot-unselected-opacity` | 0.4 | 0.23144 | Pivot headers that aren't selected |
 | `PhoneAccentColor` | `--wp-accent` | the accent | the accent | Tiles, toggles, selection, pressed states |
 
@@ -44,7 +45,6 @@ Resources in the XAML that the recreation doesn't use yet:
 | `PhoneTextCaretColor` | `#FF000000` | `#DE000000` |
 | `PhoneTextBoxReadOnlyColor` | `#77000000` | `#2E000000` |
 | `PhoneTextBoxSelectionForegroundColor` | `#FFFFFFFF` | `#FFFFFFFF` |
-| `PhoneButtonBasePressedForegroundColor` | `#FFFFFFFF` | `#FFFFFFFF` |
 | `PhoneTextHighContrastColor` | `#FFFFFFFF` | `#DE000000` |
 | `PhoneTextMidContrastColor` | `#99FFFFFF` | `#73000000` |
 | `PhoneTextLowContrastColor` | `#73FFFFFF` | `#40000000` |
@@ -95,7 +95,7 @@ The phone's own colours, measured against the background they sit on. They are k
 ## Rules
 
 - Anything that should follow the accent uses `var(--wp-accent)`. Never write an accent hex in a component.
-- Text on accent colour is white in both themes (`PhoneButtonBasePressedForegroundColor` is `#FFFFFFFF` in both). The recreation writes `#fff` today; it should become `--wp-button-base-pressed-foreground`.
+- Text on accent colour uses `--wp-button-base-pressed-foreground`, which is white in both themes. White that sits over a picture rather than the accent (Camera, the Photos viewer, Music+Videos over album art) and the black navigation bar are written as `#fff`.
 - Chrome surfaces (app bar, volume band, message boxes) use `--wp-chrome`, never the background.
 - Use the palette variables. If you need a colour that isn't in the XAML, derive it with `color-mix()` from a palette variable, label it Estimated, and add it below.
 
@@ -111,4 +111,9 @@ Colours the recreation mixes itself. All **Estimated**.
 | Text box placeholder (Messaging) | text box foreground at 55% | |
 | Music tile title | `text-shadow: 0 0 6px rgba(0,0,0,0.6)` | White title over album art |
 | Navigation bar and safe areas | `#000` in both themes | The 8.1 navigation bar is black |
-| App scrims | `rgba()` literals in app stylesheets | To consolidate onto `--wp-semitransparent` |
+| Photos viewer info bar | black at 60% over the picture | Keeps the date and time readable over any photo |
+| Photos viewer app bar | `#1F1F1F` (dark chrome) at 90% | Stays dark and see-through over pictures in both themes |
+| Camera bar | black at 50% | Over the viewfinder |
+| Music+Videos over album art | black at 60% (history labels), 45% (now playing toggles), 65% (seek bar); white at 35% (seek track) | Keeps text and controls readable over any cover |
+
+Message box scrims aren't derived: [`MessageBox`](09-components.md#message-box) uses `--wp-semitransparent`.
