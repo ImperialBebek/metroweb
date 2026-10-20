@@ -4,7 +4,7 @@ A recreation of Windows Phone 8 in the browser: Start, live tiles, Settings and 
 
 ## Commands
 
-- `npm run dev`: Vite dev server.
+- `npm run dev`: Vite dev server. The phone is at `/`, the design docs site at `/design`.
 - `npm run lint`: oxlint. `npm run build`: type check (`tsc -b`) and production build. Run both before you finish a change.
 - `npm run docs:assets` (or `-- shots | diagrams | strips | footage`): regenerate the pictures in `docs/design/assets`. Needs a Playwright Chromium, or `CHROMIUM_PATH` pointing at one. Run it after any visual change that a screenshot, diagram or motion strip shows.
 - `node scripts/gen-phosphor-icons.mjs`: regenerate `src/icons/phosphor.ts` after adding an icon name.
@@ -18,6 +18,7 @@ Read [`docs/design/README.md`](docs/design/README.md) and the page for the area 
 - **Label every value** you add or change: Decoded, Toolkit, Fitted, Estimated or Verified (see the README). Never upgrade a label without new evidence.
 - **Update the docs in the same change** as the code: the value, its label, and the version baseline row if it moves. Regenerate assets that show it.
 - **Microsoft names are canonical.** Keep names from `ThemeResources.xaml` and the UIX markup (`PhoneFontSizeLarge`, `TurnstileFeatherPixelDelay`) in tables and comments.
+- **The docs are published** at `/design` (https://wp8.vercel.app/design), built from `docs/design` by `scripts/design-docs.ts`. Fix any `design-docs` warning the dev server or build prints: it means a broken page link, a missing heading anchor or an image outside `docs/design/assets`. Live demos for `<!-- demo: name -->` comments are in `src/design/demos.tsx`.
 
 ## Code rules
 

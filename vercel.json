@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/design", "destination": "/design/index.html" },
+    { "source": "/design/:page", "destination": "/design/index.html" }
+  ]
+}

@@ -72,4 +72,5 @@ Where Windows Phone 8.0 and 8.1 differ, or where only 8.1 footage was available,
 
 - When you change a documented value, update its row here in the same change, including the source label.
 - Screenshots, measurement diagrams and motion strips are generated. Run `npm run docs:assets` (or one group: `npm run docs:assets -- strips`) after a visual change. See [`scripts/docs-assets.mjs`](../../scripts/docs-assets.mjs).
-- `<!-- demo: … -->` comments mark where a live specimen will go if these pages are published at `/design`.
+- These pages are also published as a site at [`/design`](https://wp8.vercel.app/design), built from this folder by [`scripts/design-docs.ts`](../../scripts/design-docs.ts) during `npm run dev` and `npm run build`. Links between pages and to their headings become site links, and the build warns about any that don't resolve. Links outside `docs/design` (to `src/`, `scripts/` or the evidence) are published as plain text, and only images in `assets/` are published.
+- A `<!-- demo: name -->` comment on its own line puts a live component at that spot on the site, in a phone frame that follows the site's theme and accent switches. The demos are in [`src/design/demos.tsx`](../../src/design/demos.tsx); a name with no demo renders nothing and logs a warning in the dev server.
