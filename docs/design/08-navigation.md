@@ -85,3 +85,4 @@ Pages describe themselves to the shell with a few attributes and hooks. Follow t
 - Don't navigate on `click` alone; it loses the tilt and fires during pans.
 - Don't unmount pages to "reset" them; the stack keeps them so Back restores their state.
 - Don't add your own Back or close buttons to pages. Use Back, or the app bar's **cancel** in pickers and forms, as the phone does.
+- Don't set `visibility: visible` on anything inside a page. Pages further down the stack stay mounted under `visibility: hidden`, and `visible` on a descendant shows it through the page on top. Use `visibility: inherit` to undo a `hidden`.

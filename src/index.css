@@ -287,9 +287,10 @@ a:focus-visible,
   display: none;
 }
 
+/* inherit, not visible: a page further down the stack is hidden, and so are its items. */
 .pivot-item[data-visible='true'],
 .pivot-item[data-visible=''] {
-  visibility: visible;
+  visibility: inherit;
 }
 
 .page-content {

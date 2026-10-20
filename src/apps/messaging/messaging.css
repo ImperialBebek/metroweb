@@ -47,7 +47,7 @@
 }
 
 .messaging-check[data-checked] svg {
-  visibility: visible;
+  visibility: inherit;
 }
 
 .messaging-thread-body {
