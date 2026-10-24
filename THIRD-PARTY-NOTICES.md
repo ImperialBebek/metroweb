@@ -6,7 +6,7 @@ metroweb's own code and docs are under the [MIT License](LICENSE). The parts bel
 
 `public/fonts/selawik*.woff2`. Copyright 2015 Microsoft Corporation, with Reserved Font Name Selawik. Licensed under the SIL Open Font License 1.1; the full text is in [`public/fonts/SELAWIK-LICENSE.txt`](public/fonts/SELAWIK-LICENSE.txt).
 
-Modified for this project: the composite glyphs (accented letters, the ellipsis) are flattened to plain outlines with fontTools, because Chrome drew only the first component of each from the original WOFF2 files.
+Modified for this project: the composite glyphs (accented letters, the ellipsis) are flattened to plain outlines with fontTools, because Chrome drew only the first component of each from the original WOFF2 files. The OFL doesn't let a Modified Version use a Reserved Font Name, so the modified fonts are renamed **Metroweb Sans** in their name tables. The files keep their `selawik-*` names, and the rename leaves the outlines and metrics as they were.
 
 ## Phosphor Icons
 

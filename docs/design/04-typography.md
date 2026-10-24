@@ -24,7 +24,7 @@ Each `WP *` family loads, in order:
 2. `Segoe UI *`, which Windows has.
 3. **Selawik**, served from `public/fonts/`. Selawik is Microsoft's open-source (OFL) font made to match Segoe UI's metrics, so line lengths and wrapping come out close even where the letterforms differ.
 
-Selawik's composite glyphs (accented letters, the ellipsis) were flattened to plain outlines with fontTools, because Chrome drew only the first component of each from the original woff2 files. If you replace the font files, flatten them again.
+Selawik's composite glyphs (accented letters, the ellipsis) were flattened to plain outlines with fontTools, because Chrome drew only the first component of each from the original woff2 files. Because of that change, the OFL doesn't let the files keep the name Selawik, so their name tables call them Metroweb Sans; the CSS families are unaffected. If you replace the font files, flatten and rename them again.
 
 Segoe WP itself is never shipped. The screenshots in these docs were generated on macOS, so they show Selawik.
 
