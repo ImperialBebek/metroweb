@@ -35,7 +35,7 @@ In `docs/evidence/private/footage/`:
 
 ## Tools
 
-The Swift scripts in [`tools/`](tools) read a video with AVFoundation, so they run on macOS without ffmpeg. Compile one with `swiftc -O tools/rect.swift -o /tmp/rect`, or run it with `swift tools/rect.swift …`. Several take the video path from `VIDEO`; a few have the author's download path written in and need editing.
+The Swift scripts in [`tools/`](tools) read a video with AVFoundation, so they run on macOS without ffmpeg. Compile one with `swiftc -O tools/rect.swift -o /tmp/rect`, or run it with `swift tools/rect.swift …`. The ones that read a video take its path from `VIDEO` (`probe.swift` takes it as an argument), for example `VIDEO=/path/to/video.mp4 swift tools/track.swift …`.
 
 | Tool | Does |
 |---|---|

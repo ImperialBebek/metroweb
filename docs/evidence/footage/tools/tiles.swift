@@ -8,7 +8,8 @@ import CoreGraphics
 let a = CommandLine.arguments
 let ref = Double(a[1])!, start = Double(a[2])!, end = Double(a[3])!
 let crop: CGRect = { let c = (ProcessInfo.processInfo.environment["CROP"] ?? "706 64 506 844").split(separator: " ").map { Double($0)! }; return CGRect(x: c[0], y: c[1], width: c[2], height: c[3]) }()
-let asset = AVURLAsset(url: URL(fileURLWithPath: ProcessInfo.processInfo.environment["VIDEO"] ?? "/Users/rafly/Downloads/Windows-Phone-81-SnapYT.App.mp4"))
+guard let video = ProcessInfo.processInfo.environment["VIDEO"] else { fputs("Set VIDEO to the video's path\n", stderr); exit(1) }
+let asset = AVURLAsset(url: URL(fileURLWithPath: video))
 let gen = AVAssetImageGenerator(asset: asset)
 gen.requestedTimeToleranceBefore = .zero
 gen.requestedTimeToleranceAfter = .zero

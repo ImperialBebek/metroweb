@@ -9,7 +9,8 @@ let start = Double(a[1])!, end = Double(a[2])!
 let mode = a[3]
 let rx0 = Int(a[4])!, ry0 = Int(a[5])!, rx1 = Int(a[6])!, ry1 = Int(a[7])!
 let crop = CGRect(x: 706, y: 64, width: 506, height: 844)
-let asset = AVURLAsset(url: URL(fileURLWithPath: "/Users/rafly/Downloads/Windows-Phone-81-SnapYT.App.mp4"))
+guard let video = ProcessInfo.processInfo.environment["VIDEO"] else { fputs("Set VIDEO to the video's path\n", stderr); exit(1) }
+let asset = AVURLAsset(url: URL(fileURLWithPath: video))
 let gen = AVAssetImageGenerator(asset: asset)
 gen.requestedTimeToleranceBefore = .zero
 gen.requestedTimeToleranceAfter = .zero

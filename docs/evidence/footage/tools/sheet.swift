@@ -32,7 +32,11 @@ if args.count >= 10 {
 }
 let cellW = args.count >= 11 ? Int(args[10])! : 240
 
-let videoURL = URL(fileURLWithPath: ProcessInfo.processInfo.environment["VIDEO"] ?? "/Users/rafly/Downloads/Windows-Phone-81-SnapYT.App.mp4")
+guard let video = ProcessInfo.processInfo.environment["VIDEO"] else {
+    fputs("Set VIDEO to the video's path\n", stderr)
+    exit(1)
+}
+let videoURL = URL(fileURLWithPath: video)
 let asset = AVURLAsset(url: videoURL)
 let gen = AVAssetImageGenerator(asset: asset)
 gen.appliesPreferredTrackTransform = true
