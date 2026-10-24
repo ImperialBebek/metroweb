@@ -104,7 +104,7 @@ A panorama hub opens differently from a page. The whole page swings in from edge
 | Title offset | `PanoramaTitleIntroSlideInXOffset` | 1640 px (about 1.33 × the sections) | Fitted |
 | Section offset | `PanoramaContentIntroSlideInXOffset` | 1240 px | Fitted |
 
-Fitted to the WP8 Games hub (YouTube `38SziMGTUiw`) and the WP8.1 Office hub. Fit results are in [`docs/evidence/fits`](../evidence/fits); which clip the stored samples came from is an [open question](14-evidence.md#open-questions). **Provisional**: the recreation trails the WP8 footage by one or two frames between 200 and 500 ms ([side by side](../evidence/footage/hub-intro-compare.jpg)). Nothing is clipped during the swing, so the layers and the wrapped-around last section show on the tilted plane, as on the phone.
+Fitted to the WP8 Games hub (YouTube `38SziMGTUiw`) and the WP8.1 Office hub. Fit results are in [`docs/evidence/fits`](../evidence/fits); which clip the stored samples came from is an [open question](14-evidence.md#open-questions). **Provisional**: the recreation trails the WP8 footage by one or two frames between 200 and 500 ms (see the side by side, `hub-intro-compare.jpg`, in the private evidence). Nothing is clipped during the swing, so the layers and the wrapped-around last section show on the tilted plane, as on the phone.
 
 A page opts in by marking layers with `data-intro="<offset px>"`. `Panorama` does this for you.
 

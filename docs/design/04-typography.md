@@ -2,7 +2,7 @@
 
 > **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
 > **Code** [`src/index.css`](../../src/index.css) (`@font-face`, `--font-*`, `--size-*`), [`public/fonts/`](../../public/fonts)
-> **Sources** `ThemeResources.xaml` (copied to [`docs/evidence/theme`](../evidence/theme)); Selawik (SIL Open Font License)
+> **Sources** `ThemeResources.xaml` (copied to `docs/evidence/private/theme`, kept private); Selawik (SIL Open Font License)
 
 Windows Phone 8 sets everything in **Segoe WP**, in four weights, on a ramp of eight sizes. Hierarchy comes from size and weight, never from colour blocks or rules.
 

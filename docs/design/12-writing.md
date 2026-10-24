@@ -2,7 +2,7 @@
 
 > **Status** Draft · **Baseline** Windows Phone 8.0, US English · **Last reviewed** 2026-10-19
 > **Code** [`src/pages/items.ts`](../../src/pages/items.ts) (Settings titles), [`src/format.ts`](../../src/format.ts) and each app's `format.ts` or `dates.ts`, app bar and message box labels in each app (message boxes render through [`src/components/MessageBox.tsx`](../../src/components/MessageBox.tsx))
-> **Sources** en-US string tables (`*.mui`) from the emulator image, summarised in [`docs/evidence/strings/casing.txt`](../evidence/strings/casing.txt); emulator screenshots
+> **Sources** en-US string tables (`*.mui`) from the emulator image, summarised by [`casing.py`](../evidence/strings/casing.py) in `casing.txt` (kept private); emulator screenshots
 
 Metro text is short, plain and mostly lower case. The phone's words are part of its look, so the recreation copies them where it can and follows their pattern where it can't.
 
@@ -75,7 +75,7 @@ As whole strings, the phone's tables have "yesterday" only in lower case (`Conta
 
 ## Confirmations
 
-Each delete confirmation and where its words come from. The buttons are delete and cancel, as in `PhoneRes` and `OnmUiRes`. String IDs are from [`casing.txt`](../evidence/strings/casing.txt).
+Each delete confirmation and where its words come from. The buttons are delete and cancel, as in `PhoneRes` and `OnmUiRes`. String IDs are from `casing.txt` (kept private), the output of [`casing.py`](../evidence/strings/casing.py).
 
 | App | Title | Text | Source |
 |---|---|---|---|

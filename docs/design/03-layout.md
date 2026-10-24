@@ -2,7 +2,7 @@
 
 > **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
 > **Code** [`src/index.css`](../../src/index.css), [`src/components/panorama.css`](../../src/components/panorama.css), [`src/components/AppBar.tsx`](../../src/components/AppBar.tsx)
-> **Sources** `0100_ThemeResources.xaml` and `System.Windows.xaml` (copied to [`docs/evidence/theme`](../evidence/theme)); emulator screenshots
+> **Sources** `0100_ThemeResources.xaml` and `System.Windows.xaml` (copied to `docs/evidence/private/theme`, kept private); emulator screenshots
 
 ## The 12 px grid
 

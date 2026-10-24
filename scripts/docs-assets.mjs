@@ -1,5 +1,5 @@
 // Regenerates the pictures in docs/design/assets (screenshots, measurement
-// diagrams, motion strips) and the footage comparison in docs/evidence/footage.
+// diagrams, motion strips) and the footage comparison in docs/evidence/private/footage.
 //
 //   npm run docs:assets            everything
 //   npm run docs:assets -- strips  one group: shots | diagrams | strips | footage
@@ -18,7 +18,7 @@ const OUT = {
   shots: join(root, 'docs/design/assets/screenshots'),
   diagrams: join(root, 'docs/design/assets/diagrams'),
   strips: join(root, 'docs/design/assets/strips'),
-  footage: join(root, 'docs/evidence/footage'),
+  footage: join(root, 'docs/evidence/private/footage'),
 }
 const FOOTAGE_FRAMES = process.env.WP8_FOOTAGE_FRAMES ?? '/tmp/wp8-vid/g1'
 // A WVGA phone: 32px tray + 768px page, plus the 64px software nav bar.

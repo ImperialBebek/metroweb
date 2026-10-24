@@ -35,5 +35,6 @@ Read [`docs/design/README.md`](docs/design/README.md) and the page for the area 
 ## Assets and evidence
 
 - **No Microsoft assets ship.** No Segoe WP, no Microsoft icons, sounds or images in `src/` or `public/`. The substitutes are Selawik (`public/fonts`, OFL) and Phosphor icons (MIT).
-- **`docs/evidence/` is never published.** It is in `.vercelignore` and outside the Vite build. Don't import from it. Cite videos by YouTube ID only; download URLs carry session tokens.
-- The unpacked emulator image lives in `../extracted/`, outside the repository. Don't copy whole binaries into the repo; extract the part you need into `docs/evidence/` with a note of where it came from.
+- **Microsoft material stays private.** Files copied or dumped from the emulator image (theme XAML, string tables, UIX tables), pictures of the phone's screen and frames from other people's videos go in `docs/evidence/private/`, a separate private repository that this one ignores. Never add them anywhere else, and don't link to them from public pages: a clone of this repository doesn't have them. The rest of `docs/evidence/` (tools, measurements, fits) is public.
+- **`docs/evidence/` is never deployed.** It is in `.vercelignore` and outside the Vite build. Don't import from it. Cite videos by YouTube ID only; download URLs carry session tokens.
+- The unpacked emulator image lives in `../extracted/`, outside the repository. Don't copy whole binaries into either repository; extract the part you need into `docs/evidence/private/` with a note of where it came from.

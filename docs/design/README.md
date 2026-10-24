@@ -3,7 +3,7 @@
 How this recreation of Windows Phone 8 looks, moves and behaves, and where each rule lives in the code. It is written for people building on the recreation first, but every page should read fine without the code open.
 
 > **Status** Draft · **Baseline** Windows Phone 8.0, with 8.1 where noted · **Last reviewed** 2026-10-19
-> **Code** [`src/`](../../src) · **Evidence** [`docs/evidence/`](../evidence/README.md) (local only, never published)
+> **Code** [`src/`](../../src) · **Evidence** [`docs/evidence/`](../evidence/README.md) (tools and measurements; the Microsoft files are kept private)
 
 ## Sections
 

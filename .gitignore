@@ -25,3 +25,7 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Microsoft material and frames from other people's videos: a separate,
+# private repository (see docs/evidence/README.md)
+docs/evidence/private/

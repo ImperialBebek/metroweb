@@ -2,7 +2,7 @@
 
 > **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
 > **Code** [`src/start/StartScreen.tsx`](../../src/start/StartScreen.tsx), [`src/start/Tile.tsx`](../../src/start/Tile.tsx), [`src/start/apps.ts`](../../src/start/apps.ts), [`src/start/tileFlip.ts`](../../src/start/tileFlip.ts), [`src/start/icons.tsx`](../../src/start/icons.tsx)
-> **Sources** App manifests in `Windows\System32\Manifests` (tile templates); `ShellControls.dll` UIX markup (flip animations, decoded in [`anims_shell.txt`](../evidence/uix/anims_shell.txt)); 8.1 footage (feather timing)
+> **Sources** App manifests in `Windows\System32\Manifests` (tile templates); `ShellControls.dll` UIX markup (flip animations, decoded by [`anims.py`](../evidence/uix/tools/anims.py) into `anims_shell.txt`, kept private); 8.1 footage (feather timing)
 
 Start is the home screen: a scrolling grid of tiles in the accent colour, with the app list one swipe to the right. Tiles are live: they flip, cycle and update on their own.
 
