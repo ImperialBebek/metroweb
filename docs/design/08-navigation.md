@@ -1,7 +1,7 @@
 # 08 · Navigation model
 
 > **Status** Draft · **Baseline** 8.0 behaviour, 8.1 on-screen keys · **Last reviewed** 2026-10-19
-> **Code** [`src/App.tsx`](../../src/App.tsx) (launch, `back`, `start`, history guard, keys), [`src/navigation.tsx`](../../src/navigation.tsx) (`PageStack`, `useNavigation`), [`src/start/StartScreen.tsx`](../../src/start/StartScreen.tsx), [`src/apps/registry.ts`](../../src/apps/registry.ts)
+> **Code** [`apps/web/src/App.tsx`](../../apps/web/src/App.tsx) (launch, `back`, `start`, history guard, keys), [`packages/metroweb/src/navigation.tsx`](../../packages/metroweb/src/navigation.tsx) (`PageStack`, `useNavigation`), [`packages/metroweb/src/components/PhoneFrame.tsx`](../../packages/metroweb/src/components/PhoneFrame.tsx) (keys, for apps built on the package), [`apps/web/src/start/StartScreen.tsx`](../../apps/web/src/start/StartScreen.tsx), [`apps/web/src/apps/registry.ts`](../../apps/web/src/apps/registry.ts)
 > **Sources** Windows Phone 8 behaviour as seen in the emulator and footage
 
 The phone has one way in (Start) and one way back (the Back key). Every app is a stack of pages. There are no tabs, hamburger menus or close buttons.
@@ -55,7 +55,7 @@ Pages describe themselves to the shell with a few attributes and hooks. Follow t
 
 - Render pages from the app's `PageStack` `render(route)` function. Routes are plain strings the app parses itself (`'thread:3'`, `'album:camera-roll'`).
 - Move forward with `useNavigation().navigate(route)`; go back with `useNavigation().back()`.
-- A page with an [app bar](09-components.md#app-bar) is a `.app-page` (a flex column) with `<AppBar>` last.
+- A page with an [app bar](09-components.md#app-bar) is a `.app-page` (a flex column) with its content in a `.app-page-body` and `<AppBar>` last.
 - Choose `transition="feather"` (native apps, the default) or `"turnstile"` (whole-page turns, like Silverlight apps).
 
 ### Attributes

@@ -1,14 +1,14 @@
 # 06 · Iconography
 
 > **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
-> **Code** [`src/icons/`](../../src/icons) (`phosphor.ts`, `PhIcon.tsx`, `ph.tsx`), [`src/components/glyphs.tsx`](../../src/components/glyphs.tsx), [`src/start/icons.tsx`](../../src/start/icons.tsx), [`scripts/gen-phosphor-icons.mjs`](../../scripts/gen-phosphor-icons.mjs)
-> **Sources** Phosphor Icons (MIT, [`LICENSE-phosphor.txt`](../../src/icons/LICENSE-phosphor.txt)); sizes Estimated from emulator screenshots
+> **Code** [`packages/metroweb/src/icons/`](../../packages/metroweb/src/icons) (`phosphor.ts`, `PhIcon.tsx`, `ph.tsx`), [`packages/metroweb/src/components/glyphs.tsx`](../../packages/metroweb/src/components/glyphs.tsx), [`apps/web/src/start/icons.tsx`](../../apps/web/src/start/icons.tsx), [`packages/metroweb/scripts/gen-phosphor-icons.mjs`](../../packages/metroweb/scripts/gen-phosphor-icons.mjs)
+> **Sources** Phosphor Icons (MIT, [`LICENSE-phosphor.txt`](../../packages/metroweb/src/icons/LICENSE-phosphor.txt)); sizes Estimated from emulator screenshots
 
 Metro glyphs are flat, solid, single-colour shapes drawn on a square grid, with no outlines, gradients or perspective. The phone's own glyphs (Segoe WP symbols and the SDK's app bar icon set) can't ship, so the recreation uses **Phosphor** in its **fill** weight, which has the same solid, geometric character.
 
 ## Where icons come from
 
-- `scripts/gen-phosphor-icons.mjs` copies the path data of the icons named in its `NAMES` list from `@phosphor-icons/core` into `src/icons/phosphor.ts`. Every icon is on a 256-unit square.
+- `packages/metroweb/scripts/gen-phosphor-icons.mjs` copies the path data of the icons named in its `NAMES` list from `@phosphor-icons/core` into `packages/metroweb/src/icons/phosphor.ts`. Every icon is on a 256-unit square.
 - Icons use the fill weight. An entry can name another weight as `icon:weight`; only two do: `star:regular` (the outline "favorite" star, so it reads differently from the filled "unfavorite" one) and `check:bold`.
 - `phosphor.ts` is generated. Never edit it by hand.
 
@@ -20,7 +20,7 @@ Three ways to draw an icon:
 | `ph(name, size, cx, cy)` | A glyph inside another SVG (app bar rings, the Start arrow) | Returns a `<path>` centred on `cx, cy` |
 | `<Icon name size />` | Tile and app list glyphs | Maps app glyph names (`phone`, `people`, `music`) to Phosphor names |
 
-To add an icon: add its Phosphor name to `NAMES` in the generator, run `node scripts/gen-phosphor-icons.mjs`, then map it in `glyphs.tsx` (app bar) or `start/icons.tsx` (tiles). Check the licence still covers it (all Phosphor icons are MIT).
+To add an icon: add its Phosphor name to `NAMES` in the generator, run `npm run icons -w metroweb`, then map it in `glyphs.tsx` (app bar) or the phone's `start/icons.tsx` (tiles). Check the licence still covers it (all Phosphor icons are MIT).
 
 ## Sizes
 

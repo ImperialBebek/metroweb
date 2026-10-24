@@ -1,0 +1,10 @@
+/* Everything metroweb draws. Import it once, before your own styles:
+
+     import 'metroweb/styles.css'
+
+   The parts can be imported on their own, in this order: metroweb/fonts.css,
+   tokens.css, base.css (page-wide resets) and components.css. */
+@import './fonts.css';
+@import './tokens.css';
+@import './base.css';
+@import './components.css';

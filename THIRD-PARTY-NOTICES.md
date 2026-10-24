@@ -4,17 +4,17 @@ metroweb's own code and docs are under the [MIT License](LICENSE). The parts bel
 
 ## Selawik
 
-`public/fonts/selawik*.woff2`. Copyright 2015 Microsoft Corporation, with Reserved Font Name Selawik. Licensed under the SIL Open Font License 1.1; the full text is in [`public/fonts/SELAWIK-LICENSE.txt`](public/fonts/SELAWIK-LICENSE.txt).
+`packages/metroweb/fonts/metroweb-sans*.woff2`. Copyright 2015 Microsoft Corporation, with Reserved Font Name Selawik. Licensed under the SIL Open Font License 1.1; the full text is in [`packages/metroweb/fonts/SELAWIK-LICENSE.txt`](packages/metroweb/fonts/SELAWIK-LICENSE.txt).
 
-Modified for this project: the composite glyphs (accented letters, the ellipsis) are flattened to plain outlines with fontTools, because Chrome drew only the first component of each from the original WOFF2 files. The OFL doesn't let a Modified Version use a Reserved Font Name, so the modified fonts are renamed **Metroweb Sans** in their name tables. The files keep their `selawik-*` names, and the rename leaves the outlines and metrics as they were.
+Modified for this project: the composite glyphs (accented letters, the ellipsis) are flattened to plain outlines with fontTools, because Chrome drew only the first component of each from the original WOFF2 files. The OFL doesn't let a Modified Version use a Reserved Font Name, so the modified fonts are renamed **Metroweb Sans**, in their name tables and their file names. The rename leaves the outlines and metrics as they were.
 
 ## Phosphor Icons
 
-The path data in `src/icons/phosphor.ts` comes from [Phosphor Icons](https://phosphoricons.com) (`@phosphor-icons/core`). MIT License; the full text is in [`src/icons/LICENSE-phosphor.txt`](src/icons/LICENSE-phosphor.txt).
+The path data in `packages/metroweb/src/icons/phosphor.ts` comes from [Phosphor Icons](https://phosphoricons.com) (`@phosphor-icons/core`). MIT License; the full text is in [`packages/metroweb/src/icons/LICENSE-phosphor.txt`](packages/metroweb/src/icons/LICENSE-phosphor.txt).
 
 ## Windows Phone Toolkit
 
-`src/components/useTilt.ts` is a port of the Toolkit's `TiltEffect`. The values labelled **Toolkit** in the design docs come from the Toolkit's source: `TurnstileTransition`, `TurnstileFeatherEffect`, `SwivelTransition`, `ToggleSwitch`, `ListPicker`, `DatePicker`, `TimePicker` and `LoopingSelector`. The Toolkit is copyright Microsoft Corporation and licensed under the Microsoft Public License.
+`packages/metroweb/src/components/useTilt.ts` is a port of the Toolkit's `TiltEffect`. The values labelled **Toolkit** in the design docs come from the Toolkit's source: `TurnstileTransition`, `TurnstileFeatherEffect`, `SwivelTransition`, `ToggleSwitch`, `ListPicker`, `DatePicker`, `TimePicker` and `LoopingSelector`. The Toolkit is copyright Microsoft Corporation and licensed under the Microsoft Public License.
 
 ### Microsoft Public License (Ms-PL)
 
@@ -50,4 +50,4 @@ A "contributor" is any person that distributes its contribution under this licen
 
 ## Music
 
-The recordings in `public/music/` are in the public domain. Their sources, and those of the artist portraits and album covers, are in [`public/music/CREDITS.md`](public/music/CREDITS.md).
+The recordings in `apps/web/public/music/` are in the public domain. Their sources, and those of the artist portraits and album covers, are in [`apps/web/public/music/CREDITS.md`](apps/web/public/music/CREDITS.md).

@@ -1,7 +1,7 @@
 # 09 · Components
 
 > **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
-> **Code** [`src/components/`](../../src/components), [`src/index.css`](../../src/index.css), [`src/components/panorama.css`](../../src/components/panorama.css)
+> **Code** [`packages/metroweb/src/components/`](../../packages/metroweb/src/components), [`packages/metroweb/styles/components.css`](../../packages/metroweb/styles/components.css)
 > **Sources** UIXMobile controls as used by `SettingsUI.exe`; Windows Phone Toolkit controls; `ThemeResources.xaml`; emulator screenshots
 
 The shared building blocks. Each entry gives what it is, its metrics and states, how it behaves, and where it lives. Layout values not repeated here are in [Layout](03-layout.md); motion values are in [Motion](07-motion.md).
@@ -10,7 +10,7 @@ The shared building blocks. Each entry gives what it is, its metrics and states,
 |---|---|---|
 | [Pivot](#pivot) | `Pivot.tsx` | UIX `Pivot` |
 | [Single-page pivot](#single-page-pivot) | `controls.tsx` `SettingsPage` | UIX `SinglePivotPage` |
-| [Panorama](#panorama) | `Panorama.tsx`, `panorama.css` | UIX `Panorama` |
+| [Panorama](#panorama) | `Panorama.tsx` | UIX `Panorama` |
 | [List item](#list-item) | `controls.tsx` `ListItem` | UIX `DoubleLineListItem` / `SingleLineListItem` |
 | [Paragraph](#paragraph) | `controls.tsx` `Paragraph` | `PhoneTextNormalStyle` text block |
 | [Button](#button) | `controls.tsx` `Button` | `PhoneButtonBase` |

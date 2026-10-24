@@ -1,0 +1,34 @@
+/* Type and spacing tokens. The colour tokens (--wp-foreground, --wp-accent
+   and the rest) depend on the theme and accent, so themeVariables() in
+   theme.ts sets them on the element that holds the app. */
+
+:root {
+  --font-light: 'WP Light', 'Segoe UI Light', 'Segoe UI', system-ui, sans-serif;
+  --font-semilight: 'WP SemiLight', 'Segoe UI Semilight', 'Segoe UI', system-ui, sans-serif;
+  --font-normal: 'WP Normal', 'Segoe UI', system-ui, sans-serif;
+  --font-semibold: 'WP SemiBold', 'Segoe UI Semibold', 'Segoe UI', system-ui, sans-serif;
+
+  /* PhoneFontSize* resources */
+  --size-small: 18.667px;
+  --size-normal: 20px;
+  --size-medium: 22.667px;
+  --size-medium-large: 25.333px;
+  --size-large: 32px;
+  --size-extra-large: 42.667px;
+  --size-extra-extra-large: 72px;
+
+  /* Sizes off the ramp that shared components use (Estimated) */
+  --size-panorama-title: 133.333px;
+  --size-panorama-header: 53.333px;
+  --size-tile-count: 53.333px;
+  --size-tile-count-small: 26.667px;
+  --size-tile-initials: 26.667px;
+  --size-app-bar-label: 16px;
+  --size-picker-item: 54px;
+
+  /* Thickness resources from ThemeResources.xaml */
+  --wp-margin: 12px; /* PhoneMargin; each side of PhoneHorizontalMargin and PhoneVerticalMargin */
+  --wp-touch-target-overhang: 12px; /* PhoneTouchTargetOverhang */
+  --wp-border-thickness: 3px; /* PhoneBorderThickness */
+  --wp-stroke-thickness: 3px; /* PhoneStrokeThickness */
+}

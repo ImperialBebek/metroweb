@@ -1,0 +1,609 @@
+/* The phone around the apps: the desk and the screen's column, the system
+   tray, Start and the app list, the animation speed dial and the volume
+   band. The tokens and shared components come from metroweb/styles.css,
+   imported before this file. */
+
+/* ---------- shell ---------- */
+
+/* The UI is laid out at the phone's 480px logical width. Narrower viewports
+   scale the whole screen down to fit; wider ones show it as a centred column. */
+/* Pinned to the top; its height is set from the visible height (App.tsx). */
+.desk {
+  position: fixed;
+  inset: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  overflow: clip;
+  background: var(--wp-background);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.column {
+  position: relative;
+  flex: none;
+  height: 100%;
+}
+
+.safe-area {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: #000;
+}
+
+/* ---------- system tray ---------- */
+
+.system-tray {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 32px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--size-normal);
+  color: var(--wp-foreground);
+  z-index: 3;
+}
+
+.tray-left,
+.tray-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tray-time {
+  font-family: var(--font-normal);
+}
+
+/* ---------- about ---------- */
+
+.info-lines {
+  margin: 0 var(--wp-margin) 24px;
+}
+
+/* ---------- start screen ---------- */
+
+.start {
+  position: absolute;
+  inset: var(--tray-height) 0 var(--nav-height);
+  overflow: clip;
+}
+
+.start[data-hidden] {
+  visibility: hidden;
+}
+
+.start-panorama {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 960px;
+  display: flex;
+  touch-action: pan-y;
+}
+
+.start-pane {
+  position: relative;
+  width: 480px;
+  height: 100%;
+  flex: none;
+  overflow-x: clip;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 22px 24px 48px;
+}
+
+.start-pane::-webkit-scrollbar {
+  display: none;
+}
+
+/* Cells are small-tile sized: medium tiles span 2x2, wide tiles 4x2. */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 99px);
+  grid-auto-rows: 99px;
+  grid-auto-flow: row dense;
+  gap: 12px;
+}
+
+.tile {
+  position: relative;
+  display: block;
+  color: var(--wp-button-base-pressed-foreground);
+  transform-origin: 50% 50%;
+}
+
+.tile[data-size='small'] {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.tile[data-size='medium'] {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.tile[data-size='wide'] {
+  grid-column: span 4;
+  grid-row: span 2;
+}
+
+.tile-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--wp-accent);
+}
+
+.tile-face {
+  position: absolute;
+  inset: 0;
+  background: var(--wp-accent);
+}
+
+.tile-iconic {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.glyph {
+  display: block;
+  flex: none;
+}
+
+.tile-count {
+  font-family: var(--font-normal);
+  font-size: var(--size-tile-count);
+  line-height: 1;
+}
+
+.tile[data-size='small'] .tile-count {
+  font-size: var(--size-tile-count-small);
+}
+
+.tile[data-size='small'] .tile-iconic {
+  gap: 6px;
+}
+
+.tile-title {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 6px;
+  font-family: var(--font-normal);
+  font-size: var(--size-small);
+  line-height: 1.33;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tile-back-lines {
+  position: absolute;
+  inset: 8px 12px auto;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-normal);
+  font-size: var(--size-normal);
+  line-height: 1.3;
+}
+
+.tile-back-lines > span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calendar-lines > [data-first] {
+  font-family: var(--font-semibold);
+}
+
+.calendar-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.calendar-day {
+  font-size: var(--size-large);
+  line-height: 1;
+}
+
+.calendar-day-small {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-normal);
+  font-size: var(--size-extra-large);
+}
+
+.people-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-auto-rows: 1fr;
+}
+
+.people-cell {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-semilight);
+  font-size: var(--size-tile-initials);
+  background: color-mix(in srgb, var(--wp-accent) 70%, #000);
+}
+
+.people-cell[data-shade='1'] {
+  background: color-mix(in srgb, var(--wp-accent) 85%, #fff);
+}
+
+.people-cell[data-shade='2'] {
+  background: color-mix(in srgb, var(--wp-accent) 55%, #000);
+}
+
+.people-cell[data-shade='3'] {
+  background: var(--wp-accent);
+}
+
+.cycle-strip {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 200%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cycle-frame {
+  flex: 1;
+  background-size: 160% auto;
+  background-repeat: no-repeat;
+}
+
+.start-arrow {
+  display: block;
+  margin: 24px 0 0 auto;
+  width: 48px;
+  height: 48px;
+}
+
+.start-arrow svg,
+.applist-search svg {
+  display: block;
+  margin: auto;
+}
+
+/* ---------- app list ---------- */
+
+.applist-search {
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 18px;
+}
+
+.applist-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.applist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  transform-origin: 50% 50%;
+}
+
+.applist-icon {
+  flex: none;
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  background: var(--wp-accent);
+}
+
+.applist-icon {
+  color: var(--wp-button-base-pressed-foreground);
+}
+
+.applist-title {
+  font-family: var(--font-normal);
+  font-size: var(--size-medium-large);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Animation speed dial on the desk, beside the phone. */
+.speed-control {
+  position: fixed;
+  left: 32px;
+  bottom: 32px;
+  z-index: 10;
+  width: 256px;
+  color: var(--wp-foreground);
+  font-family: var(--font-normal);
+  font-size: 15px;
+}
+
+@media (max-width: 1099px) {
+  .speed-control {
+    display: none;
+  }
+}
+
+.speed-control-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.speed-control-title {
+  font-family: var(--font-semibold);
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.speed-control-value {
+  font-family: var(--font-light);
+  font-size: var(--size-extra-large);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.speed-control-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 32px;
+  margin: 4px 0 12px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.speed-control-slider:focus-visible {
+  outline: 2px solid var(--wp-accent);
+  outline-offset: 2px;
+}
+
+.speed-control-slider::-webkit-slider-runnable-track {
+  height: 12px;
+  background: linear-gradient(to right, var(--wp-accent) var(--fill), var(--wp-disabled) var(--fill));
+}
+
+.speed-control-slider::-moz-range-track {
+  height: 12px;
+  background: linear-gradient(to right, var(--wp-accent) var(--fill), var(--wp-disabled) var(--fill));
+}
+
+.speed-control-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 32px;
+  margin-top: -10px;
+  border: none;
+  border-radius: 0;
+  background: var(--wp-foreground);
+}
+
+.speed-control-slider::-moz-range-thumb {
+  width: 10px;
+  height: 32px;
+  border: none;
+  border-radius: 0;
+  background: var(--wp-foreground);
+}
+
+.speed-control-presets {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.speed-control-presets button {
+  display: grid;
+  place-items: center;
+  height: 36px;
+  padding: 0;
+  border: 2px solid var(--wp-foreground);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-family: var(--font-semibold);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.speed-control-presets button[aria-pressed='true'] {
+  border-color: var(--wp-accent);
+  background: var(--wp-accent);
+  color: #fff;
+}
+
+.speed-control-presets button:focus-visible {
+  outline: 2px solid var(--wp-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- volume band ---------- */
+
+.volume-band {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 6;
+  padding: 10px 24px 18px;
+  background: var(--wp-chrome);
+  color: var(--wp-foreground);
+}
+
+.volume-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+}
+
+.volume-label {
+  flex: 1;
+  font-size: var(--size-medium);
+}
+
+.volume-value {
+  font-family: var(--font-semilight);
+  font-size: var(--size-large);
+}
+
+.volume-slider {
+  position: relative;
+  height: 36px;
+  touch-action: none;
+}
+
+.volume-slider::before,
+.volume-slider-fill {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 13px;
+  height: 10px;
+}
+
+.volume-slider::before {
+  right: 0;
+  background: var(--wp-subtle);
+  opacity: 0.4;
+}
+
+.volume-slider-fill {
+  background: var(--wp-accent);
+}
+
+.volume-media {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.volume-media-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.volume-media-title,
+.volume-media-artist {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.volume-media-title {
+  font-size: var(--size-medium);
+}
+
+.volume-media-artist {
+  color: var(--wp-subtle);
+  font-size: var(--size-normal);
+}
+
+.volume-media-button {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--wp-foreground);
+  border-radius: 50%;
+}
+
+.volume-media-button svg {
+  width: 44px;
+  height: 44px;
+}
+
+.volume-media-button:active {
+  background: var(--wp-foreground);
+  color: var(--wp-chrome);
+}
+
+.volume-keys {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--wp-foreground);
+  font-family: var(--font-normal);
+  font-size: 15px;
+}
+
+@media (max-width: 1099px) {
+  .volume-keys {
+    display: none;
+  }
+}
+
+.volume-keys-title {
+  font-family: var(--font-semibold);
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.volume-keys-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.volume-keys-buttons button {
+  width: 56px;
+  height: 44px;
+  border: 2px solid var(--wp-foreground);
+  font-size: 24px;
+  text-align: center;
+}
+
+.volume-keys-buttons button:active {
+  background: var(--wp-foreground);
+  color: var(--wp-background);
+}
+
+.volume-keys-hint {
+  color: var(--wp-subtle);
+  font-size: 13px;
+}
+
+/* ---------- music live tile ---------- */
+
+.music-tile-art {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.tile[data-size='wide'] .music-tile-art {
+  background-position: 50% 25%;
+}
+
+.music-tile-art + .tile-title {
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+}

@@ -1,7 +1,7 @@
 # 04 · Typography
 
 > **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
-> **Code** [`src/index.css`](../../src/index.css) (`@font-face`, `--font-*`, `--size-*`), [`public/fonts/`](../../public/fonts)
+> **Code** [`packages/metroweb/styles/fonts.css`](../../packages/metroweb/styles/fonts.css) (`@font-face`), [`packages/metroweb/styles/tokens.css`](../../packages/metroweb/styles/tokens.css) (`--font-*`, `--size-*`), [`packages/metroweb/fonts/`](../../packages/metroweb/fonts)
 > **Sources** `ThemeResources.xaml` (copied to `docs/evidence/private/theme`, kept private); Selawik (SIL Open Font License)
 
 Windows Phone 8 sets everything in **Segoe WP**, in four weights, on a ramp of eight sizes. Hierarchy comes from size and weight, never from colour blocks or rules.
@@ -22,9 +22,9 @@ Each `WP *` family loads, in order:
 
 1. `Segoe WP *`, if the visitor has it installed.
 2. `Segoe UI *`, which Windows has.
-3. **Selawik**, served from `public/fonts/`. Selawik is Microsoft's open-source (OFL) font made to match Segoe UI's metrics, so line lengths and wrapping come out close even where the letterforms differ.
+3. **Selawik**, from `packages/metroweb/fonts/`. Selawik is Microsoft's open-source (OFL) font made to match Segoe UI's metrics, so line lengths and wrapping come out close even where the letterforms differ.
 
-Selawik's composite glyphs (accented letters, the ellipsis) were flattened to plain outlines with fontTools, because Chrome drew only the first component of each from the original woff2 files. Because of that change, the OFL doesn't let the files keep the name Selawik, so their name tables call them Metroweb Sans; the CSS families are unaffected. If you replace the font files, flatten and rename them again.
+Selawik's composite glyphs (accented letters, the ellipsis) were flattened to plain outlines with fontTools, because Chrome drew only the first component of each from the original woff2 files. Because of that change, the OFL doesn't let the files keep the name Selawik, so their file names and name tables call them Metroweb Sans; the CSS families are unaffected. If you replace the font files, flatten and rename them again.
 
 Segoe WP itself is never shipped. The screenshots in these docs were generated on macOS, so they show Selawik.
 
@@ -81,7 +81,7 @@ All style values are **Decoded**.
 
 ## Text in components
 
-Sizes used by shared components that are not one of the styles above. Values off the ramp have their own `--size-*` variables in `index.css`.
+Sizes used by shared components that are not one of the styles above. Values off the ramp have their own `--size-*` variables in `tokens.css`.
 
 | Where | Family | Size | CSS variable | Source |
 |---|---|---|---|---|
@@ -119,7 +119,7 @@ Sizes used by shared components that are not one of the styles above. Values off
 
 ## App-specific sizes
 
-Sizes that only one app uses stay in that app's stylesheet. All are **Estimated**. If a second component needs one, move it to a `--size-*` variable in `index.css`.
+Sizes that only one app uses stay in that app's stylesheet. All are **Estimated**. If a second component needs one, move it to a `--size-*` variable in `tokens.css`.
 
 | App | Where | Size |
 |---|---|---|

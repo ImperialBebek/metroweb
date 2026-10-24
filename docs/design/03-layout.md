@@ -1,7 +1,7 @@
 # 03 · Layout
 
 > **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
-> **Code** [`src/index.css`](../../src/index.css), [`src/components/panorama.css`](../../src/components/panorama.css), [`src/components/AppBar.tsx`](../../src/components/AppBar.tsx)
+> **Code** [`packages/metroweb/styles/tokens.css`](../../packages/metroweb/styles/tokens.css), [`packages/metroweb/styles/components.css`](../../packages/metroweb/styles/components.css), [`packages/metroweb/src/components/AppBar.tsx`](../../packages/metroweb/src/components/AppBar.tsx)
 > **Sources** `0100_ThemeResources.xaml` and `System.Windows.xaml` (copied to `docs/evidence/private/theme`, kept private); emulator screenshots
 
 ## The 12 px grid
@@ -20,7 +20,7 @@ Windows Phone spaces everything in multiples of 12 logical px. Text starts **24 
 | `PhoneStrokeThickness` | 3 | `--wp-stroke-thickness`: the ring on app bar buttons, the Start arrow, app list search and the Messaging contact button, and the Camera buttons and shutter | Decoded |
 | `PhoneTextBoxInnerMargin` | 1, 2 | Part of the `.textbox` padding, 4 px 3 px: the template's `Padding` 2 inside this margin | Decoded |
 
-The variables live in `:root` in `src/index.css`. Use one when a value means that resource. A 12 px that is its own measurement (the gap between tiles, the tile title inset) stays a literal.
+The variables live in `:root` in `packages/metroweb/styles/tokens.css`. Use one when a value means that resource. A 12 px that is its own measurement (the gap between tiles, the tile title inset) stays a literal.
 
 ## Pages
 

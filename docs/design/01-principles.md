@@ -1,7 +1,7 @@
 # 01 · Principles
 
 > **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
-> **Code** the whole of [`src/`](../../src) · **Sources** Microsoft's Metro design language as shipped on the phone
+> **Code** the whole of [`packages/metroweb/`](../../packages/metroweb) and [`apps/web/`](../../apps/web) · **Sources** Microsoft's Metro design language as shipped on the phone
 
 Metro is a small set of strong ideas. These are the ones the recreation depends on, each with what it means in this codebase.
 

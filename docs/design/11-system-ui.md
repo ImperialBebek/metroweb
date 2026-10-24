@@ -1,7 +1,7 @@
 # 11 · System UI
 
 > **Status** Draft · **Baseline** 8.0 tray and volume band, 8.1 navigation bar · **Last reviewed** 2026-10-19
-> **Code** [`src/App.tsx`](../../src/App.tsx) (`SystemTray`, `NavBar`, safe areas), [`src/VolumeBand.tsx`](../../src/VolumeBand.tsx), [`src/MotionSpeedControl.tsx`](../../src/MotionSpeedControl.tsx), [`src/apps/alarms/AlarmRinger.tsx`](../../src/apps/alarms/AlarmRinger.tsx), [`src/index.css`](../../src/index.css)
+> **Code** [`apps/web/src/App.tsx`](../../apps/web/src/App.tsx) (`SystemTray`, safe areas), [`packages/metroweb/src/components/NavigationBar.tsx`](../../packages/metroweb/src/components/NavigationBar.tsx), [`apps/web/src/VolumeBand.tsx`](../../apps/web/src/VolumeBand.tsx), [`apps/web/src/MotionSpeedControl.tsx`](../../apps/web/src/MotionSpeedControl.tsx), [`apps/web/src/apps/alarms/AlarmRinger.tsx`](../../apps/web/src/apps/alarms/AlarmRinger.tsx), [`apps/web/src/index.css`](../../apps/web/src/index.css), [`packages/metroweb/styles/components.css`](../../packages/metroweb/styles/components.css) (`.nav-bar`)
 > **Sources** Emulator screenshots; 8.1 footage (navigation bar)
 
 The parts of the screen the system owns. Apps never draw here.

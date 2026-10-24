@@ -1,29 +1,20 @@
 {
-  "name": "wp8",
+  "name": "metroweb-repo",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "templates/*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "npm run dev -w wp8",
+    "build": "npm run build -w metroweb && npm run build -w wp8 && npm run build -w metroweb-starter",
     "lint": "oxlint",
-    "preview": "vite preview",
-    "docs:assets": "node scripts/docs-assets.mjs"
-  },
-  "dependencies": {
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "preview": "npm run preview -w wp8",
+    "docs:assets": "npm run docs:assets -w wp8 --"
   },
   "devDependencies": {
-    "@phosphor-icons/core": "^2.1.1",
-    "@types/node": "^24.13.3",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
-    "@vitejs/plugin-react": "^6.1.1",
-    "marked": "^18.1.1",
-    "oxlint": "^1.81.0",
-    "playwright-core": "^1.58.2",
-    "typescript": "~6.0.2",
-    "vite": "^8.3.0"
+    "oxlint": "^1.81.0"
   }
 }

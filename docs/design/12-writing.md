@@ -1,7 +1,7 @@
 # 12 · Writing
 
 > **Status** Draft · **Baseline** Windows Phone 8.0, US English · **Last reviewed** 2026-10-19
-> **Code** [`src/pages/items.ts`](../../src/pages/items.ts) (Settings titles), [`src/format.ts`](../../src/format.ts) and each app's `format.ts` or `dates.ts`, app bar and message box labels in each app (message boxes render through [`src/components/MessageBox.tsx`](../../src/components/MessageBox.tsx))
+> **Code** [`apps/web/src/pages/items.ts`](../../apps/web/src/pages/items.ts) (Settings titles), [`packages/metroweb/src/format.ts`](../../packages/metroweb/src/format.ts) and each app's `format.ts` or `dates.ts`, app bar and message box labels in each app (message boxes render through [`packages/metroweb/src/components/MessageBox.tsx`](../../packages/metroweb/src/components/MessageBox.tsx))
 > **Sources** en-US string tables (`*.mui`) from the emulator image, summarised by [`casing.py`](../evidence/strings/casing.py) in `casing.txt` (kept private); emulator screenshots
 
 Metro text is short, plain and mostly lower case. The phone's words are part of its look, so the recreation copies them where it can and follows their pattern where it can't.
@@ -18,7 +18,7 @@ Case depends on where the text sits, not on the word. The phone's own string tab
 | Pivot headers, page headers, panorama titles and section headers | Lower case | theme, airplane mode, music+videos, history | Written lower case | Decoded (Settings titles; `PhoneRes` history) |
 | Settings list items | Lower case, except names | lock screen, tap+send, Wi-Fi, Bluetooth, Internet Explorer | Written as shown | Decoded |
 | Settings subtitles | Lower case, except names | turned on, set up email, contacts, and others | Written as shown | Decoded |
-| App names on tiles and in the app list | Built-in features lower case; products keep their capitals | alarms, messaging, people; Data Sense, Games, Music+Videos, Office, OneNote, Store | Written as shown in [`src/start/apps.ts`](../../src/start/apps.ts) | Decoded for Music+Videos and Data Sense; the rest Estimated |
+| App names on tiles and in the app list | Built-in features lower case; products keep their capitals | alarms, messaging, people; Data Sense, Games, Music+Videos, Office, OneNote, Store | Written as shown in the phone's [`start/apps.ts`](../../apps/web/src/start/apps.ts) | Decoded for Music+Videos and Data Sense; the rest Estimated |
 | App bar labels and menu items | Lower case | new, search, delete thread, delete all | CSS (`text-transform: lowercase`); write them lower case anyway | Decoded for Phone's delete all (`PhoneRes`); the rest Estimated, from screenshots |
 | Buttons, picker options | Lower case | ok, cancel, delete, done, my contacts | Written lower case | Decoded for delete and cancel (`PhoneRes`, `OnmUiRes`); the rest Estimated |
 | Toggle switch state | Capitalised | On, Off | `ToggleSwitch` defaults | Toolkit |
@@ -50,9 +50,9 @@ All en-US, as the emulator's region is. All **Estimated** unless marked.
 
 | What | Format | Example | Helper |
 |---|---|---|---|
-| Time of day | 12-hour, no leading zero, AM/PM | 3:04 PM | `formatTimeOfDay` in [`src/format.ts`](../../src/format.ts) |
+| Time of day | 12-hour, no leading zero, AM/PM | 3:04 PM | `formatTimeOfDay` in metroweb's [`format.ts`](../../packages/metroweb/src/format.ts) |
 | System tray clock | 12-hour, no AM/PM | 3:04 | `useClock` in `App.tsx` |
-| Short date | M/D/YYYY | 10/19/2026 | `formatShortDate` in `src/format.ts` |
+| Short date | M/D/YYYY | 10/19/2026 | `formatShortDate` in metroweb's `format.ts` |
 | Long date | Weekday, month and day; add the year where the item could be old | Monday, October 19; Monday, October 19, 2026 | `longDate` (Calendar), `formatTakenDate` (Photos), `longDate` (OneNote, with the time after two spaces) |
 | When something happened, in lists | The time today, "yesterday", the weekday within a week, then the short date | 3:04 PM, yesterday, monday, 10/12/2026 | `whenLabel` (People), `listDate` (OneNote) |
 | Messaging thread list | As above, but a three-letter weekday and no "yesterday" | 3:04 PM, Mon, 10/12/2026 | `listTime` |
@@ -62,7 +62,7 @@ All en-US, as the emulator's region is. All **Estimated** unless marked.
 | Call and track lengths | Clock style | 05:42, 1:05:42 (calls); 3:42 (tracks) | `formatDuration` in `data/calls.ts` and `data/music.ts` |
 | Photo months | Lower-case month and year | october 2026 | `monthLabel` |
 
-Use the helpers in `src/format.ts` for times and short dates. `toLocaleTimeString` depends on the browser's locale data: some versions (Chrome 110, Node 20) put a narrow no-break space (U+202F) before AM/PM, so it isn't guaranteed to match `formatTimeOfDay`.
+Use `formatTimeOfDay` and `formatShortDate` from `metroweb` for times and short dates. `toLocaleTimeString` depends on the browser's locale data: some versions (Chrome 110, Node 20) put a narrow no-break space (U+202F) before AM/PM, so it isn't guaranteed to match `formatTimeOfDay`.
 
 As whole strings, the phone's tables have "yesterday" only in lower case (`ContactsRes`, `SPWUiRes`). "Today" and "Tomorrow" come in both cases in `CalendarRes` and capitalised in `OnmUiRes`; which one each screen shows isn't known. **Decoded.**
 

@@ -1,7 +1,7 @@
 # 02 · Canvas
 
 > **Status** Draft · **Baseline** 8.0 screen, 8.1 navigation bar · **Last reviewed** 2026-10-19
-> **Code** [`src/App.tsx`](../../src/App.tsx) (`useViewport`, `safeInsets`), [`src/index.css`](../../src/index.css) (`.desk`, `.screen`, `.page-stack`, `.popup-layer`)
+> **Code** [`apps/web/src/App.tsx`](../../apps/web/src/App.tsx) (`useViewport`, `safeInsets`), [`apps/web/src/index.css`](../../apps/web/src/index.css) (`.desk`), [`packages/metroweb/styles/components.css`](../../packages/metroweb/styles/components.css) (`.screen`, `.page-stack`, `.popup-layer`), [`packages/metroweb/src/components/PhoneFrame.tsx`](../../packages/metroweb/src/components/PhoneFrame.tsx)
 > **Sources** Windows Phone 8 logical resolution; emulator screenshots
 
 ## The logical screen
@@ -11,6 +11,8 @@ Windows Phone 8 lays every app out at a logical width of **480 px** and scales i
 - **Width** is always 480 logical px.
 - **Height** follows the viewport: the visible height, less any safe-area insets, divided by the scale.
 - On wider viewports the screen sits in a centred column on the "desk", which is painted in the theme background.
+
+An app built on the package gets the same screen from `PhoneFrame`, scaled to fit its container instead of the viewport. It has no system tray and leaves safe areas to the page around it.
 
 ![The screen's regions: system tray, page area and navigation bar](assets/diagrams/canvas.png)
 

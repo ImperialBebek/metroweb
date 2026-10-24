@@ -1,0 +1,65 @@
+{
+  "name": "metroweb",
+  "version": "0.1.0",
+  "description": "Windows Phone 8's Metro design for React: components, tokens and motion taken from the phone itself.",
+  "keywords": [
+    "windows-phone",
+    "metro",
+    "react",
+    "design-system",
+    "components",
+    "ui"
+  ],
+  "homepage": "https://wp8.vercel.app/design",
+  "bugs": "https://github.com/ImperialBebek/metroweb/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImperialBebek/metroweb.git",
+    "directory": "packages/metroweb"
+  },
+  "license": "MIT",
+  "author": "Rafly Nurfallah",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "@metroweb/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./styles/index.css",
+    "./fonts.css": "./styles/fonts.css",
+    "./tokens.css": "./styles/tokens.css",
+    "./base.css": "./styles/base.css",
+    "./components.css": "./styles/components.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "styles",
+    "fonts",
+    "README.md",
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "icons": "node scripts/gen-phosphor-icons.mjs",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@phosphor-icons/core": "^2.1.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "~6.0.2"
+  }
+}

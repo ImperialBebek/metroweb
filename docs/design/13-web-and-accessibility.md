@@ -1,7 +1,7 @@
 # 13 · Web and accessibility deviations
 
 > **Status** Draft · **Baseline** Windows Phone 8.0 · **Last reviewed** 2026-10-19
-> **Code** [`src/App.tsx`](../../src/App.tsx) (history, keys, viewport), [`src/navigation.tsx`](../../src/navigation.tsx) (`inert` pages), [`src/components/modal.ts`](../../src/components/modal.ts) (popups), [`src/motion.ts`](../../src/motion.ts) (`prefersReducedMotion`), [`src/index.css`](../../src/index.css) (focus style), [`src/theme.ts`](../../src/theme.ts)
+> **Code** [`apps/web/src/App.tsx`](../../apps/web/src/App.tsx) (history, keys, viewport), [`packages/metroweb/src/navigation.tsx`](../../packages/metroweb/src/navigation.tsx) (`inert` pages), [`packages/metroweb/src/components/modal.ts`](../../packages/metroweb/src/components/modal.ts) (popups), [`packages/metroweb/src/motion.ts`](../../packages/metroweb/src/motion.ts) (`prefersReducedMotion`), [`packages/metroweb/styles/base.css`](../../packages/metroweb/styles/base.css) (focus style), [`packages/metroweb/src/theme.ts`](../../packages/metroweb/src/theme.ts)
 > **Sources** Source review; contrast computed with the WCAG 2 formula from the palette in `theme.ts`
 
 [The phone wins](01-principles.md#rules-this-project-adds), except where a browser can't do what the phone does or where copying the phone would shut people out. This page lists both kinds of exception:
@@ -32,7 +32,7 @@
 | Segoe WP | Segoe WP or Segoe UI if installed, otherwise Selawik. See [Typography](04-typography.md#families) | Segoe WP can't ship |
 | Segoe WP symbols and the SDK app bar icons | Phosphor icons. See [Iconography](06-iconography.md) | Microsoft's icons can't ship |
 | Contact photos | Initials on a shaded accent square, in contact pictures and on the People tile | The sample contacts have no photos |
-| Alarm tones from the phone | Tones synthesised with Web Audio ([`sounds.ts`](../../src/apps/alarms/sounds.ts)) | The phone's sounds can't ship |
+| Alarm tones from the phone | Tones synthesised with Web Audio ([`sounds.ts`](../../apps/web/src/apps/alarms/sounds.ts)) | The phone's sounds can't ship |
 | UIX animation engine | Web Animations and CSS transitions; easing curves are fits or estimates. See [Motion](07-motion.md) | The browser's animation engines |
 | Text can't be selected outside text boxes | The same: `user-select: none` on the whole desk | Follows the phone, against web convention |
 | App and page titles are stored in capitals (`CalendarRes` NEW TO-DO, `PhoneRes` PHONE) | The same on screen, but written lower case in source and upper-cased with CSS. See [Writing](12-writing.md#casing) | Screen readers read the source text, and some spell out words in capitals |
@@ -95,7 +95,7 @@ The phone's own answer was its ease of access settings (high contrast and text s
 ## What the recreation already does
 
 - Pages under the top one, unselected pivot items, panorama sections other than the current one, and the hidden Start pane are `inert` and `aria-hidden`.
-- Popups (message boxes, full-screen popups, the accent picker, the alarm ringer) go through `useModal` in [`src/components/modal.ts`](../../src/components/modal.ts). While one is open, the running app, Start and any older popup are `inert`. Focus moves into the popup on open (a message box's first button, the current accent swatch, the ringer's dismiss, or a full-screen popup itself) and goes back on close to whatever had it. The navigation bar stays live, because Back has to work.
+- Popups (message boxes, full-screen popups, the accent picker, the alarm ringer) go through `useModal` in [`packages/metroweb/src/components/modal.ts`](../../packages/metroweb/src/components/modal.ts). While one is open, the running app, Start and any older popup are `inert`. Focus moves into the popup on open (a message box's first button, the current accent swatch, the ringer's dismiss, or a full-screen popup itself) and goes back on close to whatever had it. The navigation bar stays live, because Back has to work.
 - Every popup is a `dialog` or `alertdialog` with a label and `aria-modal`.
 - Pivot headers are a `tablist` of `tab`s, each controlling its `tabpanel`. Only the selected tab is in the tab order.
 - Buttons, links and anything with a `tabindex` get a 2 px dashed accent outline on keyboard focus (`:focus-visible`). The looping selector, the speed dial and the alarm ringer's buttons have their own.

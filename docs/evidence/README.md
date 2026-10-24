@@ -2,7 +2,7 @@
 
 The raw material behind the [design docs](../design/README.md): files decoded from the Windows Phone 8 emulator image, the tools that decoded them, measurements of footage of real phones, and the scripts that fitted curves to those measurements.
 
-> **Two parts.** The tools, measurements and fits in this folder are public. The files copied or dumped from the emulator image, and the frames from other people's videos, are Microsoft material or someone else's work, so they live in [`private/`](#private-files): a separate private repository that this one ignores. A clone of this repository doesn't have them. Neither part is deployed: Vite only bundles `src/` and `public/`, and `docs/evidence` is in `.vercelignore`.
+> **Two parts.** The tools, measurements and fits in this folder are public. The files copied or dumped from the emulator image, and the frames from other people's videos, are Microsoft material or someone else's work, so they live in [`private/`](#private-files): a separate private repository that this one ignores. A clone of this repository doesn't have them. Neither part is deployed: the site's build bundles only `apps/web`, `packages/metroweb` and the pages in `docs/design`, and `docs/evidence` is in `.vercelignore`.
 
 ## Public files
 

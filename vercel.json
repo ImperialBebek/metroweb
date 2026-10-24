@@ -1,4 +1,7 @@
 {
+  "framework": "vite",
+  "buildCommand": "npm run build -w wp8",
+  "outputDirectory": "apps/web/dist",
   "rewrites": [
     { "source": "/design", "destination": "/design/index.html" },
     { "source": "/design/:page", "destination": "/design/index.html" }

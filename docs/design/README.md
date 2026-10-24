@@ -1,9 +1,9 @@
 # Metro design system
 
-How this recreation of Windows Phone 8 looks, moves and behaves, and where each rule lives in the code. It is written for people building on the recreation first, but every page should read fine without the code open.
+How this recreation of Windows Phone 8 looks, moves and behaves, and where each rule lives in the code. It is written first for people building on the recreation or with the `metroweb` package, but every page should read fine without the code open.
 
 > **Status** Draft · **Baseline** Windows Phone 8.0, with 8.1 where noted · **Last reviewed** 2026-10-19
-> **Code** [`src/`](../../src) · **Evidence** [`docs/evidence/`](../evidence/README.md) (tools and measurements; the Microsoft files are kept private)
+> **Code** [`packages/metroweb/`](../../packages/metroweb) (the package) and [`apps/web/`](../../apps/web) (the phone and this site) · **Evidence** [`docs/evidence/`](../evidence/README.md) (tools and measurements; the Microsoft files are kept private)
 
 ## Sections
 
@@ -44,6 +44,14 @@ Every value carries one of five labels, so you can tell how much to trust it.
 
 Where Windows Phone 8.0 and 8.1 differ, or where only 8.1 footage was available, the [version baseline](#version-baseline) below marks each choice **Settled** (we know what the phone does and chose deliberately) or **Provisional** (the best we can do without a device).
 
+## Where the code lives
+
+Pages name files by their path from the root of the repository.
+
+- [`packages/metroweb/`](../../packages/metroweb) is the `metroweb` package, which any app can use: the tokens and styles (`styles/`), the theme, motion and page stack (`src/`), the shared components (`src/components/`), the icons (`src/icons/`) and the fonts.
+- [`apps/web/`](../../apps/web) is the phone built on it: Start, the system tray and volume band, Settings and the other apps, and this site (`src/design/`).
+- [`templates/starter/`](../../templates/starter) is a small app on the package, to copy when you start your own.
+
 ## Ground rules
 
 - **The phone wins.** When the phone's behaviour and a web convention disagree, the recreation follows the phone. Every exception is listed in [Web and accessibility deviations](13-web-and-accessibility.md).
@@ -71,6 +79,6 @@ Where Windows Phone 8.0 and 8.1 differ, or where only 8.1 footage was available,
 ## Keeping these pages current
 
 - When you change a documented value, update its row here in the same change, including the source label.
-- Screenshots, measurement diagrams and motion strips are generated. Run `npm run docs:assets` (or one group: `npm run docs:assets -- strips`) after a visual change. See [`scripts/docs-assets.mjs`](../../scripts/docs-assets.mjs).
-- These pages are also published as a site at [`/design`](https://wp8.vercel.app/design), built from this folder by [`scripts/design-docs.ts`](../../scripts/design-docs.ts) during `npm run dev` and `npm run build`. Links between pages and to their headings become site links, and the build warns about any that don't resolve. Links outside `docs/design` (to `src/`, `scripts/` or the evidence) are published as plain text, and only images in `assets/` are published.
-- A `<!-- demo: name -->` comment on its own line puts a live component at that spot on the site, in a phone frame that follows the site's theme and accent switches. The demos are in [`src/design/demos.tsx`](../../src/design/demos.tsx); a name with no demo renders nothing and logs a warning in the dev server.
+- Screenshots, measurement diagrams and motion strips are generated. Run `npm run docs:assets` (or one group: `npm run docs:assets -- strips`) after a visual change. See [`apps/web/scripts/docs-assets.mjs`](../../apps/web/scripts/docs-assets.mjs).
+- These pages are also published as a site at [`/design`](https://wp8.vercel.app/design), built from this folder by [`apps/web/scripts/design-docs.ts`](../../apps/web/scripts/design-docs.ts) during `npm run dev` and `npm run build`. Links between pages and to their headings become site links, and the build warns about any that don't resolve. Links outside `docs/design` (to the code or the evidence) are published as plain text, and only images in `assets/` are published.
+- A `<!-- demo: name -->` comment on its own line puts a live component at that spot on the site, in a phone frame that follows the site's theme and accent switches. The demos are in [`apps/web/src/design/demos.tsx`](../../apps/web/src/design/demos.tsx); a name with no demo renders nothing and logs a warning in the dev server.

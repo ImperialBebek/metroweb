@@ -1,7 +1,7 @@
 # 07 · Motion
 
 > **Status** Draft · **Baseline** 8.0, with 8.1 footage where noted · **Last reviewed** 2026-10-19
-> **Code** [`src/motion.ts`](../../src/motion.ts), [`src/pageMotion.ts`](../../src/pageMotion.ts), [`src/navigation.tsx`](../../src/navigation.tsx), [`src/start/StartScreen.tsx`](../../src/start/StartScreen.tsx), [`src/start/tileFlip.ts`](../../src/start/tileFlip.ts), [`src/components/useTilt.ts`](../../src/components/useTilt.ts), [`src/motionSpeed.ts`](../../src/motionSpeed.ts)
+> **Code** [`packages/metroweb/src/motion.ts`](../../packages/metroweb/src/motion.ts), [`packages/metroweb/src/pageMotion.ts`](../../packages/metroweb/src/pageMotion.ts), [`packages/metroweb/src/navigation.tsx`](../../packages/metroweb/src/navigation.tsx), [`apps/web/src/start/StartScreen.tsx`](../../apps/web/src/start/StartScreen.tsx), [`apps/web/src/start/tileFlip.ts`](../../apps/web/src/start/tileFlip.ts), [`packages/metroweb/src/components/useTilt.ts`](../../packages/metroweb/src/components/useTilt.ts), [`packages/metroweb/src/motionSpeed.ts`](../../packages/metroweb/src/motionSpeed.ts)
 > **Sources** Windows Phone Toolkit (`TurnstileTransition`, `SwivelTransition`, `TiltEffect`); UIX markup in `ShellControls.dll` and `UIXMobileAssets480x800.dll`; footage (see [evidence](../evidence/footage/README.md))
 
 Motion in Metro is how you know where you are. Pages swing on a hinge at the left edge of the screen; content leaves in reading order; the thing you tapped leaves last and lands in the next page's title. Nothing bounces, and nothing fades without also moving.
@@ -162,7 +162,7 @@ On wide screens a dial beside the phone slows every animation down (0.05× to 2�
 
 - `motionSpeed.ts` wraps `Element.prototype.animate` so each new Web Animation starts at the chosen `playbackRate`, and while slowed it retimes CSS animations and transitions every frame.
 - Timers and frame loops paced against an animation must scale with `motionMs(ms)`. Pivot, Panorama and LoopingSelector do; if you add a `setTimeout` that waits for an animation, use it too.
-- The speed is kept in `sessionStorage` (`wp8.motionSpeed`).
+- `setMotionSpeed` doesn't store the speed. The phone keeps it for the tab's session in `sessionStorage` (`wp8.motionSpeed`, in `apps/web/src/motionSpeedSession.ts`).
 
 ## Rules
 

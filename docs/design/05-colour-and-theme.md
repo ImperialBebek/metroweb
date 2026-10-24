@@ -1,7 +1,7 @@
 # 05 · Colour and theme
 
 > **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
-> **Code** [`src/theme.ts`](../../src/theme.ts) (`ACCENTS`, `PALETTES`, `themeVariables`), [`src/store.tsx`](../../src/store.tsx), [`src/App.tsx`](../../src/App.tsx)
+> **Code** [`packages/metroweb/src/theme.ts`](../../packages/metroweb/src/theme.ts) (`ACCENTS`, `PALETTES`, `themeVariables`), [`apps/web/src/store.tsx`](../../apps/web/src/store.tsx), [`apps/web/src/App.tsx`](../../apps/web/src/App.tsx)
 > **Sources** `0000_ThemeResources.xaml` (light) and `0100_ThemeResources.xaml` (dark); the image's registry (accents, defaults); `uixmobileres.dll.mui` (accent names)
 
 The user picks two things: a **background** (dark or light) and an **accent** (one of 20 colours). Everything else follows from those.

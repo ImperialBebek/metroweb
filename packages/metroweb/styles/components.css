@@ -1,0 +1,838 @@
+/* The shared components, in the order of the design docs' component pages.
+   Values and their sources are in docs/design. */
+
+/* ---------- screen ---------- */
+
+/* The phone's screen at its 480px logical width. PhoneFrame, or an app's own
+   shell, sizes and scales it. The pages sit between the system tray and the
+   navigation bar: --tray-height and --nav-height. */
+.screen {
+  --nav-height: 64px;
+  --tray-height: 32px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  /* clip, not hidden: focus or scrollIntoView must not scroll the whole screen */
+  overflow: clip;
+  background: var(--wp-background);
+  color: var(--wp-foreground);
+  font-family: var(--font-normal);
+  font-size: var(--size-normal);
+  line-height: 1.33;
+}
+
+/* PhoneFrame: fills its container and centres the screen's column in it,
+   on the theme's background, as the phone shell's desk does. */
+.phone-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: clip;
+  background: var(--wp-background);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.phone-frame-column {
+  position: relative;
+  flex: none;
+  height: 100%;
+}
+
+/* WP8.1-style software navigation bar. */
+.nav-bar {
+  position: absolute;
+  inset: auto 0 0;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #000;
+  color: #fff;
+  z-index: 4;
+}
+
+.nav-button {
+  width: 120px;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.nav-button:active {
+  opacity: 0.5;
+}
+
+/* ---------- pages ---------- */
+
+.page-stack {
+  position: absolute;
+  inset: var(--tray-height, 0px) 0 var(--nav-height, 0px);
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+
+.page-host {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 50%;
+  visibility: hidden;
+}
+
+.page-host[data-active='true'] {
+  visibility: visible;
+}
+
+.popup-layer {
+  position: absolute;
+  inset: var(--tray-height, 0px) 0 var(--nav-height, 0px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.popup-layer > * {
+  pointer-events: auto;
+}
+
+/* ---------- running app ---------- */
+
+.app-host {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- pivot (UIXMobile Pivot.uix) ---------- */
+
+.pivot {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  touch-action: pan-y;
+}
+
+.pivot-title {
+  margin: 17px 0 -7px 24px;
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-transform: uppercase;
+}
+
+.pivot-headers {
+  overflow: clip;
+  flex: none;
+  white-space: nowrap;
+}
+
+.pivot-header-strip {
+  display: inline-flex;
+}
+
+.pivot-header {
+  margin: 0;
+  padding: 0 1px 0 21px;
+  font-family: var(--font-semilight);
+  font-size: var(--size-extra-extra-large);
+  font-weight: normal;
+  line-height: 1.2;
+  opacity: var(--wp-pivot-unselected-opacity);
+  transition: opacity 200ms linear;
+}
+
+.pivot-header[data-selected='true'],
+.pivot-header[data-selected=''] {
+  opacity: 1;
+}
+
+.pivot-viewport {
+  position: relative;
+  flex: 1;
+  overflow: clip;
+}
+
+.pivot-item {
+  position: absolute;
+  inset: 28px 12px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  visibility: hidden;
+}
+
+.pivot-item::-webkit-scrollbar {
+  display: none;
+}
+
+/* inherit, not visible: a page further down the stack is hidden, and so are its items. */
+.pivot-item[data-visible='true'],
+.pivot-item[data-visible=''] {
+  visibility: inherit;
+}
+
+.page-content {
+  padding-bottom: 36px;
+}
+
+/* ---------- list items ---------- */
+
+.list {
+  padding-bottom: 36px;
+}
+
+.list-item {
+  display: block;
+  width: 100%;
+  padding: 0 var(--wp-touch-target-overhang);
+  margin-bottom: var(--wp-touch-target-overhang);
+}
+
+.list-item-title {
+  display: block;
+  font-family: var(--font-semilight);
+  font-size: var(--size-extra-large);
+  line-height: 1.2;
+}
+
+.list-item-subtitle {
+  display: block;
+  margin-top: -3px;
+  color: var(--wp-subtle);
+  font-size: var(--size-normal);
+}
+
+/* ---------- text ---------- */
+
+.paragraph {
+  margin: 0 var(--wp-margin) 24px;
+  font-size: var(--size-normal);
+}
+
+.paragraph-subtle {
+  color: var(--wp-subtle);
+}
+
+.accent-text {
+  color: var(--wp-accent);
+}
+
+/* ---------- toggle switch ---------- */
+
+.toggle {
+  margin-bottom: 12px;
+}
+
+.toggle-header {
+  margin: 0 var(--wp-margin);
+  color: var(--wp-subtle);
+}
+
+.toggle-row {
+  width: 100%;
+  height: 72px;
+  padding: 0 var(--wp-margin);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle-state {
+  font-family: var(--font-light);
+  font-size: var(--size-large);
+}
+
+.toggle-track {
+  position: relative;
+  width: 88px;
+  height: 32px;
+  border: 2px solid var(--wp-foreground);
+}
+
+.toggle-fill {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  height: 20px;
+  background: var(--wp-accent);
+}
+
+.toggle-thumb {
+  position: absolute;
+  left: -2px;
+  top: -4px;
+  width: 20px;
+  height: 36px;
+  background: var(--wp-foreground);
+  box-shadow:
+    -4px 0 0 var(--wp-background),
+    4px 0 0 var(--wp-background);
+}
+
+.toggle[data-disabled='true'] {
+  color: var(--wp-disabled);
+}
+
+.toggle[data-disabled='true'] .toggle-track {
+  border-color: var(--wp-disabled);
+}
+
+.toggle[data-disabled='true'] .toggle-thumb {
+  background: var(--wp-disabled);
+}
+
+.toggle[data-disabled='true'] .toggle-fill {
+  background: var(--wp-disabled);
+}
+
+/* ---------- list picker ---------- */
+
+.picker {
+  margin-bottom: 24px;
+}
+
+.picker-header {
+  margin: 0 var(--wp-margin) 2px;
+  color: var(--wp-subtle);
+}
+
+.picker-box {
+  display: block;
+  width: calc(100% - 28px);
+  margin: 0 var(--wp-touch-target-overhang);
+  overflow: hidden;
+  border: 2px solid var(--wp-text-box);
+  box-sizing: content-box;
+}
+
+.picker-box[data-expanded] {
+  background: var(--wp-text-box-edit-background);
+  border-color: var(--wp-accent);
+  color: var(--wp-text-box-foreground);
+}
+
+.picker-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  padding: 0 10px;
+  font-size: var(--size-medium-large);
+}
+
+.picker-row[data-selected='true'] {
+  color: var(--wp-accent);
+}
+
+.picker-swatch {
+  width: 26px;
+  height: 26px;
+  margin-right: 12px;
+  flex: none;
+}
+
+.picker[data-disabled='true'] {
+  color: var(--wp-disabled);
+}
+
+.picker[data-disabled='true'] .picker-header {
+  color: var(--wp-disabled);
+}
+
+.picker[data-disabled='true'] .picker-box {
+  border-color: var(--wp-disabled);
+}
+
+/* ---------- full-mode accent picker ---------- */
+
+.full-picker {
+  position: absolute;
+  inset: 0;
+  background: var(--wp-background);
+  padding: 20px 24px 0;
+  transform-origin: 50% 50%;
+  overflow-y: auto;
+}
+
+.full-picker-header {
+  font-family: var(--font-semibold);
+  font-size: var(--size-normal);
+  margin-bottom: 36px;
+  text-transform: uppercase;
+}
+
+.accent-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding-bottom: 24px;
+}
+
+.accent-swatch {
+  aspect-ratio: 1;
+}
+
+/* ---------- button (PhoneButtonBase) ---------- */
+
+.wp-button {
+  display: block;
+  padding: 0;
+  margin: 0 0 12px;
+}
+
+.wp-button-face {
+  display: inline-block;
+  margin: var(--wp-touch-target-overhang);
+  padding: 5px 10px 6px;
+  border: var(--wp-border-thickness) solid var(--wp-foreground);
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+}
+
+.wp-button:active .wp-button-face {
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+  color: var(--wp-button-base-pressed-foreground);
+}
+
+/* ---------- text box (PhoneTextBox) ---------- */
+
+.textbox-field {
+  margin-bottom: 24px;
+}
+
+.textbox-header {
+  display: block;
+  margin: 0 var(--wp-margin) 2px;
+  color: var(--wp-subtle);
+}
+
+/* The border is drawn in the fill colour, as the template does, so the fill
+   stops at the padding box: semi-transparent fills would double under it. */
+.textbox {
+  display: block;
+  width: calc(100% - 2 * var(--wp-touch-target-overhang));
+  height: 48px;
+  margin: 0 var(--wp-touch-target-overhang);
+  padding: 4px 3px; /* Padding 2 inside PhoneTextBoxInnerMargin (1,2) */
+  border: var(--wp-border-thickness) solid var(--wp-text-box);
+  border-radius: 0;
+  outline: none;
+  background: var(--wp-text-box);
+  background-clip: padding-box;
+  color: var(--wp-text-box-foreground);
+  caret-color: var(--wp-text-caret);
+  font-family: var(--font-normal);
+  font-size: var(--size-medium-large);
+  user-select: text;
+  -webkit-user-select: text;
+  appearance: none;
+}
+
+.textbox[data-multiline] {
+  height: auto;
+  line-height: 1.3;
+  resize: none;
+}
+
+.textbox::selection {
+  background: var(--wp-accent);
+  color: var(--wp-text-box-selection-foreground);
+}
+
+.textbox::placeholder {
+  color: color-mix(in srgb, var(--wp-text-box-foreground) 55%, transparent);
+  opacity: 1;
+}
+
+.textbox::-webkit-search-decoration,
+.textbox::-webkit-search-cancel-button {
+  display: none;
+}
+
+.textbox:focus {
+  background-color: var(--wp-text-box-edit-background);
+  border-color: var(--wp-accent);
+}
+
+.textbox:disabled {
+  background-color: transparent;
+  border-color: var(--wp-disabled);
+  color: var(--wp-disabled);
+}
+
+/* Read-only swaps in a border that the focused state doesn't touch. */
+.textbox[readonly] {
+  background-color: var(--wp-text-box);
+  border-color: var(--wp-text-box);
+  color: var(--wp-text-box-read-only);
+}
+/* ---------- message box (shell MessageBox) ---------- */
+
+.msgbox-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--wp-semitransparent);
+}
+
+.msgbox {
+  padding: 18px var(--wp-margin) 6px;
+  background: var(--wp-chrome);
+  color: var(--wp-foreground);
+  transform-origin: 50% 0;
+}
+
+.msgbox-caption {
+  margin: 0 var(--wp-margin) 10px;
+  font-family: var(--font-semibold);
+  font-size: var(--size-large);
+  line-height: 1.2;
+}
+
+.msgbox-message {
+  margin: 0 var(--wp-margin) 12px;
+  font-size: var(--size-medium);
+  line-height: 1.33;
+  overflow-wrap: anywhere;
+}
+
+.msgbox-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.msgbox-button {
+  margin: var(--wp-touch-target-overhang);
+  padding: 5px 10px 6px;
+  border: var(--wp-border-thickness) solid var(--wp-foreground);
+  font-family: var(--font-semibold);
+  font-size: var(--size-medium);
+  text-align: center;
+}
+
+.msgbox-button:active {
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+  color: var(--wp-button-base-pressed-foreground);
+}
+
+/* ---------- app pages and the application bar ---------- */
+
+/* A page with an app bar: content takes the remaining height, the bar slot
+   reserves the collapsed bar's height at the bottom. */
+.app-page {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The page's content in an .app-page: the height left above the bar. */
+.app-page-body {
+  flex: 1;
+  min-height: 0;
+}
+
+.appbar-slot {
+  position: relative;
+  flex: none;
+  z-index: 2;
+}
+
+/* Taps outside an expanded bar close it. */
+.appbar-scrim {
+  position: fixed;
+  inset: 0;
+}
+
+.appbar {
+  position: absolute;
+  inset: auto 0 0;
+  background: var(--wp-chrome);
+  color: var(--wp-foreground);
+}
+
+.appbar-buttons {
+  display: flex;
+  justify-content: center;
+  padding: 12px 64px 12px;
+}
+
+.appbar-button {
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.appbar-button svg {
+  display: block;
+}
+
+.appbar-ring {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--wp-stroke-thickness);
+}
+
+.appbar-glyph {
+  color: var(--wp-foreground);
+}
+
+.appbar-button:active .appbar-ring {
+  fill: var(--wp-foreground);
+}
+
+.appbar-button:active .appbar-glyph {
+  color: var(--wp-chrome);
+}
+
+.appbar-button:disabled {
+  opacity: 0.4;
+}
+
+.appbar-label {
+  margin-top: 4px;
+  font-size: var(--size-app-bar-label);
+  line-height: 1.2;
+  white-space: nowrap;
+  text-transform: lowercase;
+}
+
+.appbar:not([data-expanded]) .appbar-label {
+  display: none;
+}
+
+.appbar-ellipsis {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 64px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding-top: 12px;
+}
+
+.appbar-ellipsis i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.appbar-menu {
+  padding: 6px 0 18px;
+}
+
+.appbar-menu-item {
+  display: block;
+  width: 100%;
+  padding: 9px 24px;
+  font-family: var(--font-normal);
+  font-size: var(--size-medium-large);
+  text-transform: lowercase;
+}
+
+.appbar-menu-item:active {
+  color: var(--wp-accent);
+}
+
+.appbar-menu-item:disabled {
+  color: var(--wp-disabled);
+}
+
+/* ---------- full-screen popups and date/time pickers ---------- */
+
+.full-popup {
+  position: absolute;
+  inset: 0;
+  background: var(--wp-background);
+  transform-origin: 50% 50%;
+}
+
+.full-popup:focus {
+  outline: none;
+}
+
+.dt-field {
+  margin-bottom: 24px;
+}
+
+.dt-header {
+  margin: 0 var(--wp-margin) 2px;
+  color: var(--wp-subtle);
+}
+
+.dt-box {
+  display: block;
+  width: calc(100% - 24px);
+  height: 48px;
+  margin: 0 var(--wp-touch-target-overhang);
+  padding: 0 12px;
+  background: var(--wp-text-box);
+  color: var(--wp-text-box-foreground);
+  font-size: var(--size-medium-large);
+  line-height: 48px;
+  transform-origin: 50% 50%;
+}
+
+.dt-box:active {
+  background: var(--wp-accent);
+  color: var(--wp-button-base-pressed-foreground);
+}
+
+.dt-page-title {
+  flex: none;
+  margin: 20px 24px 0;
+  font-family: var(--font-semibold);
+  font-size: var(--size-normal);
+  text-transform: uppercase;
+}
+
+.dt-columns {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.ls {
+  position: relative;
+  width: 148px;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  outline: none;
+}
+
+.ls:focus-visible {
+  outline: 2px dashed var(--wp-accent);
+  outline-offset: 0;
+}
+
+.ls-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 148px;
+  height: 148px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 10px 6px;
+  border: var(--wp-border-thickness) solid var(--wp-subtle);
+  opacity: 0;
+  transition: opacity 200ms linear;
+}
+
+.ls[data-active] .ls-item {
+  opacity: 1;
+}
+
+.ls-item[data-selected] {
+  opacity: 1;
+  background: var(--wp-accent);
+  border-color: var(--wp-accent);
+  color: var(--wp-button-base-pressed-foreground);
+}
+
+.ls-primary {
+  font-family: var(--font-semilight);
+  font-size: var(--size-picker-item);
+  line-height: 1.1;
+}
+
+.ls-secondary {
+  font-size: var(--size-normal);
+  line-height: 1.3;
+}
+
+/* ---------- panorama hub (UIX Panorama) ---------- */
+
+.pano {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+[data-hub-intro] .pano {
+  overflow: visible;
+}
+
+.pano-bg {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.pano-dim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--wp-background) 55%, transparent);
+}
+
+.pano-title {
+  position: absolute;
+  top: -22px;
+  left: 14px;
+  font-family: var(--font-light);
+  font-size: var(--size-panorama-title);
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.pano-title > span {
+  display: inline-block;
+}
+
+.pano-section {
+  position: absolute;
+  top: 146px;
+  bottom: 0;
+  left: 0;
+  width: 432px;
+  padding-left: var(--wp-margin);
+  display: flex;
+  flex-direction: column;
+}
+
+.pano-header {
+  flex: none;
+  margin: 0 0 18px var(--wp-margin);
+  font-family: var(--font-semilight);
+  font-size: var(--size-panorama-header);
+  font-weight: normal;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.pano-content {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding-bottom: 24px;
+}
+
+.pano-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Last, so it wins over the transitions above. */
+@media (prefers-reduced-motion: reduce) {
+  .pivot-header,
+  .ls-item {
+    transition: none;
+  }
+}

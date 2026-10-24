@@ -1,0 +1,28 @@
+/* Each weight gets its own family name, matching the PhoneFontFamily*
+   resources in ThemeResources.xaml. Segoe WP and Segoe UI are used when
+   installed; otherwise Metroweb Sans, from ../fonts. It is Selawik,
+   Microsoft's open-source (OFL) metric match for Segoe UI, with its composite
+   glyphs (accented letters, the ellipsis) flattened to plain outlines with
+   fontTools, because Chrome drew only the first component from the original
+   woff2s, and renamed as the licence requires. */
+
+@font-face {
+  font-family: 'WP Light';
+  src: local('Segoe WP Light'), local('Segoe UI Light'), url('../fonts/metroweb-sans-light.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'WP SemiLight';
+  src: local('Segoe WP Semilight'), local('Segoe UI Semilight'), url('../fonts/metroweb-sans-semilight.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'WP Normal';
+  src: local('Segoe WP'), local('Segoe UI'), url('../fonts/metroweb-sans.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'WP SemiBold';
+  src: local('Segoe WP Semibold'), local('Segoe UI Semibold'), url('../fonts/metroweb-sans-semibold.woff2') format('woff2');
+  font-display: swap;
+}
