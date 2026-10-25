@@ -480,7 +480,7 @@ if (wanted('strips')) {
     action: () => page.locator('.tile[data-app="settings"]').click(),
     times: every(90, 15),
   })
-  await compose(join(OUT.strips, 'launch.jpg'), 'Start → Settings: tiles feather out (tapped tile last), the app feathers in', [{ frames: launch }])
+  await compose(join(OUT.strips, 'launch.jpg'), 'Start → Settings: tiles feather out (tapped tile last), the app turns in as one page', [{ frames: launch }])
 
   const pivot = await film(page, {
     // The next header is clipped off the right edge, so it can't take a real click.
@@ -495,13 +495,13 @@ if (wanted('strips')) {
     action: () => page.locator(ACTIVE + '.list-item:has-text("theme")').first().click(),
     times: every(80, 15),
   })
-  await compose(join(OUT.strips, 'drill-in.jpg'), 'Drill in (forward): rows feather out top to bottom, tapped row last; the next page feathers in', [{ frames: drill }])
+  await compose(join(OUT.strips, 'drill-in.jpg'), 'Drill in (forward): rows feather out top to bottom, tapped row last; the next page turns in as one plane', [{ frames: drill }])
 
   const back = await film(page, {
     action: () => page.locator('.nav-bar [aria-label="Back"]').click(),
     times: every(80, 14),
   })
-  await compose(join(OUT.strips, 'back.jpg'), 'Back (backward): the page turns out toward the viewer, the previous page turns back in', [{ frames: back }])
+  await compose(join(OUT.strips, 'back.jpg'), 'Back (backward): rows feather out, the previous page turns back in as one plane', [{ frames: back }])
   await page.context().close()
 
   await attempt('tile flip', async () => {

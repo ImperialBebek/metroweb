@@ -1,11 +1,12 @@
 import {
   continuum,
+  dropOut,
   FEATHER_MAX_DELAY,
   FEATHER_PIXEL_DELAY,
   hubSwing,
+  nativePageTurn,
   panoramaIntro,
   slideSheet,
-  turnstile,
   turnstileFeather,
   type TurnstileMode,
 } from './motion.ts'
@@ -27,15 +28,15 @@ export interface FeatherOptions {
 
 interface Target {
   el: HTMLElement
-  hinge: number
+  x: number
+  y: number
   delay: number
 }
 
-// The outermost visible [data-feather] elements on screen, each with its hinge
-// (distance from its centre to the screen's left edge) and feather delay.
-function featherTargets(page: HTMLElement, frame: DOMRect): Target[] {
+// The outermost visible [data-feather] elements on screen, each with its
+// top-left corner in screen px and its feather delay.
+function featherTargets(page: HTMLElement, frame: DOMRect, height: number): Target[] {
   const scale = frame.width / SCREEN_WIDTH || 1
-  const height = frame.height / scale
   const targets: Target[] = []
   page.querySelectorAll<HTMLElement>('[data-feather]').forEach((el) => {
     if (el.parentElement?.closest('[data-feather]')) return
@@ -46,7 +47,7 @@ function featherTargets(page: HTMLElement, frame: DOMRect): Target[] {
     const w = r.width / scale
     const h = r.height / scale
     if (!w || !h || y + h <= 0 || y >= height || x + w <= 0 || x >= SCREEN_WIDTH) return
-    targets.push({ el, hinge: x + w / 2, delay: Math.min(Math.max(y, 0) * FEATHER_PIXEL_DELAY, FEATHER_MAX_DELAY) })
+    targets.push({ el, x, y, delay: Math.min(Math.max(y, 0) * FEATHER_PIXEL_DELAY, FEATHER_MAX_DELAY) })
   })
   return targets
 }
@@ -64,11 +65,12 @@ function fadeAround(label: HTMLElement, source: HTMLElement, delay: number): Ani
   return animations
 }
 
-// The page transitions native apps use: the page's [data-feather] elements
-// turnstile one after another (TurnstileFeather*), a tapped [data-continuum]
-// label carries over to the next page's title (Continuum*), and a page with
-// [data-intro] layers opens with the 3D hub swing and layer slide. A page with nothing to
-// feather turns as a whole.
+// The page transitions native apps use. An arriving page turns in as one
+// plane, every row at once; a leaving page's [data-feather] elements turn out
+// one after another from the top (TurnstileFeather*). A tapped
+// [data-continuum] label carries over to the next page's title (Continuum*),
+// a page with [data-intro] layers opens with the 3D hub swing and layer slide,
+// and a [data-drop-out] page drops its content away when going back.
 export function featherPage(
   page: HTMLElement,
   frame: HTMLElement,
@@ -97,17 +99,36 @@ export function featherPage(
     return animations
   }
 
-  let targets = featherTargets(page, frame.getBoundingClientRect())
-  if (!targets.length) return [turnstile(page, mode)]
-
-  const animations: Animation[] = []
   const title = continuumTarget ? page.querySelector<HTMLElement>('[data-continuum-target]') : null
-  if (title) {
-    targets = targets.filter((t) => !t.el.contains(title) && !title.contains(t.el))
-    animations.push(continuum(title, outgoing ? 'backwardHide' : 'forwardShow'))
+
+  if (!outgoing) {
+    const animations = nativePageTurn(page, frame, mode)
+    if (title) animations.push(continuum(title, 'forwardShow'))
+    if (label?.isConnected) animations.push(continuum(label, 'backwardShow'))
+    return animations
   }
 
-  if (outgoing && source) {
+  const drop = mode === 'backwardOut' ? page.querySelector<HTMLElement>('[data-drop-out]') : null
+  if (drop) {
+    const animations = title ? [continuum(title, 'backwardHide')] : []
+    for (const child of drop.children) {
+      if (child instanceof HTMLElement && !(title && child.contains(title))) animations.push(...dropOut(child))
+    }
+    return animations
+  }
+
+  const rect = frame.getBoundingClientRect()
+  const screen = { width: SCREEN_WIDTH, height: rect.height / (rect.width / SCREEN_WIDTH || 1) }
+  let targets = featherTargets(page, rect, screen.height)
+  if (!targets.length) return nativePageTurn(page, frame, mode)
+
+  const animations: Animation[] = []
+  if (title) {
+    targets = targets.filter((t) => !t.el.contains(title) && !title.contains(t.el))
+    animations.push(continuum(title, 'backwardHide'))
+  }
+
+  if (source) {
     const last = Math.max(0, ...targets.filter((t) => t.el !== source).map((t) => t.delay)) + SOURCE_EXTRA_DELAY
     if (label && source.contains(label)) {
       targets = targets.filter((t) => t.el !== source)
@@ -117,11 +138,6 @@ export function featherPage(
     }
   }
 
-  if (!outgoing && label?.isConnected) {
-    const row = targets.find((t) => t.el.contains(label))
-    animations.push(continuum(label, 'backwardShow', row?.delay ?? 0))
-  }
-
-  animations.push(...targets.map((t) => turnstileFeather(t.el, mode, t.hinge, t.delay)))
+  animations.push(...targets.map((t) => turnstileFeather(t.el, mode, { x: t.x, y: t.y, screen }, t.delay)))
   return animations
 }

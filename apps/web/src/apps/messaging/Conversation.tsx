@@ -170,7 +170,7 @@ export function Conversation({ threadId: id, number, autoFocus }: { threadId?: s
   }
 
   return (
-    <div className="app-page">
+    <div className="app-page" data-drop-out>
       <div className="messaging-title" data-feather data-continuum-target>
         {to ? threadName(contacts, to) : ''}
       </div>

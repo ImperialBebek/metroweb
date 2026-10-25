@@ -9,6 +9,8 @@ export type { Accent, Background } from './theme.ts'
 // Motion: Toolkit and UIX easings, transitions and timings.
 export {
   continuum,
+  dropOut,
+  EXPO_IN_2,
   EXPO_IN_6,
   EXPO_OUT_2,
   EXPO_OUT_5,
@@ -17,16 +19,20 @@ export {
   FEATHER_MAX_DELAY,
   FEATHER_PIXEL_DELAY,
   hubSwing,
+  nativePageTurn,
+  NATIVE_PERSPECTIVE,
+  NATIVE_TURNSTILE,
   PANORAMA_INTRO_DURATION,
   panoramaIntro,
   prefersReducedMotion,
   scrimFade,
   slideSheet,
   swivel,
+  TOOLKIT_TURNSTILE,
   turnstile,
   turnstileFeather,
 } from './motion.ts'
-export type { ContinuumPhase, TurnstileMode } from './motion.ts'
+export type { ContinuumPhase, FeatherPlacement, TurnstileMode, TurnstileTiming } from './motion.ts'
 export { featherPage } from './pageMotion.ts'
 export type { FeatherOptions } from './pageMotion.ts'
 export { getMotionSpeed, MOTION_SPEEDS, motionMs, setMotionSpeed, subscribeMotionSpeed } from './motionSpeed.ts'

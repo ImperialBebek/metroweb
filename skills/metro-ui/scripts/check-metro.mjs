@@ -179,7 +179,7 @@ const UI_TEXT_PROPS = new Set(['caption', 'message', 'header', 'title', 'subtitl
 const LOWERCASE_PROPS = { Pivot: ['title'], Panorama: ['title'], SettingsPage: ['app', 'title'], ListItem: ['title'] }
 const BACK_LABEL = /^(?:back|go back|close|close page|[×✕✖←])$/i
 // metroweb's motion helpers start Web Animations, like element.animate().
-const MOTION_HELPERS = new Set(['turnstile', 'turnstileFeather', 'swivel', 'continuum', 'scrimFade', 'slideSheet', 'hubSwing', 'panoramaIntro', 'featherPage'])
+const MOTION_HELPERS = new Set(['turnstile', 'turnstileFeather', 'nativePageTurn', 'swivel', 'continuum', 'scrimFade', 'slideSheet', 'dropOut', 'hubSwing', 'panoramaIntro', 'featherPage'])
 const STYLESHEETS = new Set(['.css', '.scss', '.less', '.pcss'])
 const SCRIPTS = new Set(['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs'])
 const SKIPPED_FOLDERS = new Set(['node_modules', 'dist', 'build', 'out', 'coverage'])

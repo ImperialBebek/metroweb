@@ -12,6 +12,7 @@ The raw material behind the [design docs](../design/README.md): files decoded fr
 | [`uix/tools/anims.py`](uix/tools/anims.py) | Walks `ShellControls` animation bytecode and prints `anims_shell.txt`. It reads its inputs from `/tmp/wp8-uix/`; copy the `private/uix/*.txt` files there first | Producing `private/uix/anims_shell.txt` |
 | [`strings/casing.py`](strings/casing.py) | Reads the string tables (`RT_STRING`) of the image's en-US `*.mui` files and prints whole strings, with their IDs, for app names and titles, confirmations, empty states and relative days | Producing `private/strings/casing.txt`, used by [Writing](../design/12-writing.md) |
 | [`footage/`](footage/README.md) | Which recordings of real phones were measured, and the Swift tools that measured them | Fitting the hub intro, feather stagger and Start feather |
+| [`footage/wp81-240fps/fits.md`](footage/wp81-240fps/fits.md) | The 240 fps measurements and the fits behind the native turnstile timings and perspective | The native page turn, feather stagger and conversation drop in [Motion](../design/07-motion.md#turnstile) |
 | [`fits/fit.mjs`](fits/fit.mjs), [`fits/fit2.mjs`](fits/fit2.mjs) | Grid searches that fit exponential and power ease-outs to the hub intro samples measured from footage (swing angle, title offset, section offset) | The hub intro's `EXPO_OUT_2` swing and `EXPO_OUT_5` layer slide |
 | [`fits/fit-results.txt`](fits/fit-results.txt), [`fits/fit2-results.txt`](fits/fit2-results.txt) | Their output: best start time, duration, start value and RMS error per curve | as above |
 
@@ -29,7 +30,7 @@ Paths are relative to `docs/evidence/private/`. They can be made again from the 
 | `uix/shell_props.txt` | Property ids for `ShellControls.dll` markup | Input to `anims.py` |
 | `uix/anims_shell.txt` | Every animation in `ShellControls.dll` (`FlipTile.uix`, `FlipGrid.uix`), decoded into keyframes with times, angles, interpolation types and weights | [Live tile flips](../design/10-start-and-live-tiles.md#flip-motion) |
 | `strings/casing.txt` | The output of `casing.py` | [Writing](../design/12-writing.md) |
-| `footage/*.jpg`, `footage/wp81/*.jpg` | Contact sheets and key frames from the two recordings, and the hub intro side by side; listed in [`footage/README.md`](footage/README.md#files) | Fitting and checking the motion |
+| `footage/*.jpg`, `footage/wp81/*.jpg`, `footage/wp81-240fps/*.jpg` | Contact sheets and key frames from the recordings, and the hub intro side by side; listed in [`footage/README.md`](footage/README.md#files) | Fitting and checking the motion |
 
 ## Where the originals are
 

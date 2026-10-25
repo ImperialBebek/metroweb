@@ -1,5 +1,5 @@
 import { useEffect, useImperativeHandle, useRef, useState, type PointerEvent, type Ref } from 'react'
-import { EXPO_OUT_6, ph, prefersReducedMotion, turnstileFeather, useTilt } from 'metroweb'
+import { EXPO_OUT_6, ph, prefersReducedMotion, TOOLKIT_TURNSTILE, turnstileFeather, type FeatherPlacement, useTilt } from 'metroweb'
 import { APP_BY_ID, APP_LIST, DEFAULT_LAYOUT, type AppDef } from './apps'
 import { Icon } from './icons'
 import { Tile } from './Tile'
@@ -29,7 +29,7 @@ const SOURCE_EXTRA_DELAY = 150
 
 interface Target {
   el: HTMLElement
-  hinge: number
+  place: FeatherPlacement
   outDelay: number
   inDelay: number
 }
@@ -107,7 +107,6 @@ export function StartScreen({
       const r = el.getBoundingClientRect()
       const x = (r.left - screen.left) / scale
       const y = (r.top - screen.top) / scale
-      const w = r.width / scale
       const h = r.height / scale
       if (y + h <= 0 || y >= height) return
       const yNorm = Math.min(Math.max(y, 0) / height, 1)
@@ -117,7 +116,7 @@ export function StartScreen({
         pane === 0
           ? (1 - yNorm) * FEATHER_Y_MAX + (1 - xNorm) * FEATHER_X_MAX
           : yNorm * FEATHER_Y_MAX + xNorm * FEATHER_X_MAX
-      found.push({ el, hinge: x + w / 2, outDelay: delay, inDelay: delay })
+      found.push({ el, place: { x, y, screen: { width: SCREEN_WIDTH, height } }, outDelay: delay, inDelay: delay })
     })
     if (source) {
       const last = Math.max(0, ...found.filter((t) => t.el !== source).map((t) => t.outDelay)) + SOURCE_EXTRA_DELAY
@@ -132,7 +131,7 @@ export function StartScreen({
       feathered.current = null
       if (prefersReducedMotion()) return
       const list = targets(source)
-      const animations = list.map((t) => turnstileFeather(t.el, 'forwardOut', t.hinge, t.outDelay))
+      const animations = list.map((t) => turnstileFeather(t.el, 'forwardOut', t.place, t.outDelay, TOOLKIT_TURNSTILE))
       feathered.current = { pane, targets: list, animations }
       await Promise.all(animations.map((a) => a.finished.catch(() => {})))
     },
@@ -142,7 +141,7 @@ export function StartScreen({
       if (!previous) return
       // After showTiles() the elements that left are no longer on screen.
       const list = previous.pane === pane ? previous.targets : targets()
-      const animations = list.map((t) => turnstileFeather(t.el, 'backwardIn', t.hinge, t.inDelay))
+      const animations = list.map((t) => turnstileFeather(t.el, 'backwardIn', t.place, t.inDelay, TOOLKIT_TURNSTILE))
       previous.animations.forEach((a) => a.cancel())
       await Promise.all(animations.map((a) => a.finished.catch(() => {})))
       animations.forEach((a) => a.cancel())

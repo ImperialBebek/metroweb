@@ -74,7 +74,7 @@ Done when the check reports no errors, each warning is fixed or marked with its 
 
 ### Motion
 
-- The stack turns the pages. Mark each row or block that should turn on its own with `data-feather`, and a tapped label that becomes the next page's title with `data-continuum`. The package's list items, paragraphs and titles are already marked.
+- The stack turns the pages. A page arrives whole; when it leaves, each row or block marked `data-feather` turns out on its own, top to bottom. Mark a tapped label that becomes the next page's title with `data-continuum`, and a page whose content should drop away going back with `data-drop-out`. The package's list items, paragraphs and titles are already marked.
 - Animate `transform`, `translate` and `opacity`, with the package's curves and transitions: `EXPO_OUT_6` for what arrives, `EXPO_IN_6` for what leaves, and `turnstile`, `swivel`, `continuum`, `slideSheet` and the rest.
 - Check `prefersReducedMotion()` before starting an animation; in CSS, add a `prefers-reduced-motion: reduce` block.
 - Pages under the top one stay mounted under `visibility: hidden`. Inside a page, undo a `hidden` with `visibility: inherit`.

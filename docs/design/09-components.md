@@ -120,6 +120,7 @@ A header, the current state in words, and the switch.
 - Tap anywhere on the row to toggle. Drag the thumb (after 6 px) and release past halfway to toggle.
 - Disabled: header, label, border, thumb and fill all use `--wp-disabled`.
 - `role="switch"` with `aria-checked`; labelled by the header.
+- The whole switch (header and row) is `data-feather`, so it leaves with the page's rows.
 
 ## List picker
 
@@ -138,6 +139,7 @@ Shows the current choice in a box. Tapping it opens the options inline, or (in f
 | Opening | Grows from one row to all rows over 250 ms | Estimated |
 
 - Back closes an open picker without changing the value.
+- The whole picker (header and box) is `data-feather`, so it leaves with the page's rows.
 - `onOpenFullMode` replaces inline opening. The accent picker uses it: a swatch grid (4 columns, 12 px gaps) under an accents header (shown in capitals), swivelling in over the page. The current swatch takes focus.
 
 ![Accent picker](assets/screenshots/accent-picker.png)

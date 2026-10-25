@@ -77,7 +77,7 @@ export function ListPicker<T extends string | number>({
   )
 
   return (
-    <div className="picker" data-disabled={disabled}>
+    <div className="picker" data-disabled={disabled} data-feather>
       <div className="picker-header" id={`${id}-label`}>
         {header}
       </div>

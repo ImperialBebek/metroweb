@@ -236,8 +236,8 @@ Every corner is square. The only circles are rings and dots: the ring around an 
 
 Motion is how you know where you are. Nothing bounces, and nothing fades without also moving.
 
-- **Turnstile**: pages turn about a hinge at the left edge of the screen. Going forward, the page swings away and the next one swings in; Back reverses it.
-- **Feather**: in native apps the rows turn one after another, top to bottom, and the item you tapped leaves last.
+- **Turnstile**: pages turn about a hinge at the left edge of the screen. In native apps a page arrives whole, turning in as one plane in about 270 ms; going back it leaves feathered. A Silverlight-style stack (`transition="turnstile"`) turns whole pages both ways, on the Toolkit's timings.
+- **Feather**: when a native page leaves, its rows turn out one after another from the top, and the item you tapped leaves last. Mark a page whose content should drop away instead, like Messaging's conversation, with `data-drop-out`.
 - **Continuum**: the tapped label, such as a name or a title, drops away, and the next page's title rises in its place.
 - **Tilt**: whatever you press tilts toward the finger and sinks in, then springs back.
 - **Swivel**: full-screen pickers and message boxes swing in about a horizontal axis.

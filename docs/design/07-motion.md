@@ -1,6 +1,6 @@
 # 07 · Motion
 
-> **Status** Draft · **Baseline** 8.0, with 8.1 footage where noted · **Last reviewed** 2026-10-19
+> **Status** Draft · **Baseline** 8.0, with 8.1 footage where noted · **Last reviewed** 2026-10-26
 > **Code** [`packages/metroweb/src/motion.ts`](../../packages/metroweb/src/motion.ts), [`packages/metroweb/src/pageMotion.ts`](../../packages/metroweb/src/pageMotion.ts), [`packages/metroweb/src/navigation.tsx`](../../packages/metroweb/src/navigation.tsx), [`apps/web/src/start/StartScreen.tsx`](../../apps/web/src/start/StartScreen.tsx), [`apps/web/src/start/tileFlip.ts`](../../apps/web/src/start/tileFlip.ts), [`packages/metroweb/src/components/useTilt.ts`](../../packages/metroweb/src/components/useTilt.ts), [`packages/metroweb/src/motionSpeed.ts`](../../packages/metroweb/src/motionSpeed.ts)
 > **Sources** Windows Phone Toolkit (`TurnstileTransition`, `SwivelTransition`, `TiltEffect`); UIX markup in `ShellControls.dll` and `UIXMobileAssets480x800.dll`; footage (see [evidence](../evidence/footage/README.md))
 
@@ -15,6 +15,7 @@ The Toolkit storyboards use Silverlight's `ExponentialEase`. `motion.ts` samples
 | `EXPO_OUT_6` | `ExponentialEase` Exponent 6, EaseOut | Everything that arrives: pages, popups, app bar, pivot snap | Toolkit |
 | `EXPO_IN_6` | Exponent 6, EaseIn | Everything that leaves | Toolkit |
 | `EXPO_OUT_2` | Exponent 2, EaseOut | Hub swing | Fitted |
+| `EXPO_IN_2` | Exponent 2, EaseIn | Messaging's conversation dropping away | Fitted |
 | `EXPO_OUT_5` | Exponent 5, EaseOut | Hub layer slide | Fitted |
 | `EXPO_OUT_15` | Exponent 15, EaseOut | Toggle switch thumb | Toolkit |
 
@@ -22,44 +23,70 @@ Live tile flips use the phone's own (Iris) curves instead; see [flip motion](10-
 
 ## Turnstile
 
-A page turns about its left edge, seen through a camera centred on the screen (`perspective: 1000px` on `.page-stack`, origin 50% 50%). In CSS, a positive `rotateY` pushes the right side away from you, the opposite sign of the Toolkit's `PlaneProjection.RotationY`.
+A page turns about its left edge, seen through a camera centred on the screen (`perspective` on `.page-stack`, origin 50% 50%). In CSS, a positive `rotateY` pushes the right side away from you, the opposite sign of the Toolkit's `PlaneProjection.RotationY`.
 
-| Mode | From | To | Duration | Easing |
-|---|---|---|---|---|
-| `forwardIn` | 75° | 0° | 350 ms | `EXPO_OUT_6` |
-| `forwardOut` | 0° | −80° | 250 ms | `EXPO_IN_6` |
-| `backwardIn` | −80° | 0° | 350 ms | `EXPO_OUT_6` |
-| `backwardOut` | 0° | 75° | 250 ms | `EXPO_IN_6` |
+Because there is one camera for the whole screen, a turning page is a trapezoid: its left side stays tall, its right side shrinks, text above the screen's centre slopes down toward the right and text below it slopes up. This is what makes the turn look 3D rather than a flat squash.
 
-Durations and easing are **Toolkit**; angles are **Estimated** from 8.1 footage. An outgoing page snaps to opacity 0 on its last frame and stays there until it is hidden.
+![Drilling into Settings: rows feather out top to bottom, the tapped row last, then the next page turns in as one plane](assets/strips/drill-in.jpg)
 
-Silverlight-style apps turn whole pages (`PageStack transition="turnstile"`). Native apps, and the default, feather.
+Native apps (`NATIVE_TURNSTILE`, the default) and Silverlight apps (`TOOLKIT_TURNSTILE`, `PageStack transition="turnstile"`) use different timings:
+
+| Mode | From | To | Native | Toolkit | Easing |
+|---|---|---|---|---|---|
+| `forwardIn` | 75° | 0° | 270 ms | 350 ms | `EXPO_OUT_6` |
+| `forwardOut` | 0° | −80° | 100 ms per element | 250 ms | `EXPO_IN_6` |
+| `backwardIn` | −80° | 0° | 270 ms | 350 ms | `EXPO_OUT_6` |
+| `backwardOut` | 0° | 75° | 100 ms per element | 250 ms | `EXPO_IN_6` |
+
+| Value | Native | Toolkit | Source |
+|---|---|---|---|
+| Camera | `NATIVE_PERSPECTIVE`, 1250 px | 1000 px | Native **Fitted**; Toolkit **Estimated** |
+
+- **Toolkit** durations and easing come from `TurnstileTransition`; the angles are **Estimated** from 8.1 footage.
+- **Native `forwardIn`** is **Fitted** to 240 fps footage of WP8.1 Settings (threads → settings › messaging). Its angle per display frame (51°, 36°, 25°, 16°, 12°, 7° …) matches 75° → 0° over 270 ms with `EXPO_OUT_6` to within 0.5°; 350 ms misses by 3°. The first frame shown is already at about 51°, one 60 Hz frame in.
+- **Native perspective** is **Fitted** from how far the bottom toggles are pulled toward the screen's centre mid-turn (±150 px).
+- **Native `forwardOut`** is **Fitted**, more loosely: each row's angle grows 2.5 to 3 times per display frame, which fits about 100 ms of `EXPO_IN_6`.
+- **Native backward** durations weren't measured and mirror the forward ones (**Estimated**).
+
+An outgoing page or element snaps to opacity 0 on its last frame and stays there until it is hidden.
 
 ## Turnstile feather
 
-Native apps don't turn the page as one piece. Each top-level `[data-feather]` element turns on its own, after a delay that grows with its distance from the top of the screen. Every element still hinges on the **screen's** left edge, while its camera sits on the element's own centre, so a row's hinge distance is `x + width / 2`.
+Native apps don't use one motion both ways. A page **arrives whole**: every row turns in at once, as one plane (`nativePageTurn`). The 240 fps footage shows the title, the toggles and the footer appearing within the same 60 Hz refresh, with no stagger. A page **leaves feathered**: each top-level `[data-feather]` element turns out on its own, after a delay that grows with its distance from the top of the screen.
 
-![Drilling into Settings: rows feather out top to bottom, the tapped row last](assets/strips/drill-in.jpg)
+Every feathered element hinges on the **screen's** left edge and is seen through the **same camera** as the page turn, centred on the screen. A leaving row swings its right side toward you, grows, and slides off the left edge. Each element gets `transform-origin` set to the screen's centre and `perspective(1250px) translateX(−240px) rotateY(θ) translateX(240px)`, which puts its vanishing point where the page's is.
 
 | Value | Microsoft name | Value | Source |
 |---|---|---|---|
-| Delay per px from the top | `TurnstileFeatherPixelDelay` | 0.32 ms (about 35 ms per list row) | Estimated, frame-counted on 8.1 footage |
-| Maximum delay | `TurnstileFeatherMaximumDelay` | 220 ms | Estimated |
+| Delay per px from the top | `TurnstileFeatherPixelDelay` | 0.36 ms (about 41 ms per 114 px list row) | Fitted on 240 fps 8.1 footage |
+| Maximum delay | `TurnstileFeatherMaximumDelay` | 220 ms | Estimated; the footage's spread from title to last row (about 210 ms) stays under it |
 | Extra delay for the tapped element | — | 140 ms after the last other element | Estimated |
-| Camera | — | `perspective(1000px)` on each element | Toolkit (`TurnstileFeatherEffect`) |
-| Angles, durations, easing | — | as the turnstile table | Toolkit and Estimated, as above |
+| Camera | — | `perspective(1250px)` from the screen's centre | Fitted (see above) |
+| Angles, durations, easing | — | as the native column of the turnstile table | Fitted and Estimated, as above |
 
 The Microsoft names are **Decoded** from UIX string tables; their values are still compiled into undecoded UIX bytecode.
 
-How `featherPage()` picks its targets:
+How `featherPage()` picks its targets when a page leaves:
 
 - Only the outermost `[data-feather]` elements count; nested ones move with their parent.
 - Elements that aren't visible, or are off screen, are skipped.
 - Going forward, the element the user just tapped (or focused and pressed Enter on) leaves last.
-- Elements waiting to arrive are held invisible at their start angle; elements waiting to leave hold their rest pose, including any tilt.
-- If a page has nothing to feather, it turns as a whole.
+- Elements waiting to leave hold their rest pose, including any tilt.
+- If a page has nothing to feather, it turns out as a whole.
+- The next page starts turning in as soon as the last element has gone. In the footage the gap is one display frame.
 
-![Back: the page turns out toward the viewer, the previous page turns in](assets/strips/back.jpg)
+![Back: the page's rows feather out, then the previous page turns back in as one plane](assets/strips/back.jpg)
+
+### Dropping away
+
+Messaging's conversation doesn't turn when you go back. Its content drops and fades (`dropOut`) while its title leaves by [continuum](#continuum), then the thread list turns in. A page opts in with `data-drop-out` on its root; every child except the title drops.
+
+| Value | Value | Source |
+|---|---|---|
+| Drop | 185 px over 150 ms, `EXPO_IN_2` | Fitted on 240 fps 8.1 footage (Messaging, conversation → threads) |
+| Fade | 40 ms, starting 110 ms in | Fitted |
+
+Going into a conversation still uses the normal page turn; that direction hasn't been measured.
 
 ## Continuum
 
@@ -72,19 +99,23 @@ When the tapped row has a `[data-continuum]` label (a contact's name, a thread's
 | `backwardHide` (the title leaves) | — | 0, 80 | 200 ms | `EXPO_IN_6` |
 | `backwardShow` (the label returns) | `ContinuumBackwardShowXOffset` / `YOffset` | 90, 70 | 350 ms | `EXPO_OUT_6` |
 
-Names **Decoded** from `UIXMobileAssets480x800` strings (there is no backward-hide pair); values **Estimated**. While the label leaves, the rest of its row fades out over 140 ms (Estimated). `Continuum` animates `translate`, so it composes with the feather's `transform`.
+Names **Decoded** from `UIXMobileAssets480x800` strings (there is no backward-hide pair); values **Estimated**. While the label leaves, the rest of its row fades out over 140 ms (Estimated). `Continuum` animates `translate`, so it composes with the feather's and the page turn's `transform`.
+
+In 240 fps 8.1 footage the returning label looks squashed vertically before it settles, which suggests it also turns about X. The recreation only moves it; see the [open question](14-evidence.md#motion).
 
 ## Start feather
 
 Start uses its own stagger. Tiles leave and return **bottom-right first**; the app list keeps top-to-bottom order. The tapped tile starts leaving well after the others.
 
-![Start to Settings: tiles feather out, the tapped tile last, then Settings feathers in](assets/strips/launch.jpg)
+![Start to Settings: tiles feather out, the tapped tile last, then Settings turns in](assets/strips/launch.jpg)
 
 | Value | Microsoft name | Value | Source |
 |---|---|---|---|
 | Delay across the screen's height | `TileFeatherDelay_Y` | up to 145 ms (about 0.18 ms per px) | Fitted on 8.1 footage |
 | Delay across its width | `TileFeatherDelay_GridX` | up to 120 ms (about 0.25 ms per px) | Fitted on 8.1 footage |
 | Extra delay for the tapped tile | — | 150 ms after the last other tile | Fitted on 8.1 footage |
+
+Tiles use the same screen-centred `perspective(1250px)` camera as page feathers (Estimated: the footage shows tiles above the centre sloping like page rows, but it wasn't fitted separately) and keep the Toolkit durations, which the delays above were fitted with.
 
 For tiles the delay is `(1 − y/height) × 145 + (1 − x/480) × 120`; for the app list it is `y/height × 145 + x/480 × 120`. The names (and a third, `TileFeatherDelay_YMax`) are **Decoded** from strings in `startmenu.dll`; their values are not.
 

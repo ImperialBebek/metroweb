@@ -69,7 +69,7 @@ Pages name files by their path from the root of the repository.
 | App list | Search button and a list sorted by name | Search box and more sorting and grouping options | 8.0 style list; letter groups are not implemented | Settled |
 | Accent colours | 20 accents from the registry | Same set (not checked against an 8.1 image) | 8.0 registry values | Settled |
 | Typography | Segoe WP | Segoe WP | 8.0 theme resources | Settled |
-| Page transitions | Turnstile, feather and continuum | Same family | Toolkit durations and easing; angles and feather stagger estimated from 8.1 footage | Provisional |
+| Page transitions | Turnstile, feather and continuum | Same family | Native page turns and feather fitted to 240 fps 8.1 footage; Toolkit timings for Silverlight-style stacks | Provisional |
 | Hub intro | Panorama swings in while layers slide | Same family | Fitted to 8.0 (Games hub) and 8.1 (Office hub) footage | Provisional |
 | Pivot | Swipe or tap headers | Same | 8.0 behaviour; content cascade estimated from 8.1 footage | Provisional |
 | Live tiles | Flip, cycle, people and calendar templates | Adds transparent tiles over a background | 8.0, decoded from `ShellControls.dll` | Settled |

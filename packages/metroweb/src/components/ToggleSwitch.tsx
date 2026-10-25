@@ -70,7 +70,7 @@ export function ToggleSwitch({
     dragX === null && !prefersReducedMotion() ? `transform 500ms ${EXPO_OUT_15}, width 500ms ${EXPO_OUT_15}` : 'none'
 
   return (
-    <div className="toggle" data-disabled={disabled}>
+    <div className="toggle" data-disabled={disabled} data-feather>
       {header && (
         <div className="toggle-header" id={`${id}-label`}>
           {header}
