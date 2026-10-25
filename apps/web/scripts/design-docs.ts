@@ -1,8 +1,10 @@
 // Publishes docs/design/*.md at /design. At build time each page is parsed
 // with marked into HTML chunks and demo slots (`<!-- demo: name -->`) and
-// served as `virtual:design-docs`; design/index.html renders them.
-import { existsSync, readdirSync, readFileSync } from 'node:fs'
-import { join } from 'node:path'
+// served as `virtual:design-docs`; design/index.html renders them. Each page
+// is also published as Markdown at its route plus .md, next to llms.txt and
+// llms-full.txt at the root, for agents and anything else that reads text.
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
+import { dirname, join, relative, resolve, sep } from 'node:path'
 import { Marked, type Token, type Tokens } from 'marked'
 import type { Connect, Plugin } from 'vite'
 
@@ -16,6 +18,33 @@ const ROUTE = /^\/design(?:\/[a-z0-9-]+)?\/?$/
 // Stands in for an image URL until the module code imports it.
 const IMAGE_MARK = /\uE000(\d+)\uE000/
 
+// The Markdown exports have absolute links: pages to their .md, the rest of
+// the repository to GitHub, since neither is next to them once published.
+const SITE = 'https://wp8.vercel.app'
+const REPOSITORY = 'https://github.com/ImperialBebek/metroweb'
+const RAW = 'https://raw.githubusercontent.com/ImperialBebek/metroweb/main'
+const MARKDOWN_ROUTE = /^\/(?:llms(?:-full)?\.txt|design(?:\/[a-z0-9-]+)?\.md)$/
+// A page on the site: the HTML needs JavaScript to show anything, so the exports link its .md.
+const SITE_PAGE = new RegExp(`^${SITE.replace(/\./g, '\\.')}(${BASE}(?:/[a-z0-9-]+)?)/?(#.*)?$`)
+const MARKDOWN_LINK = /(!?)\[([^\]]*)\]\(([^)\s]+)(\s+"[^"]*")?\)/g
+const FENCE = /^\s*(`{3,}|~{3,})/
+
+const LLMS_INTRO = `# metroweb
+
+> Windows Phone 8's Metro design for React. metroweb is an npm package of the phone's controls, page transitions, themes and type ramp, with the values taken from the phone itself. Its design docs are the spec, and ${SITE} is a whole phone built with it.
+
+- Install it with \`npm install metroweb\` (it needs React 19), import \`metroweb/styles.css\` once, and render a \`PhoneFrame\` as the app's root. The starter is the quickest way in: \`npx degit ImperialBebek/metroweb/templates/starter my-app\`.
+- The phone wins: where the phone and a web convention disagree, the docs and the package follow the phone. The exceptions are listed on the web and accessibility page.
+- Every value in the docs carries a source label: Decoded (read from the emulator image), Toolkit (the Windows Phone Toolkit's source), Fitted (measured from footage), Estimated (matched by eye, or chosen) or Verified (checked on a device).
+- Coding agents can install the metro-ui skill, with the steps, the rules and a checker script: \`npx skills add ImperialBebek/metroweb\`.
+
+## Package
+
+- [metroweb README](${RAW}/packages/metroweb/README.md): installing, pages and navigation, every component, the theme variables and the rules that keep an app Metro
+- [metro-ui skill](${RAW}/skills/metro-ui/SKILL.md): how a coding agent builds and checks an app on the package
+- [DESIGN.md](${RAW}/DESIGN.md): the design tokens in Google's DESIGN.md format
+- [Starter](${REPOSITORY}/tree/main/templates/starter): a small to-do app on the package
+`
 interface Source {
   file: string
   route: string
@@ -237,12 +266,88 @@ function buildModule(dir: string, warn: (message: string) => void) {
   return { code: `${imports}\n\nexport const pages = [\n${entries.join(',\n')}\n]\n`, files: sources.map((s) => join(dir, s.file)) }
 }
 
+// The Markdown exports, by file name: each page at its route plus .md
+// (design.md, design/motion.md), llms.txt, and llms-full.txt with the package
+// README and every page.
+function markdownFiles(dir: string): Map<string, string> {
+  // `dir` is docs/design, two levels into the repository.
+  const root = resolve(dir, '../..')
+  const sources = readSources(dir)
+  const byPath = new Map(sources.map((s) => [join(dir, s.file), s]))
+
+  const resolveLink = (href: string, from: string): string | null => {
+    const [, route, anchor = ''] = SITE_PAGE.exec(href) ?? []
+    if (route && sources.some((s) => s.route === route)) return `${SITE}${route}.md${anchor}`
+    if (/^[a-z][a-z0-9+.-]*:/i.test(href) || href.startsWith('#')) return href
+    const hashAt = href.indexOf('#')
+    const path = resolve(from, hashAt < 0 ? href : href.slice(0, hashAt))
+    const hash = hashAt < 0 ? '' : href.slice(hashAt)
+    const page = byPath.get(path)
+    if (page) return `${SITE}${page.route}.md${hash}`
+    const file = relative(root, path).split(sep).join('/')
+    if (file.startsWith('../') || file.startsWith('docs/evidence/private')) return null
+    if (file.startsWith('docs/design/assets/')) return `${RAW}/${file}`
+    // docs/evidence isn't uploaded to Vercel, so there a name without an extension is taken for a folder.
+    const folder = existsSync(path) ? statSync(path).isDirectory() : !/\.[a-z0-9]+$/i.test(file)
+    return `${REPOSITORY}/${folder ? 'tree' : 'blob'}/main/${file}${hash}`
+  }
+
+  const exportFile = (file: string) => {
+    const from = dirname(file)
+    let fence = ''
+    const lines: string[] = []
+    for (const line of readFileSync(file, 'utf8').split('\n')) {
+      const marker = FENCE.exec(line)?.[1]
+      if (marker && (!fence || marker.startsWith(fence))) fence = fence ? '' : marker
+      else if (!fence) {
+        if (DEMO.test(line.trim())) continue
+        lines.push(
+          line.replace(MARKDOWN_LINK, (_, image: string, label: string, href: string, title = '') => {
+            const target = resolveLink(href, from)
+            if (target === null) return image ? '' : label
+            return `${image}[${label}](${target}${title})`
+          }),
+        )
+        continue
+      }
+      lines.push(line)
+    }
+    return lines.join('\n').trimEnd() + '\n'
+  }
+
+  const files = new Map<string, string>()
+  const pages = sources.map((s) => exportFile(join(dir, s.file)))
+  sources.forEach((s, i) => files.set(`${s.route.slice(1)}.md`, pages[i]))
+
+  // The README's numbered list of sections says what each page covers.
+  const about = new Map<string, string>()
+  for (const m of readFileSync(join(dir, 'README.md'), 'utf8').matchAll(/^\d+\.\s+\[[^\]]*\]\(([^)#\s]+)\):\s*(.+)$/gm)) about.set(m[1], m[2])
+  const entries = sources.map((s) => {
+    const what = s.number === null ? 'how to read the pages, the source labels and the version baseline' : about.get(s.file)
+    return `- [${s.title}](${SITE}${s.route}.md)${what ? `: ${what}` : ''}`
+  })
+  files.set(
+    'llms.txt',
+    `${LLMS_INTRO}\n## Design docs\n\n${entries.join('\n')}\n\n## Optional\n\n- [Everything in one file](${SITE}/llms-full.txt): the package README and every page of the design docs\n`,
+  )
+  files.set('llms-full.txt', [exportFile(join(root, 'packages/metroweb/README.md')), ...pages].join('\n---\n\n'))
+  return files
+}
+
 // `dir` is the docs/design folder.
 export function designDocs({ dir }: { dir: string }): Plugin {
   const rewrite: Connect.NextHandleFunction = (req, _res, next) => {
     const path = (req.url ?? '').split(/[?#]/)[0]
     if (req.method === 'GET' && ROUTE.test(path)) req.url = `${BASE}/index.html`
     next()
+  }
+  // In dev the Markdown exports are made per request, from the files as they are now.
+  const markdown: Connect.NextHandleFunction = (req, res, next) => {
+    const path = (req.url ?? '').split(/[?#]/)[0]
+    const body = req.method === 'GET' && MARKDOWN_ROUTE.test(path) ? markdownFiles(dir).get(path.slice(1)) : undefined
+    if (body === undefined) return next()
+    res.setHeader('Content-Type', `${path.endsWith('.txt') ? 'text/plain' : 'text/markdown'}; charset=utf-8`)
+    res.end(body)
   }
   return {
     name: 'design-docs',
@@ -266,7 +371,11 @@ export function designDocs({ dir }: { dir: string }): Plugin {
       this.environment.hot.send({ type: 'full-reload' })
       return []
     },
+    generateBundle() {
+      for (const [fileName, source] of markdownFiles(dir)) this.emitFile({ type: 'asset', fileName, source })
+    },
     configureServer(server) {
+      server.middlewares.use(markdown)
       server.middlewares.use(rewrite)
     },
     configurePreviewServer(server) {
