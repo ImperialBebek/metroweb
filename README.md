@@ -16,6 +16,7 @@ Windows Phone 8 in the browser, and the library it is built on, for making apps 
 - **The phone** ([`apps/web/`](apps/web)): Start with live tiles, the app list, the system tray and volume band, Settings, and Alarms, Calculator, Calendar, Camera, Messaging, Music+Videos, OneNote, People, Phone and Photos. Light and dark themes and all 20 accents. Pages turn with the turnstile, feather and continuum transitions, and anything you press tilts.
 - **The library** ([`packages/metroweb/`](packages/metroweb/README.md)): the `metroweb` package the phone is built on. The pivot and panorama, lists, toggle switches, pickers, text boxes, the app bar and message boxes; the page stack and its transitions; tilt; the type ramp, both themes and the 20 accents.
 - **The starter** ([`templates/starter/`](templates/starter/README.md)): a small to-do app on the package, to copy when you start your own.
+- **The agent skill** ([`skills/metro-ui/`](skills/metro-ui/SKILL.md)): for coding agents building on the package. The steps, the rules, and a checker for the ones code can show, from accent hexes and font weights to click handlers on divs. [`DESIGN.md`](DESIGN.md) has the tokens and rules in Google's DESIGN.md format, for design tools.
 - **The design system** ([`docs/design/`](docs/design/README.md)): 14 pages on how Metro looks, moves and behaves, from the 480 px canvas and the 12 px grid to motion, navigation, components, live tiles and writing. Each value gives its Microsoft name, the CSS variable that holds it and a [source label](docs/design/README.md#source-labels) that says how far to trust it. The same pages are a site with live demos at [/design](https://wp8.vercel.app/design).
 - **The evidence tools** ([`docs/evidence/`](docs/evidence/README.md)): the decoders for the emulator image's UIX markup and string tables, the Swift tools that measured footage of real phones, and the curve fits. The Microsoft files and video frames they produced are kept out of this repository.
 
@@ -38,15 +39,24 @@ npm install metroweb
 
 The [package README](packages/metroweb/README.md) has a quick start, the components and the short version of the rules that keep an app looking and behaving like the phone. The [design docs](https://wp8.vercel.app/design) are the full spec.
 
+With a coding agent, install the skill in your app, and the agent reads it when you ask for Metro UI:
+
+```sh
+npx skills add ImperialBebek/metroweb
+```
+
+Agents without skills can start from [wp8.vercel.app/llms.txt](https://wp8.vercel.app/llms.txt): the design docs as Markdown, page by page or [in one file](https://wp8.vercel.app/llms-full.txt).
+
 ## Run the phone
 
 Needs Node 20.19+ or 22.12+. The repository is an npm workspace, so run everything from its root.
 
 ```sh
 npm install
-npm run dev     # the phone at /, the design docs at /design
-npm run lint    # oxlint
-npm run build   # type check and build the package, the phone and the starter
+npm run dev         # the phone at /, the design docs at /design
+npm run lint        # oxlint
+npm run lint:metro  # the skill's Metro checker, errors only
+npm run build       # type check and build the package, the phone and the starter
 ```
 
 `npm run docs:assets` regenerates the screenshots, diagrams and motion strips in `docs/design/assets`. It needs a Playwright Chromium (`npx playwright-core install chromium-headless-shell`) or `CHROMIUM_PATH` pointing at one.

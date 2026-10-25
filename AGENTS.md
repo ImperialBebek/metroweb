@@ -12,12 +12,15 @@ An npm workspace with three packages:
 
 The phone imports the package as `metroweb`, and the `@metroweb/source` export condition resolves that to `packages/metroweb/src`, so a change there shows up without a package build. The starter uses the package's build in `dist/`, as any app outside this repository does.
 
+Outside the workspace, for people and agents building on the package: [`skills/metro-ui/`](skills/metro-ui/SKILL.md), a skill for coding agents, with `scripts/check-metro.mjs`, a checker for the Metro rules code can show; and [`DESIGN.md`](DESIGN.md), the tokens and rules in Google's DESIGN.md format.
+
 ## Commands
 
 Run them from the repository root.
 
 - `npm run dev`: the phone's dev server. The phone is at `/`, the design docs site at `/design`.
-- `npm run lint`: oxlint. `npm run build`: type check and build the package, the phone and the starter. Run both before you finish a change.
+- `npm run lint`: oxlint. `npm run lint:metro`: the skill's Metro checker on the phone and the starter, errors only. `npm run build`: type check and build the package, the phone and the starter. Run all three before you finish a change.
+- `node skills/metro-ui/scripts/check-metro.mjs <paths>`: the same checker with its warnings, for the files you changed. Mark a deliberate exception with `metro-ignore <rule>: <why>` on its line or the line above.
 - `npm run docs:assets` (or `-- shots | diagrams | strips | footage`): regenerate the pictures in `docs/design/assets`. Needs a Playwright Chromium, or `CHROMIUM_PATH` pointing at one. Run it after any visual change that a screenshot, diagram or motion strip shows.
 - `npm run icons -w metroweb`: regenerate `packages/metroweb/src/icons/phosphor.ts` after adding an icon name.
 - `npm run build -w metroweb`, then `npm run dev -w metroweb-starter`: run the starter against the package as it is now.
@@ -30,8 +33,9 @@ Read [`docs/design/README.md`](docs/design/README.md) and the page for the area 
 - **The phone wins.** When the phone and a web convention disagree, copy the phone. Every exception goes in [`13-web-and-accessibility.md`](docs/design/13-web-and-accessibility.md).
 - **Label every value** you add or change: Decoded, Toolkit, Fitted, Estimated or Verified (see the README). Never upgrade a label without new evidence.
 - **Update the docs in the same change** as the code: the value, its label, and the version baseline row if it moves. Regenerate assets that show it.
+- **`DESIGN.md` and the skill restate the docs.** When a token, a rule or a public export they name changes, update [`DESIGN.md`](DESIGN.md) and [`skills/metro-ui/SKILL.md`](skills/metro-ui/SKILL.md) in the same change, and `check-metro.mjs` if it checks that rule. `npx @google/design.md lint DESIGN.md` validates DESIGN.md.
 - **Microsoft names are canonical.** Keep names from `ThemeResources.xaml` and the UIX markup (`PhoneFontSizeLarge`, `TurnstileFeatherPixelDelay`) in tables and comments.
-- **The docs are published** at `/design` (https://wp8.vercel.app/design), built from `docs/design` by `apps/web/scripts/design-docs.ts`. Fix any `design-docs` warning the dev server or build prints: it means a broken page link, a missing heading anchor or an image outside `docs/design/assets`. Live demos for `<!-- demo: name -->` comments are in `apps/web/src/design/demos.tsx`.
+- **The docs are published** at `/design` (https://wp8.vercel.app/design), built from `docs/design` by `apps/web/scripts/design-docs.ts`, which also serves each page as Markdown at its route plus `.md`, with `llms.txt` and `llms-full.txt` at the root. Fix any `design-docs` warning the dev server or build prints: it means a broken page link, a missing heading anchor or an image outside `docs/design/assets`. Live demos for `<!-- demo: name -->` comments are in `apps/web/src/design/demos.tsx`.
 
 ## Code rules
 

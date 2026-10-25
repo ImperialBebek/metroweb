@@ -51,6 +51,7 @@ Pages name files by their path from the root of the repository.
 - [`packages/metroweb/`](../../packages/metroweb) is the `metroweb` package, which any app can use: the tokens and styles (`styles/`), the theme, motion and page stack (`src/`), the shared components (`src/components/`), the icons (`src/icons/`) and the fonts.
 - [`apps/web/`](../../apps/web) is the phone built on it: Start, the system tray and volume band, Settings and the other apps, and this site (`src/design/`).
 - [`templates/starter/`](../../templates/starter) is a small app on the package, to copy when you start your own.
+- [`skills/metro-ui/`](../../skills/metro-ui/SKILL.md) is a skill for coding agents that build on the package: the steps, the rules, and a checker for the ones code can show. [`DESIGN.md`](../../DESIGN.md) gives the tokens and rules in Google's DESIGN.md format.
 
 ## Ground rules
 
@@ -81,4 +82,6 @@ Pages name files by their path from the root of the repository.
 - When you change a documented value, update its row here in the same change, including the source label.
 - Screenshots, measurement diagrams and motion strips are generated. Run `npm run docs:assets` (or one group: `npm run docs:assets -- strips`) after a visual change. See [`apps/web/scripts/docs-assets.mjs`](../../apps/web/scripts/docs-assets.mjs).
 - These pages are also published as a site at [`/design`](https://wp8.vercel.app/design), built from this folder by [`apps/web/scripts/design-docs.ts`](../../apps/web/scripts/design-docs.ts) during `npm run dev` and `npm run build`. Links between pages and to their headings become site links, and the build warns about any that don't resolve. Links outside `docs/design` (to the code or the evidence) are published as plain text, and only images in `assets/` are published.
+- Each page is also published as Markdown at its route plus `.md` (`/design/motion.md`), listed in [`/llms.txt`](https://wp8.vercel.app/llms.txt) and joined with the package README in `/llms-full.txt`. Their links are absolute: pages to their `.md`, the code to GitHub.
+- `DESIGN.md` and the metro-ui skill restate tokens and rules from these pages. Change them with the page.
 - A `<!-- demo: name -->` comment on its own line puts a live component at that spot on the site, in a phone frame that follows the site's theme and accent switches. The demos are in [`apps/web/src/design/demos.tsx`](../../apps/web/src/design/demos.tsx); a name with no demo renders nothing and logs a warning in the dev server.

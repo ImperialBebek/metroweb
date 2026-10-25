@@ -5,6 +5,7 @@ Windows Phone 8's Metro design for React: the pivot, the panorama, toggle switch
 - **See it:** [wp8.vercel.app](https://wp8.vercel.app) is a whole phone built with it.
 - **The spec:** [wp8.vercel.app/design](https://wp8.vercel.app/design) says what each component does, which value the code uses and how sure we are of it, with live demos.
 - **Start an app:** copy the [starter template](https://github.com/ImperialBebek/metroweb/tree/main/templates/starter).
+- **With a coding agent:** `npx skills add ImperialBebek/metroweb` installs the metro-ui skill: the steps, the rules and a checker for them. The docs are Markdown too, listed at [wp8.vercel.app/llms.txt](https://wp8.vercel.app/llms.txt).
 
 ## Install
 
