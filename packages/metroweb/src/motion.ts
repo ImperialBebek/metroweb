@@ -15,6 +15,7 @@ function exponential(exponent: number, mode: 'in' | 'out'): string {
 export const EXPO_OUT_2 = exponential(2, 'out')
 export const EXPO_IN_2 = exponential(2, 'in')
 export const EXPO_OUT_5 = exponential(5, 'out')
+export const EXPO_IN_5 = exponential(5, 'in')
 export const EXPO_OUT_6 = exponential(6, 'out')
 export const EXPO_IN_6 = exponential(6, 'in')
 export const EXPO_OUT_15 = exponential(15, 'out')
@@ -22,7 +23,8 @@ export const EXPO_OUT_15 = exponential(15, 'out')
 // One turnstile spin, hinged on the left: going forward, the right side comes
 // in from behind the screen and leaves toward the viewer; going back it
 // reverses. CSS rotateY is the opposite sign of the Toolkit's PlaneProjection
-// RotationY: positive angles push the right side away from the viewer.
+// RotationY and UIX's Rotation: positive angles push the right side away from
+// the viewer.
 export type TurnstileMode = 'forwardIn' | 'forwardOut' | 'backwardIn' | 'backwardOut'
 
 export type TurnstileTiming = Record<TurnstileMode, { from: number; to: number; duration: number; easing: string }>
@@ -35,20 +37,36 @@ export const TOOLKIT_TURNSTILE: TurnstileTiming = {
   backwardOut: { from: 0, to: 75, duration: 250, easing: EXPO_IN_6 },
 }
 
-// Native (UIX) page turns, fitted to 240 fps footage of WP8.1 Settings and
-// Messaging: an arriving page turns in 270ms as one plane, while each
-// feathered element leaves in about 100ms. The backward durations weren't
-// measured and mirror the forward ones.
+// Decoded from TurnstileFeather* wrapping Turnstile* in uixmobile's
+// ANIMATIONS.UIX: Log/Exp weight 150 (ln 150 ≈ 5.01), TimeScale 0.8 on
+// outgoing feathers (167ms × 0.8 = 134ms) and 0.48 on backwardIn
+// (350ms × 0.48 = 168ms).
 export const NATIVE_TURNSTILE: TurnstileTiming = {
-  forwardIn: { from: 75, to: 0, duration: 270, easing: EXPO_OUT_6 },
-  forwardOut: { from: 0, to: -80, duration: 100, easing: EXPO_IN_6 },
-  backwardIn: { from: -80, to: 0, duration: 270, easing: EXPO_OUT_6 },
-  backwardOut: { from: 0, to: 75, duration: 100, easing: EXPO_IN_6 },
+  forwardIn: { from: 80, to: 0, duration: 350, easing: EXPO_OUT_5 },
+  forwardOut: { from: 0, to: -50, duration: 134, easing: EXPO_IN_5 },
+  backwardIn: { from: -50, to: 0, duration: 168, easing: EXPO_OUT_5 },
+  backwardOut: { from: 0, to: 80, duration: 134, easing: EXPO_IN_5 },
 }
 
-// The native camera, fitted from how far a bottom row is pulled toward the
-// screen's centre mid-turn. The Toolkit page turn keeps .page-stack's 1000px.
-export const NATIVE_PERSPECTIVE = 1250
+// Decoded from TileNavigate* and ApplicationNavigate* in startmenu's
+// STYLES.UIX: forwardOut 0° → -50° over 167ms (Exp weight 100, ln 100 ≈ 4.61),
+// backwardIn -80° → 0° over 250ms (Log weight 10, ln 10 ≈ 2.30).
+export const START_TURNSTILE: TurnstileTiming = {
+  forwardIn: { from: 80, to: 0, duration: 350, easing: EXPO_OUT_5 },
+  forwardOut: { from: 0, to: -50, duration: 167, easing: EXPO_IN_5 },
+  backwardIn: { from: -80, to: 0, duration: 250, easing: EXPO_OUT_2 },
+  backwardOut: { from: 0, to: 50, duration: 133, easing: EXPO_IN_5 },
+}
+
+// IntroAnimationCameraEye = Vec3(0, 0, -1000) in uixmobile's CONSTANTS.UIX.
+export const NATIVE_PERSPECTIVE = 1000
+
+const NATIVE_PAGE_TURNSTILE: TurnstileTiming = {
+  forwardIn: { from: 80, to: 0, duration: 350, easing: EXPO_OUT_5 },
+  forwardOut: { from: 0, to: -50, duration: 167, easing: EXPO_IN_5 },
+  backwardIn: { from: -50, to: 0, duration: 350, easing: EXPO_OUT_5 },
+  backwardOut: { from: 0, to: 80, duration: 167, easing: EXPO_IN_5 },
+}
 
 export function turnstile(element: HTMLElement, mode: TurnstileMode, timing = TOOLKIT_TURNSTILE): Animation {
   const { from, to, duration, easing } = timing[mode]
@@ -65,16 +83,25 @@ export function turnstile(element: HTMLElement, mode: TurnstileMode, timing = TO
   )
 }
 
-// A native page arriving: the whole page turns as one plane, every row at
-// once, through the stack's screen-centred camera at the native perspective.
+// Whole-page native turnstile (Turnstile* in ANIMATIONS.UIX): the page turns
+// around CenterPointPercent = (-0.1, 0, 0) through the stack's 1000px camera.
 export function nativePageTurn(page: HTMLElement, stack: HTMLElement, mode: TurnstileMode): Animation[] {
-  const { duration } = NATIVE_TURNSTILE[mode]
+  const { from, to, duration, easing } = NATIVE_PAGE_TURNSTILE[mode]
+  const outgoing = mode.endsWith('Out')
+  const origin = '-10% 50%'
   return [
     stack.animate([{ perspective: `${NATIVE_PERSPECTIVE}px` }, { perspective: `${NATIVE_PERSPECTIVE}px` }], {
       duration,
       fill: 'both',
     }),
-    turnstile(page, mode, NATIVE_TURNSTILE),
+    page.animate(
+      [
+        { transform: `rotateY(${from}deg)`, transformOrigin: origin, opacity: 1 },
+        { transform: `rotateY(${to}deg)`, transformOrigin: origin, opacity: 1, offset: 0.999 },
+        { transform: `rotateY(${to}deg)`, transformOrigin: origin, opacity: outgoing ? 0 : 1 },
+      ],
+      { duration, easing, fill: 'both' },
+    ),
   ]
 }
 
@@ -106,30 +133,34 @@ export function scrimFade(element: HTMLElement, direction: 'in' | 'out'): Animat
     : element.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 250, fill: 'forwards' })
 }
 
-// TurnstileFeather: each element swings on the screen's left edge, seen
-// through one camera at the screen's centre, so rows above the centre slope
-// down toward the right and rows below it slope up, as on the phone. `x` and
-// `y` are the element's top-left corner and `screen` the screen's size, all in
-// 480-wide screen px.
+// TurnstileFeather: each element swings on a shared vertical hinge left of the
+// screen (CenterPointPercent = -0.1 = -48px in ANIMATIONS.UIX;
+// TileCenterPointPercent = -0.3 = -144px on Start in STYLES.UIX), seen through
+// one camera at the screen's centre (240, 400, 1000), so rows above the centre
+// slope down toward the right when behind the screen and up toward the right
+// when in front of it, as on the phone. `x` and `y` are the element's top-left
+// corner and `screen` the screen's size, all in 480-wide screen px.
 export interface FeatherPlacement {
   x: number
   y: number
   screen: { width: number; height: number }
+  hingeX?: number
 }
 
 export function turnstileFeather(
   element: HTMLElement,
   mode: TurnstileMode,
-  { x, y, screen }: FeatherPlacement,
+  { x, y, screen, hingeX = -screen.width * 0.1 }: FeatherPlacement,
   delay: number,
   timing = NATIVE_TURNSTILE,
 ): Animation {
   const { from, to, duration, easing } = timing[mode]
   const outgoing = mode.endsWith('Out')
   const cameraX = screen.width / 2
+  const pivotX = cameraX - hingeX
   const transformOrigin = `${cameraX - x}px ${screen.height / 2 - y}px`
   const at = (angle: number) =>
-    `perspective(${NATIVE_PERSPECTIVE}px) translateX(${-cameraX}px) rotateY(${angle}deg) translateX(${cameraX}px)`
+    `perspective(${NATIVE_PERSPECTIVE}px) translateX(${-pivotX}px) rotateY(${angle}deg) translateX(${pivotX}px)`
   const frames = outgoing
     ? [
         { transform: at(from), transformOrigin, opacity: 1 },

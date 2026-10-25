@@ -7,7 +7,7 @@ How this recreation of Windows Phone 8 looks, moves and behaves, and where each 
 
 ## Sections
 
-1. [Principles](01-principles.md): what Metro is for, and the rules this project adds.
+1. [Principles](01-principles.md): where Metro comes from, what it is for, how to check a screen against it, and the rules this project adds.
 2. [Canvas](02-canvas.md): the 480 px logical screen, its regions, scaling and safe areas.
 3. [Layout](03-layout.md): the 12 px grid, margins and component metrics.
 4. [Typography](04-typography.md): Segoe WP, the type ramp and text styles.
@@ -69,7 +69,7 @@ Pages name files by their path from the root of the repository.
 | App list | Search button and a list sorted by name | Search box and more sorting and grouping options | 8.0 style list; letter groups are not implemented | Settled |
 | Accent colours | 20 accents from the registry | Same set (not checked against an 8.1 image) | 8.0 registry values | Settled |
 | Typography | Segoe WP | Segoe WP | 8.0 theme resources | Settled |
-| Page transitions | Turnstile, feather and continuum | Same family | Native page turns and feather fitted to 240 fps 8.1 footage; Toolkit timings for Silverlight-style stacks | Provisional |
+| Page transitions | Turnstile, feather and continuum | Same family | Native turnstile and Start feather decoded from `ANIMATIONS.UIX` and `STYLES.UIX` and checked against 240 fps 8.1 footage; Toolkit timings for Silverlight-style stacks | Settled |
 | Hub intro | Panorama swings in while layers slide | Same family | Fitted to 8.0 (Games hub) and 8.1 (Office hub) footage | Provisional |
 | Pivot | Swipe or tap headers | Same | 8.0 behaviour; content cascade estimated from 8.1 footage | Provisional |
 | Live tiles | Flip, cycle, people and calendar templates | Adds transparent tiles over a background | 8.0, decoded from `ShellControls.dll` | Settled |

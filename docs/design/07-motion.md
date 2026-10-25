@@ -12,70 +12,69 @@ The Toolkit storyboards use Silverlight's `ExponentialEase`. `motion.ts` samples
 
 | Name | Curve | Used for | Source |
 |---|---|---|---|
-| `EXPO_OUT_6` | `ExponentialEase` Exponent 6, EaseOut | Everything that arrives: pages, popups, app bar, pivot snap | Toolkit |
-| `EXPO_IN_6` | Exponent 6, EaseIn | Everything that leaves | Toolkit |
-| `EXPO_OUT_2` | Exponent 2, EaseOut | Hub swing | Fitted |
+| `EXPO_OUT_6` | `ExponentialEase` Exponent 6, EaseOut | Toolkit arrivals: pages, popups, app bar, pivot snap | Toolkit |
+| `EXPO_IN_6` | Exponent 6, EaseIn | Toolkit departures, continuum hide | Toolkit |
+| `EXPO_OUT_5` | Exponent 5, EaseOut | Native turnstile arrivals (`Log` weight 150, $\ln 150 \approx 5.01$), hub layer slide | Decoded, Fitted |
+| `EXPO_IN_5` | Exponent 5, EaseIn | Native turnstile and Start departures (`Exp` weight 150 and 100) | Decoded |
+| `EXPO_OUT_2` | Exponent 2, EaseOut | Start return (`Log` weight 10, $\ln 10 \approx 2.30$), hub swing | Decoded, Fitted |
 | `EXPO_IN_2` | Exponent 2, EaseIn | Messaging's conversation dropping away | Fitted |
-| `EXPO_OUT_5` | Exponent 5, EaseOut | Hub layer slide | Fitted |
 | `EXPO_OUT_15` | Exponent 15, EaseOut | Toggle switch thumb | Toolkit |
 
 Live tile flips use the phone's own (Iris) curves instead; see [flip motion](10-start-and-live-tiles.md#flip-motion).
 
 ## Turnstile
 
-A page turns about its left edge, seen through a camera centred on the screen (`perspective` on `.page-stack`, origin 50% 50%). In CSS, a positive `rotateY` pushes the right side away from you, the opposite sign of the Toolkit's `PlaneProjection.RotationY`.
+A page or feathered row turns about a vertical hinge on or to the left of the screen, seen through a camera centred on the screen (`IntroAnimationCameraEye = Vec3(0, 0, -1000)` in `CONSTANTS.UIX`, `perspective: 1000px` on `.page-stack`, origin 50% 50%). In CSS, a positive `rotateY` pushes the right side away from you, the opposite sign of the Toolkit's `PlaneProjection.RotationY` and UIX's right-handed `Rotation`.
 
-Because there is one camera for the whole screen, a turning page is a trapezoid: its left side stays tall, its right side shrinks, text above the screen's centre slopes down toward the right and text below it slopes up. This is what makes the turn look 3D rather than a flat squash.
+Because there is one camera for the whole screen and the hinge sits left of the content (`CenterPointPercent = Vec3(-0.1, 0, 0)` = −48 px in `ANIMATIONS.UIX`; `TileCenterPointPercent = Vec3(-0.3, 0, 0)` = −144 px on Start in `STYLES.UIX`), a turning page or row is a 3D trapezoid: as it swings toward you (`rotateY < 0`, `Z > 0`) it grows larger and its top edge above the screen's centre slopes up toward the right; as it swings in from behind the screen (`rotateY > 0`, `Z < 0`) its right side shrinks and its top edge slopes down toward the right. This is what makes the turn look 3D rather than a flat flip.
 
-![Drilling into Settings: rows feather out top to bottom, the tapped row last, then the next page turns in as one plane](assets/strips/drill-in.jpg)
+![Drilling into Settings: rows feather out top to bottom, the tapped row last, then the next page feathers in](assets/strips/drill-in.jpg)
 
-Native apps (`NATIVE_TURNSTILE`, the default) and Silverlight apps (`TOOLKIT_TURNSTILE`, `PageStack transition="turnstile"`) use different timings:
+Native app pages (`NATIVE_TURNSTILE`, decoded from `TurnstileFeather*` wrapping `Turnstile*` in `ANIMATIONS.UIX`), Start (`START_TURNSTILE`, decoded from `TileNavigate*` and `ApplicationNavigate*` in `startmenu`'s `STYLES.UIX`) and Silverlight apps (`TOOLKIT_TURNSTILE`, `PageStack transition="turnstile"`) use these timings:
 
-| Mode | From | To | Native | Toolkit | Easing |
-|---|---|---|---|---|---|
-| `forwardIn` | 75° | 0° | 270 ms | 350 ms | `EXPO_OUT_6` |
-| `forwardOut` | 0° | −80° | 100 ms per element | 250 ms | `EXPO_IN_6` |
-| `backwardIn` | −80° | 0° | 270 ms | 350 ms | `EXPO_OUT_6` |
-| `backwardOut` | 0° | 75° | 100 ms per element | 250 ms | `EXPO_IN_6` |
-
-| Value | Native | Toolkit | Source |
+| Mode | Native (`ANIMATIONS.UIX`) | Start (`STYLES.UIX`) | Toolkit (`TurnstileTransition`) |
 |---|---|---|---|
-| Camera | `NATIVE_PERSPECTIVE`, 1250 px | 1000 px | Native **Fitted**; Toolkit **Estimated** |
+| `forwardIn` | 80° → 0°, 350 ms, `EXPO_OUT_5` | 80° → 0°, 350 ms, `EXPO_OUT_5` | 75° → 0°, 350 ms, `EXPO_OUT_6` |
+| `forwardOut` | 0° → −50°, 134 ms (`167 ms × 0.8`), `EXPO_IN_5` | 0° → −50°, 167 ms, `EXPO_IN_5` | 0° → −80°, 250 ms, `EXPO_IN_6` |
+| `backwardIn` | −50° → 0°, 168 ms (`350 ms × 0.48`), `EXPO_OUT_5` | −80° → 0°, 250 ms, `EXPO_OUT_2` | −80° → 0°, 350 ms, `EXPO_OUT_6` |
+| `backwardOut` | 0° → 80°, 134 ms (`167 ms × 0.8`), `EXPO_IN_5` | 0° → 50°, 133 ms, `EXPO_IN_5` | 0° → 75°, 250 ms, `EXPO_IN_6` |
 
-- **Toolkit** durations and easing come from `TurnstileTransition`; the angles are **Estimated** from 8.1 footage.
-- **Native `forwardIn`** is **Fitted** to 240 fps footage of WP8.1 Settings (threads → settings › messaging). Its angle per display frame (51°, 36°, 25°, 16°, 12°, 7° …) matches 75° → 0° over 270 ms with `EXPO_OUT_6` to within 0.5°; 350 ms misses by 3°. The first frame shown is already at about 51°, one 60 Hz frame in.
-- **Native perspective** is **Fitted** from how far the bottom toggles are pulled toward the screen's centre mid-turn (±150 px).
-- **Native `forwardOut`** is **Fitted**, more loosely: each row's angle grows 2.5 to 3 times per display frame, which fits about 100 ms of `EXPO_IN_6`.
-- **Native backward** durations weren't measured and mirror the forward ones (**Estimated**).
+| Value | Native (`ANIMATIONS.UIX`) | Start (`STYLES.UIX`) | Toolkit | Source |
+|---|---|---|---|---|
+| Camera | `NATIVE_PERSPECTIVE`, 1000 px | 1000 px | 1000 px | Native **Decoded** (`IntroAnimationCameraEye`); Toolkit **Estimated** |
+| Hinge (`hingeX`) | −48 px (`CenterPointPercent = -0.1`) | −144 px on tiles (`-0.3`), 0 px on app list | 0 px (`CenterOfRotationX = 0`) | Native and Start **Decoded**; Toolkit **Toolkit** |
 
-An outgoing page or element snaps to opacity 0 on its last frame and stays there until it is hidden.
+- **Native (`ANIMATIONS.UIX`)** angles, keyframes, `TimeScale` multipliers (0.8 on `TurnstileFeatherForwardOut` and `TurnstileFeatherBackwardOut`, 0.48 on `TurnstileFeatherBackwardIn`), `Log`/`Exp` weight 150 ($\ln 150 \approx 5.01$) and `CenterPointPercent = Vec3(-0.1, 0, 0)` are **Decoded** from `uixmobile`'s `ANIMATIONS.UIX`. Whole-page native turns (`nativePageTurn`, used when a page has no `[data-feather]` elements) play the unscaled `Turnstile*` durations (350 ms in, 167 ms out).
+- **Start (`STYLES.UIX`)** angles, durations (167 ms `TileNavigateAway`, 250 ms `TileNavigateTo`), `Exp` weight 100 ($\ln 100 \approx 4.61$) / `Log` weight 10 ($\ln 10 \approx 2.30$) and `TileCenterPointPercent = Vec3(-0.3, 0, 0)` are **Decoded** from `startmenu`'s `STYLES.UIX` and confirmed against 240 fps 8.1 footage (`IMG_0885.mov`).
+- **Toolkit** durations and easing come from `TurnstileTransition`; the angles are **Estimated**.
+
+An outgoing page or element snaps to opacity 0 on its last frame (`160 ms → 167 ms` in `ANIMATIONS.UIX`) and stays there until it is hidden.
 
 ## Turnstile feather
 
-Native apps don't use one motion both ways. A page **arrives whole**: every row turns in at once, as one plane (`nativePageTurn`). The 240 fps footage shows the title, the toggles and the footer appearing within the same 60 Hz refresh, with no stagger. A page **leaves feathered**: each top-level `[data-feather]` element turns out on its own, after a delay that grows with its distance from the top of the screen.
+In native apps, top-level `[data-feather]` elements turn in and out one after another from the top of the screen (`TurnstileFeatherForwardIn`, `TurnstileFeatherForwardOut`, `TurnstileFeatherBackwardIn` and `TurnstileFeatherBackwardOut` in `ANIMATIONS.UIX`).
 
-Every feathered element hinges on the **screen's** left edge and is seen through the **same camera** as the page turn, centred on the screen. A leaving row swings its right side toward you, grows, and slides off the left edge. Each element gets `transform-origin` set to the screen's centre and `perspective(1250px) translateX(−240px) rotateY(θ) translateX(240px)`, which puts its vanishing point where the page's is.
+Every feathered element hinges on the shared vertical axis 48 px left of the screen (`CenterPointPercent = Vec3(-0.1, 0, 0)`) and is seen through the **same camera** as the page stack, centred on the screen at `z = 1000 px`. Each element gets `transform-origin` set to the screen's centre (`240 − x px`, `height / 2 − y px`) and `perspective(1000px) translateX(-288px) rotateY(θ) translateX(288px)`, so every row on the page shares one vanishing point and one off-screen hinge.
 
 | Value | Microsoft name | Value | Source |
 |---|---|---|---|
-| Delay per px from the top | `TurnstileFeatherPixelDelay` | 0.36 ms (about 41 ms per 114 px list row) | Fitted on 240 fps 8.1 footage |
-| Maximum delay | `TurnstileFeatherMaximumDelay` | 220 ms | Estimated; the footage's spread from title to last row (about 210 ms) stays under it |
+| Per-item feather delay | `TurnstileFeather*` delay | 33 ms per item (`0.36 ms/px` in `FEATHER_PIXEL_DELAY`, about 41 ms per 114 px list row) | Decoded (`0.033 s` in `ANIMATIONS.UIX`) and Fitted on 240 fps 8.1 footage |
+| Maximum delay | `TurnstileFeatherMaximumDelay` | 220 ms | Estimated; the footage's spread from title to last row stays under it |
 | Extra delay for the tapped element | — | 140 ms after the last other element | Estimated |
-| Camera | — | `perspective(1250px)` from the screen's centre | Fitted (see above) |
-| Angles, durations, easing | — | as the native column of the turnstile table | Fitted and Estimated, as above |
+| Camera | `IntroAnimationCameraEye` | `perspective(1000px)` from the screen's centre | Decoded (`CONSTANTS.UIX`) |
+| Hinge | `CenterPointPercent` | `Vec3(-0.1, 0, 0)` (−48 px) | Decoded (`ANIMATIONS.UIX`) |
+| Angles, durations, easing | `TurnstileFeather*` | as the native column of the turnstile table | Decoded (`ANIMATIONS.UIX`) |
 
-The Microsoft names are **Decoded** from UIX string tables; their values are still compiled into undecoded UIX bytecode.
-
-How `featherPage()` picks its targets when a page leaves:
+How `featherPage()` picks its targets:
 
 - Only the outermost `[data-feather]` elements count; nested ones move with their parent.
 - Elements that aren't visible, or are off screen, are skipped.
 - Going forward, the element the user just tapped (or focused and pressed Enter on) leaves last.
-- Elements waiting to leave hold their rest pose, including any tilt.
-- If a page has nothing to feather, it turns out as a whole.
+- Elements waiting to leave hold their rest pose, including any tilt; elements waiting to arrive stay hidden (`opacity: 0`) until their delay expires.
+- If a page has nothing to feather, it turns as a whole (`nativePageTurn`).
 - The next page starts turning in as soon as the last element has gone. In the footage the gap is one display frame.
 
-![Back: the page's rows feather out, then the previous page turns back in as one plane](assets/strips/back.jpg)
+![Back: the page's rows feather out, then the previous page feathers back in](assets/strips/back.jpg)
 
 ### Dropping away
 
@@ -105,19 +104,23 @@ In 240 fps 8.1 footage the returning label looks squashed vertically before it s
 
 ## Start feather
 
-Start uses its own stagger. Tiles leave and return **bottom-right first**; the app list keeps top-to-bottom order. The tapped tile starts leaving well after the others.
+Start uses its own hinge, timings (`START_TURNSTILE`) and stagger, decoded from `startmenu`'s `STYLES.UIX`. Both the tile grid (`FeatheredTileNavigateTo` / `Away`) and the app list (`FeatheredApplicationNavigateTo` / `Away`) set `Direction = -1`, so tiles leave and return **bottom-right first** and the app list feathers **bottom-to-top**. The tapped tile or app list item (`TileClickedNavigateAway` / `ApplicationClickedNavigateAway`) leaves last.
 
-![Start to Settings: tiles feather out, the tapped tile last, then Settings turns in](assets/strips/launch.jpg)
+![Start to Settings: tiles feather out, the tapped tile last, then Settings feathers in](assets/strips/launch.jpg)
 
 | Value | Microsoft name | Value | Source |
 |---|---|---|---|
-| Delay across the screen's height | `TileFeatherDelay_Y` | up to 145 ms (about 0.18 ms per px) | Fitted on 8.1 footage |
-| Delay across its width | `TileFeatherDelay_GridX` | up to 120 ms (about 0.25 ms per px) | Fitted on 8.1 footage |
-| Extra delay for the tapped tile | — | 150 ms after the last other tile | Fitted on 8.1 footage |
+| Tile hinge | `TileCenterPointPercent` | `Vec3(-0.3, 0, 0)` (−144 px on a 480 px screen) | Decoded (`STYLES.UIX`) |
+| App list hinge | `ApplicationCenterPointPercent` | `Vec3(0, 0, 0)` (0 px, the screen's left edge) | Decoded (`STYLES.UIX`) |
+| Outgoing turn | `TileNavigateAway` / `ApplicationNavigateAway` | 0° → −50° over 167 ms, `EXPO_IN_5` (`Exp` weight 100) | Decoded (`STYLES.UIX`) |
+| Returning turn | `TileNavigateTo` / `ApplicationNavigateTo` | −80° → 0° over 250 ms, `EXPO_OUT_2` (`Log` weight 10) | Decoded (`STYLES.UIX`) |
+| Delay across the screen's height | `TileFeatherDelay_Y` / `ApplicationFeatherDelay_Y` | up to 145 ms (`0.025 s` / `0.02 s` per band in `STYLES.UIX`) | Decoded and Fitted on 8.1 footage |
+| Delay across its width | `TileFeatherDelay_GridX` | up to 120 ms (`0.025 s` per grid column in `STYLES.UIX`) | Decoded and Fitted on 8.1 footage |
+| Extra delay for the tapped item | `TileClickedNavigateAway` / `ApplicationClickedNavigateAway` | 150 ms after the last other item (350 ms total delay in `STYLES.UIX`) | Decoded and Fitted on 8.1 footage |
 
-Tiles use the same screen-centred `perspective(1250px)` camera as page feathers (Estimated: the footage shows tiles above the centre sloping like page rows, but it wasn't fitted separately) and keep the Toolkit durations, which the delays above were fitted with.
+Because `TileCenterPointPercent` puts the hinge 144 px to the left of the screen (`-30%` of 480 px), even tiles in the leftmost column (`x = 24 px`) sit 168 px from the hinge: as they swing toward the viewer (`0° → -50°`) or return (`-80° → 0°`) through the screen-centred `perspective(1000px)` camera, they sweep horizontally across the left edge and expand in height (`Z > 0`).
 
-For tiles the delay is `(1 − y/height) × 145 + (1 − x/480) × 120`; for the app list it is `y/height × 145 + x/480 × 120`. The names (and a third, `TileFeatherDelay_YMax`) are **Decoded** from strings in `startmenu.dll`; their values are not.
+For tiles the delay is `(1 − y/height) × 145 + (1 − x/480) × 120`; for the app list it is `(1 − y/height) × 145`.
 
 ## Hub intro
 

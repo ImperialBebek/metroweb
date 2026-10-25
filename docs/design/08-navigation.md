@@ -56,13 +56,13 @@ Pages describe themselves to the shell with a few attributes and hooks. Follow t
 - Render pages from the app's `PageStack` `render(route)` function. Routes are plain strings the app parses itself (`'thread:3'`, `'album:camera-roll'`).
 - Move forward with `useNavigation().navigate(route)`; go back with `useNavigation().back()`.
 - A page with an [app bar](09-components.md#app-bar) is a `.app-page` (a flex column) with its content in a `.app-page-body` and `<AppBar>` last.
-- Choose `transition="feather"` (native apps, the default: pages arrive whole and leave feathered) or `"turnstile"` (whole-page turns both ways with the Toolkit's timings, like Silverlight apps).
+- Choose `transition="feather"` (native apps, the default: pages feather their `[data-feather]` elements in and out) or `"turnstile"` (whole-page turns both ways with the Toolkit's timings, like Silverlight apps).
 
 ### Attributes
 
 | Attribute | Put it on | Effect |
 |---|---|---|
-| `data-feather` | Each row or block that should turn on its own: list items, paragraphs, the pivot title, the header strip. `ToggleSwitch` and `ListPicker` mark themselves. | Feathers out when the page leaves ([turnstile feather](07-motion.md#turnstile-feather)); the page arrives whole. Only the outermost one counts. |
+| `data-feather` | Each row or block that should turn on its own: list items, paragraphs, the pivot title, the header strip. `ToggleSwitch` and `ListPicker` mark themselves. | Feathers in and out when the page arrives or leaves ([turnstile feather](07-motion.md#turnstile-feather)). Only the outermost one counts. |
 | `data-continuum` | The label inside a tappable `data-feather` row that should carry over to the next page (a name, a title) | Drops away from the row going forward and flies back going back ([continuum](07-motion.md#continuum)) |
 | `data-continuum-target` | The next page's title | Rises into place when the page was opened from a `data-continuum` label. `Pivot` and `SettingsPage` already mark their titles. |
 | `data-intro="<px>"` | Panorama layers | Turns the page's entrance into the [hub intro](07-motion.md#hub-intro). `Panorama` sets it. |

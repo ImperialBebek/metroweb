@@ -236,12 +236,12 @@ Every corner is square. The only circles are rings and dots: the ring around an 
 
 Motion is how you know where you are. Nothing bounces, and nothing fades without also moving.
 
-- **Turnstile**: pages turn about a hinge at the left edge of the screen. In native apps a page arrives whole, turning in as one plane in about 270 ms; going back it leaves feathered. A Silverlight-style stack (`transition="turnstile"`) turns whole pages both ways, on the Toolkit's timings.
-- **Feather**: when a native page leaves, its rows turn out one after another from the top, and the item you tapped leaves last. Mark a page whose content should drop away instead, like Messaging's conversation, with `data-drop-out`.
+- **Turnstile**: pages and feathered rows turn about a vertical hinge left of the screen (`-10%` of width for native pages, `-30%` for Start tiles), seen through a 1000 px camera at the screen's centre. A Silverlight-style stack (`transition="turnstile"`) turns whole pages both ways around the left edge on the Toolkit's timings.
+- **Feather**: in native apps, a page's `[data-feather]` rows turn in and out one after another from the top, and going forward the item you tapped leaves last. Mark a page whose content should drop away instead, like Messaging's conversation, with `data-drop-out`.
 - **Continuum**: the tapped label, such as a name or a title, drops away, and the next page's title rises in its place.
 - **Tilt**: whatever you press tilts toward the finger and sinks in, then springs back.
 - **Swivel**: full-screen pickers and message boxes swing in about a horizontal axis.
-- Arrivals ease out and departures ease in, on the Toolkit's exponential curves (`EXPO_OUT_6` and `EXPO_IN_6`). Take curves and durations from the package.
+- Arrivals ease out and departures ease in, on exponential curves (`EXPO_OUT_5` / `EXPO_IN_5` for native turnstiles, `EXPO_OUT_6` / `EXPO_IN_6` for Toolkit transitions). Take curves and durations from the package.
 - Animate transform, translate and opacity only.
 - With reduced motion on, pages and popups appear without moving and live tiles stop. Tilt stays, because it is feedback under the finger.
 

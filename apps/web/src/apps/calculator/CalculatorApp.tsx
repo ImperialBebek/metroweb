@@ -120,7 +120,7 @@ function Calculator() {
 
   return (
     <div className="app-page calculator" data-scientific={prefs.scientific || undefined}>
-      <div className="calculator-display" aria-live="polite">
+      <div className="calculator-display" data-feather aria-live="polite">
         {prefs.memory !== null && <span className="calculator-memory">M</span>}
         <div className="calculator-expression">{line.length > 40 ? `…${line.slice(-40)}` : line || '\u00a0'}</div>
         <div className="calculator-value" style={{ fontSize }}>
@@ -154,6 +154,7 @@ function CalcKey({ k }: { k: Key }) {
     <button
       type="button"
       className="calculator-key"
+      data-feather
       data-kind={k.kind}
       data-wide={k.wide || undefined}
       aria-label={k.name ?? k.label}

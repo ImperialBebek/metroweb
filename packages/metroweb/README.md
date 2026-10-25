@@ -73,7 +73,7 @@ export function App() {
 - `render(route)` returns the page for a route. Routes are strings your app parses itself, such as `'note:42'`.
 - In a page, `useNavigation()` gives `navigate(route)`, `back()` and `registerBackHandler(handler)`. Back on the first page does nothing unless you pass `onExit`.
 - Pages under the top one stay mounted and hidden, so Back returns to a page as it was left: its scroll position, pivot item and state.
-- Pages use the feather transition: a page arrives whole, and when it leaves its `data-feather` elements (list items, paragraphs and the titles already are) turn out one after another from the top. Pass `transition="turnstile"` to turn whole pages both ways instead. The [authoring contract](https://wp8.vercel.app/design/navigation#authoring-contract) lists the attributes, including continuum and `data-drop-out`.
+- Pages use the feather transition: a page's `data-feather` elements (list items, paragraphs and the titles already are) turn in and out one after another from the top, with the tapped item leaving last. Pass `transition="turnstile"` to turn whole pages both ways instead. The [authoring contract](https://wp8.vercel.app/design/navigation#authoring-contract) lists the attributes, including continuum and `data-drop-out`.
 
 A page with an app bar is an `.app-page`, with its content in an `.app-page-body` and the `AppBar` last:
 
