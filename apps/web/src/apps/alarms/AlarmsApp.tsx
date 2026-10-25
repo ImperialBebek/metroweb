@@ -59,6 +59,7 @@ function AlarmToast({ text, onDone }: { text: string; onDone: () => void }) {
     return () => window.clearTimeout(timer)
   }, [])
   return (
+    // metro-ignore click-on-div: a tap only dismisses the toast early; it goes by itself after 4 s
     <div className="alarms-toast" role="status" onClick={() => onDoneRef.current()}>
       <span className="alarms-toast-title">Alarm</span> {text}
     </div>

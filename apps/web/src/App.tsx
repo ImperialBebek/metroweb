@@ -71,6 +71,7 @@ function useClock() {
 function SystemTray({ settings, onTap }: { settings: SettingsState; onTap: () => void }) {
   const time = useClock()
   return (
+    // metro-ignore click-on-div: a tap on the tray drops the volume band, as on the phone; the tray has no tilt
     <div className="system-tray" aria-hidden onClick={onTap}>
       <div className="tray-left">
         {settings.airplaneMode ? (
@@ -253,7 +254,8 @@ export default function App() {
       </div>
       {/* Solid black behind any status bar the host draws over the page, and
           behind its home indicator, extending the nav bar. Tapping the status
-          bar stands in for tapping the phone's tray. */}
+          bar stands in for tapping the phone's tray.
+          metro-ignore click-on-div: like the tray, it isn't a control */}
       <div className="safe-area" style={{ top: 0, height: viewport.insets.top }} onClick={() => volumeBand.current?.show()} />
       <div className="safe-area" style={{ bottom: 0, height: viewport.insets.bottom }} />
       <MotionSpeedControl />

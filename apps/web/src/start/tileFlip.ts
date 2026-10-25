@@ -6,6 +6,8 @@ import { flushSync } from 'react-dom'
 // (hide) and the incoming face's (show). At `swap` the outgoing face's opacity
 // drops to 0 and the incoming one's rises to 1, with both edge-on, so a single
 // element can play the hide track up to `swap` and the show track after it.
+//
+// metro-ignore-file reduced-motion: useLiveTimer in Tile.tsx doesn't flip tiles under reduced motion.
 
 type Curve = (t: number) => number
 

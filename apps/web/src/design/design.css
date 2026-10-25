@@ -16,6 +16,7 @@
 
 .design {
   --design-nav-width: 300px;
+  /* metro-ignore viewport-units: the docs site is a web page, not a phone screen */
   min-height: 100vh;
   background: var(--wp-background);
   color: var(--wp-foreground);

@@ -257,6 +257,7 @@ export function NotePage({ id, isNew = false }: { id: string; isNew?: boolean })
 
   return (
     <div className="app-page onenote-note" ref={page}>
+      {/* metro-ignore click-on-div: a tap on the empty page puts the caret in the last block; the keyboard reaches the fields directly */}
       <div className="onenote-note-scroll" onClick={onCanvasClick}>
         <input
           className="onenote-title"
@@ -269,6 +270,7 @@ export function NotePage({ id, isNew = false }: { id: string; isNew?: boolean })
           onFocus={() => setActive(null)}
         />
         <div className="onenote-note-date">{longDate(note.created)}</div>
+        {/* metro-ignore click-on-div: the same tap on the empty page, between the blocks */}
         <div className="onenote-blocks" onClick={onCanvasClick}>
           {blocks.map((block, index) => (
             <BlockRow

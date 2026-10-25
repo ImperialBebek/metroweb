@@ -11,6 +11,7 @@
     "dev": "npm run dev -w wp8",
     "build": "npm run build -w metroweb && npm run build -w wp8 && npm run build -w metroweb-starter",
     "lint": "oxlint",
+    "lint:metro": "node skills/metro-ui/scripts/check-metro.mjs apps/web/src templates/starter/src --quiet",
     "preview": "npm run preview -w wp8",
     "docs:assets": "npm run docs:assets -w wp8 --"
   },

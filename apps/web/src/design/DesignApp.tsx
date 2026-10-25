@@ -196,6 +196,7 @@ export function DesignApp() {
 
   return (
     <DesignThemeContext.Provider value={store}>
+      {/* metro-ignore click-on-div: it routes clicks on the links inside without a page load */}
       <div className="design" style={themeVariables(theme.background, theme.accent) as CSSProperties} onClick={onClick}>
         <a className="design-skip" href="#content">
           Skip to content

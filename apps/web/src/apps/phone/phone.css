@@ -301,7 +301,7 @@
 .phone-call-end {
   height: 72px;
   width: 100%;
-  background: #e51400;
+  background: #e51400; /* metro-ignore accent-hex, raw-color: end call stays red with white text whatever the accent */
   color: #fff;
   font-size: var(--size-medium-large);
   text-align: center;
