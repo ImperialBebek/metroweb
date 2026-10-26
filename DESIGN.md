@@ -142,7 +142,7 @@ components:
 
 ## Overview
 
-Metro is Windows Phone 8's design language, and metroweb rebuilds it for the web from the phone's own theme files, the Windows Phone Toolkit and measurements of real phones. Content is the interface: text, pictures and flat colour, with nothing drawn around them. Type does the hierarchy, with big, light, lower-case headings. Motion explains where you are, as pages turn on a hinge at the left edge of the screen. It is personal, because the one accent colour the user picks recolours tiles, toggles, selection and pressed states at once, and touch first, because whatever you press tilts toward your finger. Where the phone and a web convention disagree, follow the phone.
+Metro is Windows Phone 8's design language, and metroweb rebuilds it for the web from the phone's own theme files, the Windows Phone Toolkit and measurements of real phones. It is named after transit signage, made to be read at a glance by people on the move, and the phone was made to get you in, out and back to life: each screen does one job, with nothing extra. Content is the interface: text, pictures and flat colour, with nothing drawn around them. Type does the hierarchy, with big, light, lower-case headings. Motion explains where you are, as pages turn on a hinge at the left edge of the screen. It is personal, because the one accent colour the user picks recolours tiles, toggles, selection and pressed states at once, and touch first, because whatever you press tilts toward your finger. Where the phone and a web convention disagree, follow the phone.
 
 The full spec, with the source of every value and live demos, is at https://wp8.vercel.app/design.
 
@@ -236,13 +236,13 @@ Every corner is square. The only circles are rings and dots: the ring around an 
 
 Motion is how you know where you are. Nothing bounces, and nothing fades without also moving.
 
-- **Turnstile**: pages and feathered rows turn about a vertical hinge left of the screen (`-10%` of width for native pages, `-30%` for Start tiles), seen through a 1000 px camera at the screen's centre. A Silverlight-style stack (`transition="turnstile"`) turns whole pages both ways around the left edge on the Toolkit's timings.
+- **Turnstile**: pages and feathered rows turn about a vertical hinge left of the screen (`-10%` of width, 100 px behind the screen in 8.1, the default; 8.0's Start tiles turned around `-30%`), seen through a 1000 px camera at the screen's centre. A Silverlight-style stack (`transition="turnstile"`) turns whole pages both ways around the left edge on the Toolkit's timings.
 - **Feather**: in native apps, a page's `[data-feather]` rows turn in and out one after another from the top, and going forward the item you tapped leaves last. Mark a page whose content should drop away instead, like Messaging's conversation, with `data-drop-out`.
-- **Continuum**: the tapped label, such as a name or a title, drops away, and the next page's title rises in its place.
+- **Continuum**: the tapped label, such as a name or a title, tips toward you, grows and drops away, and the next page's title falls into place from below.
 - **Tilt**: whatever you press tilts toward the finger and sinks in, then springs back.
 - **Swivel**: full-screen pickers and message boxes swing in about a horizontal axis.
 - Arrivals ease out and departures ease in, on exponential curves (`EXPO_OUT_5` / `EXPO_IN_5` for native turnstiles, `EXPO_OUT_6` / `EXPO_IN_6` for Toolkit transitions). Take curves and durations from the package.
-- Animate transform, translate and opacity only.
+- Animate transform (or translate, rotate and scale) and opacity only.
 - With reduced motion on, pages and popups appear without moving and live tiles stop. Tilt stays, because it is feedback under the finger.
 
 ## Components
@@ -250,6 +250,7 @@ Motion is how you know where you are. Nothing bounces, and nothing fades without
 Build with the metroweb components, which carry the phone's metrics, states, motion and Back behaviour.
 
 - An app's first page is a **pivot**: pages under one title, swiped or picked by their headers. A sub-page is a **settings page**, a pivot with one header. A hub is a **panorama**: wide sections under a big title, over an optional background picture.
+- A pivot shows one kind of data in different ways (filtered, grouped, or views of one item). A panorama gathers several sources in one place, in four sections at most, over one solid colour or one picture behind the whole panorama.
 - A **list item** is one button: a big title and an optional subtle subtitle. A tap navigates; rows have no selected state.
 - A **button** is outlined, and fills with the accent while pressed.
 - A **toggle switch** sits under a header with its state, On or Off, beside it. Its fill is the accent.
@@ -269,6 +270,9 @@ Build with the metroweb components, which carry the phone's metrics, states, mot
 - Don't add a font size without a source.
 - Don't use viewport units inside the screen.
 - Don't add back or close buttons to pages.
+- Don't nest a pivot or panorama inside another, and don't use a pivot for the steps of a task: steps are pages, so Back walks through them.
+- Don't put a slider, a map or anything else that pans sideways in a pivot or panorama with more than one item. Toggles go on settings pages.
+- Don't remove structure along with decoration: when there are no boxes, space and type size must still show what belongs together.
 - Don't navigate on click alone: it loses the tilt and fires during pans.
 - Don't write new easing curves or durations inline.
 - Don't put anything the user must read to finish a task in subtle or disabled text.

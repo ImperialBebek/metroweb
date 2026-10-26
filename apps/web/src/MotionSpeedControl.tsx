@@ -1,11 +1,21 @@
 import { useSyncExternalStore, type CSSProperties } from 'react'
-import { getMotionSpeed, MOTION_SPEEDS, setMotionSpeed, subscribeMotionSpeed } from 'metroweb'
+import {
+  getMotionSpeed,
+  getNativeMotionVersion,
+  MOTION_SPEEDS,
+  NATIVE_MOTION_VERSIONS,
+  setMotionSpeed,
+  setNativeMotionVersion,
+  subscribeMotionSpeed,
+  subscribeNativeMotionVersion,
+} from 'metroweb'
 
 const PRESETS = [0.1, 0.25, 0.5, 1, 2]
 
 // Sits on the desk beside the phone, so it is only shown when there is room.
 export function MotionSpeedControl() {
   const speed = useSyncExternalStore(subscribeMotionSpeed, getMotionSpeed)
+  const version = useSyncExternalStore(subscribeNativeMotionVersion, getNativeMotionVersion)
   const index = MOTION_SPEEDS.indexOf(speed)
   const fill = `${(index / (MOTION_SPEEDS.length - 1)) * 100}%`
   return (
@@ -30,6 +40,16 @@ export function MotionSpeedControl() {
         {PRESETS.map((preset) => (
           <button key={preset} type="button" aria-pressed={preset === speed} onClick={() => setMotionSpeed(preset)}>
             {preset}×
+          </button>
+        ))}
+      </div>
+      <div className="speed-control-head speed-control-section" id="native-motion-label">
+        <span className="speed-control-title">native motion</span>
+      </div>
+      <div className="speed-control-presets speed-control-versions" role="group" aria-labelledby="native-motion-label">
+        {NATIVE_MOTION_VERSIONS.map((value) => (
+          <button key={value} type="button" aria-pressed={value === version} onClick={() => setNativeMotionVersion(value)}>
+            {value}
           </button>
         ))}
       </div>

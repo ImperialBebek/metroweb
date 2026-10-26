@@ -1,5 +1,14 @@
 import { useEffect, useImperativeHandle, useRef, useState, type PointerEvent, type Ref } from 'react'
-import { EXPO_OUT_6, ph, prefersReducedMotion, START_TURNSTILE, turnstileFeather, type FeatherPlacement, useTilt } from 'metroweb'
+import {
+  EXPO_OUT_6,
+  getNativeMotionVersion,
+  ph,
+  prefersReducedMotion,
+  startTurnstile,
+  turnstileFeather,
+  type FeatherPlacement,
+  useTilt,
+} from 'metroweb'
 import { APP_BY_ID, APP_LIST, DEFAULT_LAYOUT, type AppDef } from './apps'
 import { Icon } from './icons'
 import { Tile } from './Tile'
@@ -112,11 +121,12 @@ export function StartScreen({
       const yNorm = Math.min(Math.max(y, 0) / height, 1)
       const xNorm = Math.min(Math.max(x, 0) / SCREEN_WIDTH, 1)
       // STYLES.UIX sets Direction = -1 on both FeatheredTileNavigate* and
-      // FeatheredApplicationNavigate*: tiles feather bottom-right first around
-      // TileCenterPointPercent (-0.3 = -144px), and the app list feathers
-      // bottom-to-top around ApplicationCenterPointPercent (0).
+      // FeatheredApplicationNavigate*: tiles feather bottom-right first, and the
+      // app list bottom-to-top. In 8.0 tiles turn around TileCenterPointPercent
+      // (-0.3 = -144px) and the app list around ApplicationCenterPointPercent
+      // (0); 8.1's turns bring their own hinge (START_TURNSTILE_81).
       const delay = pane === 0 ? (1 - yNorm) * FEATHER_Y_MAX + (1 - xNorm) * FEATHER_X_MAX : (1 - yNorm) * FEATHER_Y_MAX
-      const hingeX = pane === 0 ? -SCREEN_WIDTH * 0.3 : 0
+      const hingeX = getNativeMotionVersion() === '8.1' ? undefined : pane === 0 ? -SCREEN_WIDTH * 0.3 : 0
       found.push({ el, place: { x, y, screen: { width: SCREEN_WIDTH, height }, hingeX }, outDelay: delay, inDelay: delay })
     })
     if (source) {
@@ -132,7 +142,7 @@ export function StartScreen({
       feathered.current = null
       if (prefersReducedMotion()) return
       const list = targets(source)
-      const animations = list.map((t) => turnstileFeather(t.el, 'forwardOut', t.place, t.outDelay, START_TURNSTILE))
+      const animations = list.map((t) => turnstileFeather(t.el, 'forwardOut', t.place, t.outDelay, startTurnstile()))
       feathered.current = { pane, targets: list, animations }
       await Promise.all(animations.map((a) => a.finished.catch(() => {})))
     },
@@ -142,7 +152,7 @@ export function StartScreen({
       if (!previous) return
       // After showTiles() the elements that left are no longer on screen.
       const list = previous.pane === pane ? previous.targets : targets()
-      const animations = list.map((t) => turnstileFeather(t.el, 'backwardIn', t.place, t.inDelay, START_TURNSTILE))
+      const animations = list.map((t) => turnstileFeather(t.el, 'backwardIn', t.place, t.inDelay, startTurnstile()))
       previous.animations.forEach((a) => a.cancel())
       await Promise.all(animations.map((a) => a.finished.catch(() => {})))
       animations.forEach((a) => a.cancel())

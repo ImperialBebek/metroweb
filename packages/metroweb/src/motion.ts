@@ -1,3 +1,5 @@
+import { getNativeMotionVersion } from './nativeMotionVersion.ts'
+
 // Silverlight's ExponentialEase, sampled into a CSS linear() easing so the curve
 // matches the Windows Phone Toolkit storyboards exactly.
 function sampled(curve: (t: number) => number, steps = 32): string {
@@ -27,7 +29,17 @@ export const EXPO_OUT_15 = exponential(15, 'out')
 // the viewer.
 export type TurnstileMode = 'forwardIn' | 'forwardOut' | 'backwardIn' | 'backwardOut'
 
-export type TurnstileTiming = Record<TurnstileMode, { from: number; to: number; duration: number; easing: string }>
+// UIX's CenterPointPercent: `x` is a fraction of the screen's width from its
+// left edge, `z` is px behind the screen (UIX's sign; CSS's is the opposite).
+export interface TurnstileHinge {
+  x: number
+  z: number
+}
+
+export type TurnstileTiming = Record<
+  TurnstileMode,
+  { from: number; to: number; duration: number; easing: string; hinge?: TurnstileHinge }
+>
 
 // Durations are the Toolkit TurnstileTransition's (350ms in, 250ms out).
 export const TOOLKIT_TURNSTILE: TurnstileTiming = {
@@ -48,6 +60,31 @@ export const NATIVE_TURNSTILE: TurnstileTiming = {
   backwardOut: { from: 0, to: 80, duration: 134, easing: EXPO_IN_5 },
 }
 
+// 8.1's ANIMATIONS.UIX keeps the angles and weights but shortens Turnstile* to
+// 300ms in and 128ms out, adds TimeScale 0.6 on TurnstileFeatherForwardIn
+// (180ms; 0.8 and 0.48 stay: 102ms out, 144ms back in), and hinges at
+// CenterPointPercent (+0.1, 0, 100) on ForwardOut and BackwardIn and
+// (-0.1, 0, 100) on ForwardIn and BackwardOut. WinRT's turnstile hinges 100px
+// behind the plane, so z is read as px.
+const HINGE_81_LEFT: TurnstileHinge = { x: -0.1, z: 100 }
+const HINGE_81_RIGHT: TurnstileHinge = { x: 0.1, z: 100 }
+
+export const NATIVE_TURNSTILE_81: TurnstileTiming = {
+  forwardIn: { from: 80, to: 0, duration: 180, easing: EXPO_OUT_5, hinge: HINGE_81_LEFT },
+  forwardOut: { from: 0, to: -50, duration: 102, easing: EXPO_IN_5, hinge: HINGE_81_RIGHT },
+  backwardIn: { from: -50, to: 0, duration: 144, easing: EXPO_OUT_5, hinge: HINGE_81_RIGHT },
+  backwardOut: { from: 0, to: 80, duration: 102, easing: EXPO_IN_5, hinge: HINGE_81_LEFT },
+}
+
+const NATIVE_PAGE_TURNSTILE_81: TurnstileTiming = {
+  forwardIn: { from: 80, to: 0, duration: 300, easing: EXPO_OUT_5, hinge: HINGE_81_LEFT },
+  forwardOut: { from: 0, to: -50, duration: 128, easing: EXPO_IN_5, hinge: HINGE_81_RIGHT },
+  backwardIn: { from: -50, to: 0, duration: 300, easing: EXPO_OUT_5, hinge: HINGE_81_RIGHT },
+  backwardOut: { from: 0, to: 80, duration: 128, easing: EXPO_IN_5, hinge: HINGE_81_LEFT },
+}
+
+const is81 = () => getNativeMotionVersion() === '8.1'
+
 // Decoded from TileNavigate* and ApplicationNavigate* in startmenu's
 // STYLES.UIX: forwardOut 0° → -50° over 167ms (Exp weight 100, ln 100 ≈ 4.61),
 // backwardIn -80° → 0° over 250ms (Log weight 10, ln 10 ≈ 2.30).
@@ -58,7 +95,24 @@ export const START_TURNSTILE: TurnstileTiming = {
   backwardOut: { from: 0, to: 50, duration: 133, easing: EXPO_IN_5 },
 }
 
-// IntroAnimationCameraEye = Vec3(0, 0, -1000) in uixmobile's CONSTANTS.UIX.
+// 8.1's STYLES.UIX: every turn is Log/Exp weight 150 and carries its own
+// CenterPointPercent, which overrides TileCenterPointPercent the way
+// EnterRearrangeClick's (0.5, 0.5, 0) scales a tile about its own centre.
+// NavigateAwayForward 0° → 50° over 128ms at (-0.1, 0, 50); NavigateToBackTile
+// 50° → 0° over 300ms at (0.1, 0, 100); NavigateToForward -80° → 0° over
+// 300ms at (-0.1, 0, 100); NavigateAwayBack 0° → -80° over 128ms at (0.1, 0, 100).
+export const START_TURNSTILE_81: TurnstileTiming = {
+  forwardIn: { from: 80, to: 0, duration: 300, easing: EXPO_OUT_5, hinge: { x: -0.1, z: 100 } },
+  forwardOut: { from: 0, to: -50, duration: 128, easing: EXPO_IN_5, hinge: { x: -0.1, z: 50 } },
+  backwardIn: { from: -50, to: 0, duration: 300, easing: EXPO_OUT_5, hinge: HINGE_81_RIGHT },
+  backwardOut: { from: 0, to: 80, duration: 128, easing: EXPO_IN_5, hinge: HINGE_81_RIGHT },
+}
+
+export const startTurnstile = () => (is81() ? START_TURNSTILE_81 : START_TURNSTILE)
+
+// IntroAnimationCameraEye = Vec3(0, 0, -1000) in StartAssets480x800's CONSTANTS.UIX, the camera Start
+// attaches while its tiles turn back in. App page turns set no camera in the markup, so for
+// them this is an estimate; 8.1 footage fits 1250-1290 px.
 export const NATIVE_PERSPECTIVE = 1000
 
 const NATIVE_PAGE_TURNSTILE: TurnstileTiming = {
@@ -86,9 +140,9 @@ export function turnstile(element: HTMLElement, mode: TurnstileMode, timing = TO
 // Whole-page native turnstile (Turnstile* in ANIMATIONS.UIX): the page turns
 // around CenterPointPercent = (-0.1, 0, 0) through the stack's 1000px camera.
 export function nativePageTurn(page: HTMLElement, stack: HTMLElement, mode: TurnstileMode): Animation[] {
-  const { from, to, duration, easing } = NATIVE_PAGE_TURNSTILE[mode]
+  const { from, to, duration, easing, hinge } = (is81() ? NATIVE_PAGE_TURNSTILE_81 : NATIVE_PAGE_TURNSTILE)[mode]
   const outgoing = mode.endsWith('Out')
-  const origin = '-10% 50%'
+  const origin = `${(hinge?.x ?? -0.1) * 100}% 50% ${-(hinge?.z ?? 0)}px`
   return [
     stack.animate([{ perspective: `${NATIVE_PERSPECTIVE}px` }, { perspective: `${NATIVE_PERSPECTIVE}px` }], {
       duration,
@@ -140,27 +194,31 @@ export function scrimFade(element: HTMLElement, direction: 'in' | 'out'): Animat
 // slope down toward the right when behind the screen and up toward the right
 // when in front of it, as on the phone. `x` and `y` are the element's top-left
 // corner and `screen` the screen's size, all in 480-wide screen px.
+// `hingeX` (px from the screen's left edge) and `hingeZ` (px behind it)
+// override the timing's hinge.
 export interface FeatherPlacement {
   x: number
   y: number
   screen: { width: number; height: number }
   hingeX?: number
+  hingeZ?: number
 }
 
 export function turnstileFeather(
   element: HTMLElement,
   mode: TurnstileMode,
-  { x, y, screen, hingeX = -screen.width * 0.1 }: FeatherPlacement,
+  { x, y, screen, hingeX, hingeZ }: FeatherPlacement,
   delay: number,
-  timing = NATIVE_TURNSTILE,
+  timing = is81() ? NATIVE_TURNSTILE_81 : NATIVE_TURNSTILE,
 ): Animation {
-  const { from, to, duration, easing } = timing[mode]
+  const { from, to, duration, easing, hinge } = timing[mode]
   const outgoing = mode.endsWith('Out')
   const cameraX = screen.width / 2
-  const pivotX = cameraX - hingeX
+  const pivotX = cameraX - (hingeX ?? screen.width * (hinge?.x ?? -0.1))
+  const depth = hingeZ ?? hinge?.z ?? 0
   const transformOrigin = `${cameraX - x}px ${screen.height / 2 - y}px`
   const at = (angle: number) =>
-    `perspective(${NATIVE_PERSPECTIVE}px) translateX(${-pivotX}px) rotateY(${angle}deg) translateX(${pivotX}px)`
+    `perspective(${NATIVE_PERSPECTIVE}px) translate3d(${-pivotX}px, 0, ${-depth}px) rotateY(${angle}deg) translate3d(${pivotX}px, 0, ${depth}px)`
   const frames = outgoing
     ? [
         { transform: at(from), transformOrigin, opacity: 1 },
@@ -188,6 +246,11 @@ export function turnstileFeather(
 // the screen leave later (~41ms per 114px list row in 240fps WP8.1 footage).
 export const FEATHER_PIXEL_DELAY = 0.36 // ms per px
 export const FEATHER_MAX_DELAY = 220
+
+// The markup's values: TurnstileFeatherPixelDelay = TurnstileFeatherMaximumDelay
+// (0.3s) / ResolutionHeight (800), and no feather clamps to the maximum.
+export const featherDelay = (y: number) =>
+  is81() ? (Math.max(y, 0) * 300) / 800 : Math.min(Math.max(y, 0) * FEATHER_PIXEL_DELAY, FEATHER_MAX_DELAY)
 
 // Messaging's conversation going back: instead of turning, its content drops
 // and fades (fitted to 240fps WP8.1 footage: ~185px over 150ms, gone in the
@@ -227,7 +290,107 @@ const CONTINUUM: Record<ContinuumPhase, { x: number; y: number; duration: number
   backwardShow: { x: 90, y: 70, duration: 350 },
 }
 
+type Curve = (t: number) => number
+// Iris interpolations with weight w (see tileFlip.ts): Exp eases in, Log out,
+// SCurve is Exp then Log at double speed.
+const uixExp =
+  (w: number): Curve =>
+  (t) =>
+    (w ** t - 1) / (w - 1)
+const uixLog =
+  (w: number): Curve =>
+  (t) =>
+    1 - uixExp(w)(1 - t)
+const uixSCurve =
+  (w: number): Curve =>
+  (t) =>
+    t < 0.5 ? uixExp(w)(2 * t) / 2 : 1 - uixExp(w)(2 - 2 * t) / 2
+const linearCurve: Curve = (t) => t
+
+// [time (ms), value, curve of the segment arriving at this key]
+type Track = [number, number, Curve?][]
+
+function sampleTrack(track: Track, ms: number): number {
+  if (ms <= track[0][0]) return track[0][1]
+  for (let i = 1; i < track.length; i++) {
+    const [t1, v1, curve = linearCurve] = track[i]
+    const [t0, v0] = track[i - 1]
+    if (ms <= t1) return v0 + (v1 - v0) * curve((ms - t0) / (t1 - t0))
+  }
+  return track[track.length - 1][1]
+}
+
+// 8.1's ContinuumActive* in ANIMATIONS.UIX, offsets from UIXMobileAssets480x800.
+// Rotations are about X, in CSS's sign (the markup's is the opposite, as for
+// rotateY), so the leaving label tips toward the viewer as it grows. The scale
+// on forwardShow is kind 7 (EaseIn 10, 0.5), whose formula isn't decoded; WinRT's
+// ContinuumNavigationTransitionInfo uses PowerEase 2 EaseOut there.
+interface Continuum81 {
+  duration: number
+  origin: string
+  y: Track
+  rotate: Track
+  scale: Track
+  opacity: Track
+}
+
+const CONTINUUM_81: Record<ContinuumPhase, Continuum81> = {
+  forwardHide: {
+    duration: 120,
+    origin: '0% 100%',
+    y: [[0, 0], [120, 200, uixExp(150)]],
+    rotate: [[0, 0], [120, -80, uixExp(60)]],
+    scale: [[0, 1], [120, 1.5, uixExp(150)]],
+    opacity: [[0, 1], [100, 1], [120, 0]],
+  },
+  forwardShow: {
+    duration: 350,
+    origin: '0% 100%',
+    y: [[0, 200], [100, -40, uixLog(60)], [350, 0, uixSCurve(7.5)]],
+    rotate: [[0, 50], [350, 0, uixLog(10)]],
+    scale: [[0, 1.5], [350, 1, (t) => 1 - (1 - t) ** 2]],
+    opacity: [[0, 0], [167, 1, uixLog(10)]],
+  },
+  backwardHide: {
+    duration: 300,
+    origin: '50% 50%',
+    y: [[0, 0]],
+    rotate: [[0, 0]],
+    scale: [[0, 1], [300, 0.85, uixExp(10)]],
+    opacity: [[0, 1], [300, 0, uixLog(50)]],
+  },
+  backwardShow: {
+    duration: 200,
+    origin: '50% 50%',
+    y: [[0, -20], [200, 0, uixLog(10)]],
+    rotate: [[0, 90], [200, 0, uixLog(10)]],
+    scale: [[0, 1]],
+    opacity: [[0, 1]],
+  },
+}
+
+// Sampled every 8ms, since each property has its own curve. `rotate` has no
+// perspective of its own, so the turn about X reads as a vertical squash.
+function continuum81(element: HTMLElement, phase: ContinuumPhase, delay: number): Animation {
+  const { duration, origin, y, rotate, scale, opacity } = CONTINUUM_81[phase]
+  const frames: Keyframe[] = []
+  const steps = Math.ceil(duration / 8)
+  for (let i = 0; i <= steps; i++) {
+    const ms = (duration * i) / steps
+    frames.push({
+      offset: i / steps,
+      translate: `0px ${sampleTrack(y, ms).toFixed(2)}px`,
+      rotate: `x ${sampleTrack(rotate, ms).toFixed(2)}deg`,
+      scale: sampleTrack(scale, ms).toFixed(4),
+      opacity: sampleTrack(opacity, ms).toFixed(4),
+      transformOrigin: origin,
+    })
+  }
+  return element.animate(frames, { duration, delay, fill: phase.endsWith('Hide') ? 'forwards' : 'both' })
+}
+
 export function continuum(element: HTMLElement, phase: ContinuumPhase, delay = 0): Animation {
+  if (is81()) return continuum81(element, phase, delay)
   const { x, y, duration } = CONTINUUM[phase]
   const away = { translate: `${x}px ${y}px`, opacity: 0 }
   const home = { translate: '0px 0px', opacity: 1 }

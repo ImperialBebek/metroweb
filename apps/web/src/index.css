@@ -413,6 +413,15 @@
   gap: 6px;
 }
 
+.speed-control-section {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.speed-control-versions {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .speed-control-presets button {
   display: grid;
   place-items: center;

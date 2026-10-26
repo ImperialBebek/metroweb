@@ -74,6 +74,7 @@ export function App() {
 - In a page, `useNavigation()` gives `navigate(route)`, `back()` and `registerBackHandler(handler)`. Back on the first page does nothing unless you pass `onExit`.
 - Pages under the top one stay mounted and hidden, so Back returns to a page as it was left: its scroll position, pivot item and state.
 - Pages use the feather transition: a page's `data-feather` elements (list items, paragraphs and the titles already are) turn in and out one after another from the top, with the tapped item leaving last. Pass `transition="turnstile"` to turn whole pages both ways instead. The [authoring contract](https://wp8.vercel.app/design/navigation#authoring-contract) lists the attributes, including continuum and `data-drop-out`.
+- The feather, continuum and Start's turns (`startTurnstile()`) play Windows Phone 8.1's native motion. `setNativeMotionVersion('8.0')` switches every page stack back to 8.0's longer turns, hinge and feather delay and the estimated 8.0 continuum (`getNativeMotionVersion` and `subscribeNativeMotionVersion` read and watch it); see [Motion](https://wp8.vercel.app/design/motion#what-81-changed).
 
 A page with an app bar is an `.app-page`, with its content in an `.app-page-body` and the `AppBar` last:
 

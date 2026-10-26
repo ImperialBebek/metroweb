@@ -34,7 +34,7 @@ Every value carries one of five labels, so you can tell how much to trust it.
 
 | Label | Meaning |
 |---|---|
-| **Decoded** | Read from the Windows Phone 8 emulator image: theme XAML, the registry, string tables, app manifests, or compiled UIX markup decoded with the tools in [`docs/evidence/uix/tools`](../evidence/uix/tools). |
+| **Decoded** | Read from the Windows Phone 8 emulator image: theme XAML, the registry, string tables, app manifests, or compiled UIX markup decoded with the tools in [`docs/evidence/uix/tools`](../evidence/uix/tools). **Decoded (8.1)** is the same, read from the Windows Phone 8.1 SDK Update 1 emulator image; **Decoded (8.1 WinRT)** is read from the 8.1 SDK's theme for its new app model (`generic.xaml`, `themeresources.xaml`), whose sizes are 8.0 px × 0.8. Neither replaces an 8.0 value; where one agrees with an Estimated value, the source says so. |
 | **Toolkit** | Taken from Microsoft's published Windows Phone Toolkit source (Silverlight). |
 | **Fitted** | Measured frame by frame from recordings of real phones, usually with a curve fitted to the samples. |
 | **Estimated** | Matched by eye against footage or screenshots, or chosen by us where no source exists. |
@@ -64,18 +64,19 @@ Pages name files by their path from the root of the repository.
 | Area | Windows Phone 8.0 | Windows Phone 8.1 | Recreation follows | Status |
 |---|---|---|---|---|
 | Back, Start, Search | Hardware or capacitive keys below the screen | Adds an optional on-screen navigation bar | 8.1 on-screen bar, because a browser has no hardware keys | Settled |
-| System tray | 32 px tray across the top | Same tray, plus Action Center on a swipe down | 8.0 tray. Tapping it opens the volume band; there is no Action Center | Settled |
+| System tray | 32 px tray across the top, 9 px left padding, clock 10 px from the right | Same height, 24 px padding on both sides, plus Action Center on a swipe down | 8.0 tray, with estimated 12 px padding. Tapping it opens the volume band; there is no Action Center | Settled |
 | Start | Four small-tile columns of solid accent tiles | Adds a six-column option and a Start background picture | 8.0 | Settled |
 | App list | Search button and a list sorted by name | Search box and more sorting and grouping options | 8.0 style list; letter groups are not implemented | Settled |
-| Accent colours | 20 accents from the registry | Same set (not checked against an 8.1 image) | 8.0 registry values | Settled |
-| Typography | Segoe WP | Segoe WP | 8.0 theme resources | Settled |
-| Page transitions | Turnstile, feather and continuum | Same family | Native turnstile and Start feather decoded from `ANIMATIONS.UIX` and `STYLES.UIX` and checked against 240 fps 8.1 footage; Toolkit timings for Silverlight-style stacks | Settled |
+| Accent colours | 20 accents from the registry; default Red | Same 20 in the same order, but Cobalt is `#3E65FF` (was `#0050EF`), each accent gains a complementary colour, and the emulator defaults to Cobalt | 8.0 registry values | Settled |
+| Typography | Segoe WP | Segoe WP; the Silverlight theme resources are unchanged. WinRT apps get the same ramp in view pixels (× 0.8) | 8.0 theme resources | Settled |
+| Page transitions | Turnstile, feather and continuum | Same family, faster: turns out 128 ms and in 300 ms, feathered elements in over 180 ms; continuum moves vertically and turns about X | 8.1: native turnstile, Start feather and continuum decoded from 8.1's `ANIMATIONS.UIX` and `STYLES.UIX` and checked against 240 fps 8.1 footage; Toolkit timings for Silverlight-style stacks. `setNativeMotionVersion('8.0')` switches back to the 8.0 turnstile and Start feather, and the estimated 8.0 continuum, for comparison | Provisional |
 | Hub intro | Panorama swings in while layers slide | Same family | Fitted to 8.0 (Games hub) and 8.1 (Office hub) footage | Provisional |
 | Pivot | Swipe or tap headers | Same | 8.0 behaviour; content cascade estimated from 8.1 footage | Provisional |
+| Panorama | Section headers 66.667 px, title 170.667 px, sections 191 px down (decoded) | Same at 480 × 800; smaller in the six-column variants | Sizes matched to 8.1 footage of what looks like a six-column phone (53.333, 133.333, 146), not yet moved to the decoded 8.0 values | Provisional |
 | Live tiles | Flip, cycle, people and calendar templates | Adds transparent tiles over a background | 8.0, decoded from `ShellControls.dll` | Settled |
 | Music | One Music+Videos hub | Separate Xbox Music and Video apps | 8.0 | Settled |
 | Volume | One volume band, 0 to 30, with media controls | Ringer and media volumes split | 8.0 | Settled |
-| Settings | 8.0 item list and order | Adds and regroups items (for example notifications+actions) | 8.0 registry order | Settled |
+| Settings | 8.0 item list and order | Adds and regroups items: start+theme first, then notifications+actions, cellular+SIM, NFC, data sense, storage sense, navigation bar and more (decoded from the 8.1 emulator's registry; a Lumia 520 on 8.1 has the same list without navigation bar, apps corner and accessory apps) | 8.0 registry order | Settled |
 
 ## Keeping these pages current
 

@@ -23,18 +23,28 @@ export {
   nativePageTurn,
   NATIVE_PERSPECTIVE,
   NATIVE_TURNSTILE,
+  NATIVE_TURNSTILE_81,
   PANORAMA_INTRO_DURATION,
   panoramaIntro,
   prefersReducedMotion,
   scrimFade,
   slideSheet,
   START_TURNSTILE,
+  START_TURNSTILE_81,
+  startTurnstile,
   swivel,
   TOOLKIT_TURNSTILE,
   turnstile,
   turnstileFeather,
 } from './motion.ts'
-export type { ContinuumPhase, FeatherPlacement, TurnstileMode, TurnstileTiming } from './motion.ts'
+export type { ContinuumPhase, FeatherPlacement, TurnstileHinge, TurnstileMode, TurnstileTiming } from './motion.ts'
+export {
+  getNativeMotionVersion,
+  NATIVE_MOTION_VERSIONS,
+  setNativeMotionVersion,
+  subscribeNativeMotionVersion,
+} from './nativeMotionVersion.ts'
+export type { NativeMotionVersion } from './nativeMotionVersion.ts'
 export { featherPage } from './pageMotion.ts'
 export type { FeatherOptions } from './pageMotion.ts'
 export { getMotionSpeed, MOTION_SPEEDS, motionMs, setMotionSpeed, subscribeMotionSpeed } from './motionSpeed.ts'

@@ -31,6 +31,8 @@ Done when `npm run dev` shows the first page inside the frame.
    | One form or settings page | `SettingsPage` with `app` and `title` |
    | A hub: wide sections over a background picture | `Panorama` with `title`, `background` and `sections` |
 
+   A pivot's items hold one kind of data; a panorama has four sections at most. Never nest one in another, don't use a pivot for the steps of a task (each step is a page), and keep sliders, maps and toggles out of a pivot or panorama with more than one item: put toggles on a `SettingsPage`.
+
    A page with commands is a `<div className="app-page">` holding a `<div className="app-page-body">` and then the `AppBar`: up to four `buttons` (`{ icon, label, onTap }`, with icons named in `GLYPHS`) and an optional `menu` (`{ label, onTap }`).
 
 2. Fill it with the package's controls. They carry the phone's metrics, states, tilt and Back handling:
@@ -75,7 +77,7 @@ Done when the check reports no errors, each warning is fixed or marked with its 
 ### Motion
 
 - The stack turns the pages. Each row or block marked `data-feather` turns in and out on its own, top to bottom, with the tapped item leaving last. Mark a tapped label that becomes the next page's title with `data-continuum`, and a page whose content should drop away going back with `data-drop-out`. The package's list items, paragraphs and titles are already marked.
-- Animate `transform`, `translate` and `opacity`, with the package's curves and transitions: `EXPO_OUT_5` / `EXPO_OUT_6` for what arrives, `EXPO_IN_5` / `EXPO_IN_6` for what leaves, and `turnstile`, `swivel`, `continuum`, `slideSheet` and the rest.
+- Animate `transform` (or `translate`, `rotate`, `scale`) and `opacity`, with the package's curves and transitions: `EXPO_OUT_5` / `EXPO_OUT_6` for what arrives, `EXPO_IN_5` / `EXPO_IN_6` for what leaves, and `turnstile`, `swivel`, `continuum`, `slideSheet` and the rest.
 - Check `prefersReducedMotion()` before starting an animation; in CSS, add a `prefers-reduced-motion: reduce` block.
 - Pages under the top one stay mounted under `visibility: hidden`. Inside a page, undo a `hidden` with `visibility: inherit`.
 
@@ -135,7 +137,7 @@ node <this skill's folder>/scripts/check-metro.mjs src
 
 It reads stylesheets as text, and TypeScript and JavaScript with the app's own `typescript` package. Each finding gives the file and line, the rule and the fix; `--help` lists the rules. Errors are rules the phone never breaks: fix them. Review each warning: fix it, or mark a deliberate exception with its reason on the line or the line above, `/* metro-ignore <rule>: <why> */` (`{/* … */}` inside JSX). `metro-ignore-file <rule>` covers a whole file.
 
-The check reads code, so look over what it can't see: the case of text that comes from data, Back closing everything that opens, the accent kept to a few places, and spacing on the 12 px grid.
+The check reads code, so look over what it can't see: the case of text that comes from data, Back closing everything that opens, the accent kept to a few places, and spacing on the 12 px grid. Then look at the screen: it should do one job, a glance should say what's new, and with the screenshot blurred the headers and groups should still read.
 
 ## Look it up
 

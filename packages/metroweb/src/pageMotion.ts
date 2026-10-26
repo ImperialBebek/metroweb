@@ -1,8 +1,7 @@
 import {
   continuum,
   dropOut,
-  FEATHER_MAX_DELAY,
-  FEATHER_PIXEL_DELAY,
+  featherDelay,
   hubSwing,
   nativePageTurn,
   panoramaIntro,
@@ -47,7 +46,7 @@ function featherTargets(page: HTMLElement, frame: DOMRect, height: number): Targ
     const w = r.width / scale
     const h = r.height / scale
     if (!w || !h || y + h <= 0 || y >= height || x + w <= 0 || x >= SCREEN_WIDTH) return
-    targets.push({ el, x, y, delay: Math.min(Math.max(y, 0) * FEATHER_PIXEL_DELAY, FEATHER_MAX_DELAY) })
+    targets.push({ el, x, y, delay: featherDelay(y) })
   })
   return targets
 }
