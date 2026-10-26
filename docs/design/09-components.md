@@ -1,8 +1,8 @@
 # 09 · Components
 
-> **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
+> **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-26
 > **Code** [`packages/metroweb/src/components/`](../../packages/metroweb/src/components), [`packages/metroweb/styles/components.css`](../../packages/metroweb/styles/components.css)
-> **Sources** UIXMobile controls as used by `SettingsUI.exe`; Windows Phone Toolkit controls; `ThemeResources.xaml`; emulator screenshots
+> **Sources** UIXMobile controls as used by `SettingsUI.exe`; Windows Phone Toolkit controls; `ThemeResources.xaml`; emulator screenshots; Windows Phone 7 design guidance for choosing a pivot or panorama; the Windows Phone 8.1 SDK's WinRT templates (`generic.xaml`), as corroboration
 
 The shared building blocks. Each entry gives what it is, its metrics and states, how it behaves, and where it lives. Layout values not repeated here are in [Layout](03-layout.md); motion values are in [Motion](07-motion.md).
 
@@ -11,6 +11,7 @@ The shared building blocks. Each entry gives what it is, its metrics and states,
 | [Pivot](#pivot) | `Pivot.tsx` | UIX `Pivot` |
 | [Single-page pivot](#single-page-pivot) | `controls.tsx` `SettingsPage` | UIX `SinglePivotPage` |
 | [Panorama](#panorama) | `Panorama.tsx` | UIX `Panorama` |
+| [Pivot or panorama](#pivot-or-panorama) | | When to use which |
 | [List item](#list-item) | `controls.tsx` `ListItem` | UIX `DoubleLineListItem` / `SingleLineListItem` |
 | [Paragraph](#paragraph) | `controls.tsx` `Paragraph` | `PhoneTextNormalStyle` text block |
 | [Button](#button) | `controls.tsx` `Button` | `PhoneButtonBase` |
@@ -62,9 +63,9 @@ A hub: one wide canvas wider than the screen, with a big title and an optional b
 
 | Part | Value | Source |
 |---|---|---|
-| Section | 432 px wide (the next header peeks in 48 px), 146 px from the top, 12 px left padding | Estimated |
-| Title | Light 133.333, 14 px in, 22 px above the top of the page area | Estimated |
-| Section header | SemiLight 53.333, 12 px in, 18 px above the content | Estimated; `PanoramaItemHeaderFontSize` says 66 (see [open questions](14-evidence.md#open-questions)) |
+| Section | 432 px wide (the next header peeks in 48 px), 146 px from the top, 12 px left padding | Estimated; the native `PanoramaHeaderMargins` top is 191 |
+| Title | Light 133.333, 14 px in, 22 px above the top of the page area | Estimated; the native `PanoramaTitleFontSize` is 128 pt (170.667 px) |
+| Section header | SemiLight 53.333, 12 px in, 18 px above the content | Estimated; the native `PanoramaGroupHeaderFontSize` is 50 pt (66.667 px), and `PanoramaItemHeaderFontSize` says 66 (see [open questions](14-evidence.md#open-questions)) |
 | Background | 640 px wide (480 + 160 of travel), dimmed by the background colour at 55% | Estimated |
 | Parallax | Title travels half its width across all sections; background travels 160 px | Estimated |
 
@@ -75,6 +76,26 @@ Behaviour:
 - When wrapping from the last section to the first, the title and background glide back rather than jump.
 - Opens with the [hub intro](07-motion.md#hub-intro).
 - Only the selected section is focusable; the others are `inert`. Its header is in the tab order, and the left and right arrows anywhere in the panorama move one section and focus the new header (`aria-keyshortcuts` says so). Arrows inside text boxes, sliders, spin buttons, list boxes and tabs are left alone.
+
+## Pivot or panorama
+
+Both pan sideways under one title, but they do different jobs.
+
+| | Pivot | Panorama |
+|---|---|---|
+| Use it for | One kind of thing seen in different ways: filtered (all, unread), grouped (artists, albums, songs), or views of one item (a contact's profile and history) | A hub: several sources gathered in one place, as the front door to an app (collection, history, new) |
+| Items | As many as the views need. Each fills the screen, so a pivot holds more and is the more efficient of the two | Four sections at most |
+| Background | The page background | One solid colour, or one picture behind the whole panorama |
+| In the recreation | Settings, Messaging, People, Calendar, OneNote, Music lists | Music+Videos, Photos |
+
+Rules:
+
+- A pivot's items hold the same kind of data. If they hold different things, it's a panorama or separate pages.
+- Never put a pivot or a panorama inside another pivot or panorama.
+- A pivot isn't a task flow. The steps of a task are pages in the stack, so Back walks through them.
+- Inside a pivot or panorama with more than one item, don't use a control that pans or scrolls sideways, such as a slider, a map or a horizontal list: it fights the swipe. The guidance names toggle switches too. On the phone, toggles live on [single-page pivots](#single-page-pivot), where nothing swipes, and every toggle in the recreation is on a `SettingsPage`.
+
+These rules come from Microsoft's Windows Phone 7 design guidelines, as quoted in a 2011 talk (see [Design guidance](14-evidence.md#design-guidance)). They are guidance, not values, so they carry no source label. The recreation already follows them: nothing is nested, and the largest panorama, Music+Videos, has four sections.
 
 ## List item
 
@@ -112,7 +133,7 @@ A header, the current state in words, and the switch.
 |---|---|---|
 | Header | Normal 20, subtle | Estimated |
 | Row | 72 px tall; the state label (Light 32, "On" / "Off") on the left, the switch on the right | Estimated |
-| Track | 88 × 32, 2 px foreground border | Estimated |
+| Track | 88 × 32, 2 px foreground border | Estimated; the width agrees with 8.1 WinRT |
 | Fill | Accent, 20 px tall, 4 px inside the border, grows with the thumb | Estimated |
 | Thumb | 20 × 36 foreground bar, with 4 px gaps in the background colour on each side | Estimated |
 | Motion | 500 ms `EXPO_OUT_15` | Toolkit |
@@ -121,6 +142,8 @@ A header, the current state in words, and the switch.
 - Disabled: header, label, border, thumb and fill all use `--wp-disabled`.
 - `role="switch"` with `aria-checked`; labelled by the header.
 - The whole switch (header and row) is `data-feather`, so it leaves with the page's rows.
+
+The 8.1 WinRT `ToggleSwitch` template (in 8.0 px) has a 3 px border rather than 2, an accent fill that touches the border with no inset, and a thumb about 39 px tall with 3 px gaps; its On/Off text is Normal, not Light. Its header (Normal 20, subtle) and track width agree with ours. The recreation keeps the Toolkit-style switch until 8.0 footage settles it. **Decoded (8.1 WinRT)**.
 
 ## List picker
 
@@ -136,7 +159,7 @@ Shows the current choice in a box. Tapping it opens the options inline, or (in f
 | Box | 2 px border in `--wp-text-box`, 12 px side margins | Decoded colour; size Estimated |
 | Rows | 44 px, MediumLarge 25.333, 10 px padding; optional 26 px colour swatch | Estimated |
 | Open | Edit background, accent border, text box foreground; selected row in accent | Decoded colours |
-| Opening | Grows from one row to all rows over 250 ms | Estimated |
+| Opening | Grows from one row to all rows over 250 ms | Estimated; the duration agrees with 8.1 WinRT's `ComboBox` (see [Motion](07-motion.md#other-motion)) |
 
 - Back closes an open picker without changing the value.
 - The whole picker (header and box) is `data-feather`, so it leaves with the page's rows.
@@ -157,7 +180,7 @@ A field shows the value; tapping it opens a full-screen page of spinning columns
 | Field | 48 px tall, `--wp-text-box` fill, text box foreground, MediumLarge; pressed: accent fill, white text | Estimated |
 | Page title | CHOOSE TIME / CHOOSE DATE (written lower case, upper-cased by CSS), SemiBold 20, 20 px from the top, 24 px in | Estimated |
 | Columns | 148 px wide, centred, 12 px apart | Estimated |
-| Items | 148 × 148 squares on a 160 px step, 3 px subtle border; primary SemiLight 54, secondary Normal 20 | Estimated |
+| Items | 148 × 148 squares on a 160 px step, 3 px subtle border; primary SemiLight 54, secondary Normal 20 | Estimated; the 12 px gap, the 3 px border and the time picker's 54 agree with 8.1 WinRT |
 | Selected item | Accent fill and border, white text | Estimated |
 
 - At rest only the selected item in each column shows. Touching a column reveals its neighbours (200 ms fade) so it can be spun.
@@ -180,9 +203,9 @@ Up to four round icon buttons and an ellipsis at the bottom of a page, with an o
 
 | Part | Value | Source |
 |---|---|---|
-| Bar | `--wp-chrome`; 72 px collapsed, 30 px minimized; grows upward over the content | Estimated |
-| Buttons | 80 px slots, centred, 12 px top and bottom padding; 48 px ring, 3 px stroke, 24 px glyph | Estimated; stroke Decoded |
-| Labels | Normal 16, lowercase, 4 px below the ring, only when expanded | Estimated |
+| Bar | `--wp-chrome`; 72 px collapsed, 30 px minimized; grows upward over the content | Estimated; 72 agrees with 8.1 WinRT |
+| Buttons | 80 px slots, centred, 12 px top and bottom padding; 48 px ring, 3 px stroke, 24 px glyph | Estimated; stroke Decoded; the ring agrees with 8.1 WinRT |
+| Labels | Normal 16, lowercase, 4 px below the ring, only when expanded | Estimated; 8.1 WinRT says about 12 px |
 | Ellipsis | 64 × 36 target in the top right; three 4 px dots 5 px apart | Estimated |
 | Menu | Items 9 × 24 px padding, Normal 25.333, lowercase; pressed in accent | Estimated |
 
@@ -191,6 +214,8 @@ Up to four round icon buttons and an ellipsis at the bottom of a page, with an o
 - Minimized bars show only the ellipsis until expanded.
 - Buttons have `aria-label`s; the ellipsis reports `aria-expanded`; the menu is a `menu` of `menuitem`s.
 - Pass a name from `glyphs.tsx`, or an SVG fragment on the same 48-unit grid.
+
+The 8.1 WinRT `AppBarButton` template (in 8.0 px) has 100 px slots, the ring 15 px from the top and a label of about 12 px. Those are 8.1 values for WinRT apps and may not hold for the 8.0 shell, so the recreation keeps its estimates. **Decoded (8.1 WinRT)**.
 
 ## Message box
 
@@ -206,8 +231,8 @@ A chrome-coloured panel that drops down from the top of the page over a dimmed s
 |---|---|---|
 | Scrim | `--wp-semitransparent` | Decoded colour |
 | Panel | `--wp-chrome`, padding 18 12 6 | Estimated |
-| Caption | SemiBold 32, 12 px in | Estimated |
-| Message | Normal 22.667 | Estimated |
+| Caption | SemiBold 32, 12 px in | Estimated; agrees with 8.1 WinRT |
+| Message | Normal 22.667 | Estimated; agrees with 8.1 WinRT |
 | Buttons | Two equal columns, styled like [Button](#button) | Estimated |
 | Motion | Swivel in and out from the top edge; scrim fades in 200 ms, out 250 ms | Estimated |
 

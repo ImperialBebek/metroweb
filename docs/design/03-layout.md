@@ -1,8 +1,8 @@
 # 03 · Layout
 
-> **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
+> **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-26
 > **Code** [`packages/metroweb/styles/tokens.css`](../../packages/metroweb/styles/tokens.css), [`packages/metroweb/styles/components.css`](../../packages/metroweb/styles/components.css), [`packages/metroweb/src/components/AppBar.tsx`](../../packages/metroweb/src/components/AppBar.tsx)
-> **Sources** `0100_ThemeResources.xaml` and `System.Windows.xaml` (copied to `docs/evidence/private/theme`, kept private); emulator screenshots
+> **Sources** `0100_ThemeResources.xaml` and `System.Windows.xaml` (copied to `docs/evidence/private/theme`, kept private); emulator screenshots; the Windows Phone 8.1 SDK's WinRT theme, as corroboration
 
 ## The 12 px grid
 
@@ -28,8 +28,8 @@ The variables live in `:root` in `packages/metroweb/styles/tokens.css`. Use one 
 
 | Element | Value | Source |
 |---|---|---|
-| Pivot title | 17 px from the top of the page area, 24 px from the left | Estimated |
-| Pivot headers | 21 px left padding, so the 72 px glyphs' side bearing lines up near 24 px | Estimated |
+| Pivot title | 17 px from the top of the page area, 24 px from the left | Estimated; the 24 px agrees with 8.1 WinRT |
+| Pivot headers | 21 px left padding, so the 72 px glyphs' side bearing lines up near 24 px | Estimated; 8.1 WinRT has 20 |
 | Pivot item | 28 px below the headers, 12 px side margins | Decoded (`PivotItemMargin`) |
 | List item | 12 px side padding, 12 px between items | Decoded (`PhoneTouchTargetOverhang`) |
 | Paragraph | 12 px sides, 24 px below | Estimated |
@@ -65,13 +65,15 @@ See [Start and live tiles](10-start-and-live-tiles.md) for the layout itself.
 | Section header | 12 px in, 18 px above the content | Estimated |
 | Parallax | title moves 0.5 × its width across all sections; background moves 160 px | Estimated |
 
+The native panorama's markup (`UIXMobileAssets480x800`, the same in 8.0 and 8.1) puts the sections lower and the type larger than these estimates: `PanoramaHeaderMargins` is (0, 191, 0, 0), `PanoramaTitleFontSize` 128 pt (170.667 px) and `PanoramaGroupHeaderFontSize` 50 pt (66.667 px). **Decoded**; the recreation hasn't moved to them yet. See the [open question](14-evidence.md#type-and-layout).
+
 ## App bar
 
 ![App bar measurements](assets/diagrams/app-bar.png)
 
 | Element | Value | Source |
 |---|---|---|
-| Height | 72 collapsed, 30 minimized; grows upward when expanded | Estimated |
+| Height | 72 collapsed, 30 minimized; grows upward when expanded | Estimated; 72 agrees with 8.1 WinRT |
 | Buttons | up to four, each an 80 px slot with a 48 px ring, centred, 12 px top and bottom padding, 64 px side padding | Estimated |
 | Ellipsis | 64 × 36 target in the top-right corner, three 4 px dots 5 px apart | Estimated |
 | Menu items | 9 px × 24 px padding, MediumLarge text | Estimated |
@@ -85,3 +87,7 @@ See [Start and live tiles](10-start-and-live-tiles.md) for the layout itself.
 | 25% / 20% of the width | Pivot / panorama commit distance | Estimated |
 | 120 px | Start pane commit distance | Estimated |
 | 0.45 px/ms | Flick velocity that commits a pan regardless of distance | Estimated |
+
+## Windows Phone 8.1
+
+The 8.1 SDK's WinRT theme sizes everything in view pixels that are 8.0 px × 0.8. Multiplied back by 1.25, its overhangs (`PhoneTouchTargetOverhang` 9.5 ≈ 12, vertical only), `PhoneBorderThickness` and `PhoneStrokeThickness` (2.5 ≈ 3), page inset (19 ≈ 24), `PivotItemMargin` top (22.5 ≈ 28), button minimum height (57.5 ≈ 72) and app bar height (57.5 ≈ 72) all agree with the 8.0 values above, so 8.1 kept the 12 px grid. Where it differs: `PivotItemMargin` puts the 24 px inset inside the item rather than 12 + 12, and app bar slots are 100 px rather than 80. **Decoded (8.1 WinRT)**; the recreation keeps the 8.0 layout.

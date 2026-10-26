@@ -1,10 +1,12 @@
 # 10 · Start and live tiles
 
-> **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
+> **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-26
 > **Code** [`apps/web/src/start/StartScreen.tsx`](../../apps/web/src/start/StartScreen.tsx), [`apps/web/src/start/Tile.tsx`](../../apps/web/src/start/Tile.tsx), [`apps/web/src/start/apps.ts`](../../apps/web/src/start/apps.ts), [`apps/web/src/start/tileFlip.ts`](../../apps/web/src/start/tileFlip.ts), [`apps/web/src/start/icons.tsx`](../../apps/web/src/start/icons.tsx)
 > **Sources** App manifests in `Windows\System32\Manifests` (tile templates); `ShellControls.dll` UIX markup (flip animations, decoded by [`anims.py`](../evidence/uix/tools/anims.py) into `anims_shell.txt`, kept private); 8.1 footage (feather timing)
 
 Start is the home screen: a scrolling grid of tiles in the accent colour, with the app list one swipe to the right. Tiles are live: they flip, cycle and update on their own.
+
+Start is there so a glance tells you what's new without opening anything. In the words of Microsoft's Metro booklet, "the people and things you care about most appear as soon as you start up", and when their status changes you see it at once. That's why a tile shows information (a count, the next appointment, the latest photo) where other phones show a fixed icon, and why the tiles stay readable even blurred: big blocks of colour and big numbers survive where small icons don't. See [Checking a screen](01-principles.md#checking-a-screen).
 
 ![Start, dark](assets/screenshots/start-dark.png) ![App list](assets/screenshots/app-list.png)
 
@@ -44,7 +46,7 @@ Each app's tile template comes from the `PrimaryToken` in its manifest (**Decode
 | `TemplateMetroCount` | `iconic` | phone, messaging, Outlook, Store, camera, maps, calculator, settings, Internet Explorer, Games | Glyph and an optional count | — |
 | `TemplateFlip` | `flip` | OneNote, Office, Wallet, Data Sense | Flips between the front and a back with a title and lines of text | Every 6–10 s |
 | `TemplateFlip` | `alarm` | alarms | Flips to the next alarm's time and day while one is on | Every 6–10 s |
-| `TemplatePeople` | `people` | people | A grid of contact pictures (3 × 3 medium, 6 × 3 wide); single cells flip to other contacts | A cell every 2.2–4.2 s |
+| `TemplatePeople` | `people` | people | A grid of contact pictures (3 × 3 medium, 6 × 3 wide); single cells flip to other contacts | A cell every 2.2–4.2 s (the markup waits 0.5–2 s; see [People cell flips](#people-cell-flips)) |
 | `TemplateCycle` | `cycle` | photos | Pictures pan up into the tile one after another (camera roll, then sample pictures) | Every 5–7 s |
 | `TemplateCalendar` | `calendar` | calendar | The next appointments in the coming week; today's day number and name where the title would be | Flips to the next appointment every 8–11 s |
 | `TemplateMusicVideo` | `music` | Music+Videos | The album last played (or, on a wide tile, its artist's picture) | — |
@@ -84,7 +86,9 @@ All keyframes are **Decoded**.
 
 ### People cell flips
 
-Cells use `NormalizedCellFlip*` (TimeScale 1), on a timeline normalized to 0–1. The recreation plays it over 1000 ms; the real duration comes from `FlipCellDurationMin` / `Max`, which aren't decoded (Estimated).
+Cells use `NormalizedCellFlip*` on a timeline normalized to 0–1. The recreation plays it over 1000 ms (Estimated), which matches the markup for horizontal cells: `HorizontalCellFlipShow` has `TimeScale` 1. `VerticalCellFlipShow` has `TimeScale` 0.5, which multiplies every keyframe time, so vertical cells show over 500 ms; the recreation doesn't apply it. Hides take 137 ms either way. **Decoded**.
+
+`FlipCellDurationMin` / `Max` are 500 / 2000 ms (200 / 2000 ms for the 3 × 3 variants). They aren't the length of a flip: they bound the random wait before the next cell flips (`Random.Next(min, max)` feeds the grid's timer). **Decoded**; how the code uses them is read from bytecode whose method names are only partly resolved. If nothing native adds idle time, the phone flips a cell every 0.5–2 s, faster than the recreation's 2.2–4.2 s.
 
 | Track | Keyframes | Swap |
 |---|---|---|
@@ -99,7 +103,7 @@ Iris (the phone's animation engine) interpolations as `uixrender` computes them,
 
 - **Exp** eases in: `(wᵗ − 1) / (w − 1)`.
 - **Log** eases out: the mirror of Exp.
-- **SCurve**: its exact shape wasn't decoded. The recreation uses Exp mirrored about the midpoint (Estimated).
+- **SCurve**: Exp over the first half and Log over the second, each at double speed: `E(2t) / 2` before the midpoint, `1/2 + L(2t − 1) / 2` after it, the same as `ExponentialEase` EaseInOut with exponent `ln w`. **Decoded** from `uixrender.dll` in the 8.1 emulator; that this evaluator is the markup's SCurve follows the engine's order of interpolation kinds, which wasn't traced. The recreation's Exp mirrored about the midpoint is the same curve. Cell flips don't use it: they use Log.
 
 They have no CSS equivalent, so `tileFlip.ts` samples each track into keyframes every 8 ms.
 
@@ -111,7 +115,7 @@ The cycle tile pans a two-picture strip up by one tile height in 1200 ms (`cubic
 
 | Tile | Detail | Source |
 |---|---|---|
-| Flip back | Lines of Normal 20 (line height 1.3) 8 px from the top, 12 px in; the back's title replaces the app name | Estimated |
+| Flip back | Lines of Normal 20 (line height 1.3) 8 px from the top, 12 px in; the back's title replaces the app name | Estimated; Normal 20 agrees with `TileTemplateNormalFontSize` (15 pt), and the 12 px with `TileTemplateContentMarginLeftBottom` (12, 0, 0, 12) |
 | Calendar | First line (the event title) SemiBold; title row: day number (32 px) and weekday; lines show title, location and when ("all day", "9:00 AM", "Tue 9:00 AM") | Estimated |
 | Calendar, small | The day number, Normal 42.667, centred | Estimated |
 | People | Contacts have no photos, so each cell is the contact's initials (SemiLight 26.667) on one of four shades of the accent | Estimated (a [deviation](13-web-and-accessibility.md#rendering)) |
@@ -121,14 +125,13 @@ The cycle tile pans a two-picture strip up by one tile height in 1200 ms (`cubic
 
 - Pinning, unpinning, resizing and moving tiles (press and hold).
 - Wide tiles for every app; the tile sizes in `DEFAULT_LAYOUT` are fixed.
-- 8.1's six-column layout, transparent tiles and Start background.
+- 8.1's six-column layout, transparent tiles and Start background. Its markup has the layout as screen-size variants (`480x800s20`, `s30`): six columns of 66 px cells with 12 px gaps, tile text at 10.5 pt rather than 15 (**Decoded (8.1)**). Which phones use which variant isn't decoded.
 - Letter groups and the jump list in the app list.
 - The lock screen.
 
 ## Open questions
 
-- `TileTemplate*` sizes and margins (`TileTemplateFlipMessageMargins`, `TileTemplateFlipNotificationFontSize`, …) are named in the markup but their values aren't decoded.
-- `VerticalCellFlipShow` is wrapped in a `TimeScale 0.5` in the markup; the recreation doesn't apply it.
-- `FlipCellDurationMin` / `Max` (and their 3 × 3 variants) are undecoded.
+- `TileTemplate*` values are now decoded from the 8.0 markup but not applied: `TileTemplateFlipNotificationFontSize` 24 pt (32 px), `TileTemplateFlipMessageMargins` (0, 0, 0, 0), `TileTemplateFlipTileMessageTitleTextMargins` (0, 0, 0, 8), and a 37 × 37 notification indicator 12 px from the top-right corner at 17 pt. `TileTemplateFlipMessageLineSpacing` is 9, in a unit that isn't known yet.
+- The recreation doesn't apply `VerticalCellFlipShow`'s `TimeScale 0.5` (500 ms vertical cell flips) or the 0.5–2 s wait between cell flips.
 
 See [Evidence](14-evidence.md#open-questions).

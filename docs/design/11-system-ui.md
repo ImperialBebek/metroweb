@@ -2,7 +2,7 @@
 
 > **Status** Draft · **Baseline** 8.0 tray and volume band, 8.1 navigation bar · **Last reviewed** 2026-10-19
 > **Code** [`apps/web/src/App.tsx`](../../apps/web/src/App.tsx) (`SystemTray`, safe areas), [`packages/metroweb/src/components/NavigationBar.tsx`](../../packages/metroweb/src/components/NavigationBar.tsx), [`apps/web/src/VolumeBand.tsx`](../../apps/web/src/VolumeBand.tsx), [`apps/web/src/MotionSpeedControl.tsx`](../../apps/web/src/MotionSpeedControl.tsx), [`apps/web/src/apps/alarms/AlarmRinger.tsx`](../../apps/web/src/apps/alarms/AlarmRinger.tsx), [`apps/web/src/index.css`](../../apps/web/src/index.css), [`packages/metroweb/styles/components.css`](../../packages/metroweb/styles/components.css) (`.nav-bar`)
-> **Sources** Emulator screenshots; 8.1 footage (navigation bar)
+> **Sources** Emulator screenshots; 8.1 footage (navigation bar); `ShellChromeAssets480x800` UIX markup (tray metrics)
 
 The parts of the screen the system owns. Apps never draw here.
 
@@ -14,7 +14,7 @@ A 32 px strip across the top of the screen, transparent over the page background
 
 | Part | Value | Source |
 |---|---|---|
-| Height and padding | 32 px; 12 px each side | Estimated |
+| Height and padding | 32 px; 12 px each side | Height Decoded (`Assets_SystemTraySize`); padding Estimated. The 8.0 markup pads 9 px on the left (`SystemTray_PortraitPadding`) and 10 px right of the clock (`SystemTray_ClockPaddingPortrait`); 8.1 uses 24 px on both sides |
 | Left | Signal (or airplane mode) 20 px; Wi-Fi 20 px when on; Bluetooth 18 px when on; 10 px apart | Estimated |
 | Right | Battery 28 px (a lower level while battery saver is on), then the time | Estimated |
 | Time | Normal 20, 12-hour, no AM/PM, updated every 10 s | Estimated |

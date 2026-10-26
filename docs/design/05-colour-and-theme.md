@@ -1,8 +1,8 @@
 # 05 · Colour and theme
 
-> **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
+> **Status** Draft · **Baseline** 8.0, with 8.1 differences noted · **Last reviewed** 2026-10-26
 > **Code** [`packages/metroweb/src/theme.ts`](../../packages/metroweb/src/theme.ts) (`ACCENTS`, `PALETTES`, `themeVariables`), [`apps/web/src/store.tsx`](../../apps/web/src/store.tsx), [`apps/web/src/App.tsx`](../../apps/web/src/App.tsx)
-> **Sources** `0000_ThemeResources.xaml` (light) and `0100_ThemeResources.xaml` (dark); the image's registry (accents, defaults); `uixmobileres.dll.mui` (accent names)
+> **Sources** `0000_ThemeResources.xaml` (light) and `0100_ThemeResources.xaml` (dark); the image's registry (accents, defaults); `uixmobileres.dll.mui` (accent names); the same files in the Windows Phone 8.1 SDK Update 1 emulator image, and the 8.1 SDK's WinRT `themeresources.xaml`
 
 The user picks two things: a **background** (dark or light) and an **accent** (one of 20 colours). Everything else follows from those.
 
@@ -13,7 +13,7 @@ The user picks two things: a **background** (dark or light) and an **accent** (o
 - `themeVariables(background, accent)` turns the palette into CSS variables named after the Microsoft resources: `subtle` becomes `--wp-subtle`, `textBoxEditBackground` becomes `--wp-text-box-edit-background`.
 - `App` sets the variables on `.desk` and `.screen`, and `data-theme="dark|light"` on the screen.
 - The page background and the `theme-color` meta tag follow the background (`#000000` or `#ffffff`), so overscroll and browser chrome match.
-- Settings are saved in `localStorage` (`wp8-settings`). The default is **dark** with **Red**, from the emulator registry (`DefaultTheme = 1`, `DefaultAccent = 0xB`).
+- Settings are saved in `localStorage` (`wp8-settings`). The default is **dark** with **Red**, from the 8.0 emulator registry (`DefaultTheme = 1`, `DefaultAccent = 0xB`). The 8.1 emulator defaults to Cobalt (`DefaultAccent = 0x5`); see [Windows Phone 8.1](#windows-phone-81). A retail phone's default comes from its maker or operator.
 
 ## Palette
 
@@ -117,3 +117,14 @@ Colours the recreation mixes itself. All **Estimated**.
 | Music+Videos over album art | black at 60% (history labels), 45% (now playing toggles), 65% (seek bar); white at 35% (seek track) | Keeps text and controls readable over any cover |
 
 Message box scrims aren't derived: [`MessageBox`](09-components.md#message-box) uses `--wp-semitransparent`.
+
+## Windows Phone 8.1
+
+What changed in 8.1, read from the Windows Phone 8.1 SDK Update 1 emulator image (build 8.10.14141), a retail Lumia 520's firmware (build 8.10.12393) and the SDK's WinRT theme. The recreation keeps the 8.0 values above.
+
+- **Silverlight theme: unchanged.** `0000_ThemeResources.xaml` and `0100_ThemeResources.xaml` are byte for byte the 8.0 files, in the emulator and in the Lumia 520's retail firmware, so every value in [Palette](#palette) also holds for Silverlight apps on 8.1. **Decoded (8.1)**.
+- **Cobalt: `#3E65FF`.** 8.1 keeps the 20 accents in the same order, with the same names, but Cobalt (`Accents\5\Color`) moves from `#0050EF` to `#3E65FF`. White on the new Cobalt is 4.43:1. **Decoded (8.1)**.
+- **Default accent: Cobalt.** The 8.1 emulator's `DefaultAccent` is 5. So is a retail Lumia 520's (RM-914, Indonesian firmware 3058.50000.1425.0004): its image has the same accent table, including the new Cobalt, and no maker override (`Shell\OEM\Theme\OEMDefaultAccent` is absent). The phone's first-run setup could still change it, so this is the image's default, not proof of what every phone showed. **Decoded (8.1)**.
+- **Complementary colours.** Each accent gains a `ComplementaryColor`, mostly the next accent in the picker: Lime → Green, Green → Emerald, and so on to Amber → Yellow, then Yellow → Amber, Brown and Olive → Taupe, Steel ↔ Mauve, Taupe → Brown. Where 8.1 draws it isn't known. **Decoded (8.1)**.
+- **WinRT apps use a different light palette.** The 8.1 SDK's `themeresources.xaml`, which 8.1's new app model uses, has an opaque black foreground (`#FF000000`, keeping `#DE000000` as `PhoneTextHighColor`), a `#73000000` subtle colour (`PhoneTextMidColor`), `#66000000` disabled, and unselected pivot headers drawn in the disabled colour rather than at an opacity, in both themes. Its dialog scrim (`ContentDialogDimmingColor`) is `#99` black or white, not `#AA`. The dark palette matches 8.0. **Decoded (8.1 WinRT)**.
+

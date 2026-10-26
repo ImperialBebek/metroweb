@@ -1,8 +1,8 @@
 # 04 · Typography
 
-> **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-19
+> **Status** Draft · **Baseline** 8.0 · **Last reviewed** 2026-10-26
 > **Code** [`packages/metroweb/styles/fonts.css`](../../packages/metroweb/styles/fonts.css) (`@font-face`), [`packages/metroweb/styles/tokens.css`](../../packages/metroweb/styles/tokens.css) (`--font-*`, `--size-*`), [`packages/metroweb/fonts/`](../../packages/metroweb/fonts)
-> **Sources** `ThemeResources.xaml` (copied to `docs/evidence/private/theme`, kept private); Selawik (SIL Open Font License)
+> **Sources** `ThemeResources.xaml` (copied to `docs/evidence/private/theme`, kept private); the Windows Phone 8.1 SDK's WinRT theme (`themeresources.xaml`, `generic.xaml`), as corroboration; Selawik (SIL Open Font License)
 
 Windows Phone 8 sets everything in **Segoe WP**, in four weights, on a ramp of eight sizes. Hierarchy comes from size and weight, never from colour blocks or rules.
 
@@ -30,7 +30,7 @@ Segoe WP itself is never shipped. The screenshots in these docs were generated o
 
 ## Type ramp
 
-All sizes are logical px at the 480 px [canvas](02-canvas.md). Microsoft specified them in points; px = pt × 4 ÷ 3.
+All sizes are logical px at the 480 px [canvas](02-canvas.md). Microsoft specified them in points; px = pt × 4 ÷ 3. The native shell's UIX markup gives its font sizes in points too: `FontMediumSize` 15, `FontLargeSize` 17 and `PivotHeaderFontSize` 54 are this table's pt column.
 
 | Microsoft name | px | pt | CSS variable | Typical use | Source |
 |---|---|---|---|---|---|
@@ -49,7 +49,7 @@ Other sizes in the theme resources:
 |---|---|---|---|
 | `PivotHeaderFontSize` | 72 | `.pivot-header` uses `--size-extra-extra-large` | Decoded |
 | `PivotTitleFontSize` | 22.667 | `.pivot-title` uses `--size-medium` | Decoded |
-| `PanoramaItemHeaderFontSize` | 66 | **not followed**: `.pano-header` is 53.333 px, matched to footage of native hubs | Decoded; see [open questions](14-evidence.md#open-questions) |
+| `PanoramaItemHeaderFontSize` | 66 | **not followed**: `.pano-header` is 53.333 px, matched to footage of native hubs. The native panorama agrees with 66: its `PanoramaGroupHeaderFontSize` is 50 pt (66.667 px) | Decoded; see [open questions](14-evidence.md#open-questions) |
 | `PanoramaItemCharacterSpacing` | −35 (thousandths of an em) | not applied | Decoded |
 | `LongListSelectorGroupHeaderFontSize` | 29.333 | not used | Decoded |
 | `LongListSelectorGroupHeaderLetterTileFontSize` | 42.667 | not used: People's letter tiles are 38 px (Estimated) | Decoded |
@@ -86,7 +86,7 @@ Sizes used by shared components that are not one of the styles above. Values off
 | Where | Family | Size | CSS variable | Source |
 |---|---|---|---|---|
 | Pivot title | SemiBold, uppercase | 22.667 | `--size-medium` | Decoded size; uppercase Estimated from screenshots |
-| Toggle state (On/Off) | Light | 32 | `--size-large` | Estimated |
+| Toggle state (On/Off) | Light | 32 | `--size-large` | Estimated; the size agrees with 8.1 WinRT, the weight doesn't (see [8.1](#windows-phone-81)) |
 | Button face | SemiBold | 22.667 | `--size-medium` | Decoded (`PhoneButtonBase`) |
 | Text box | Normal | 25.333 | `--size-medium-large` | Decoded (`PhoneTextBox`) |
 | Tile title | Normal | 18.667 | `--size-small` | Estimated |
@@ -94,13 +94,14 @@ Sizes used by shared components that are not one of the styles above. Values off
 | Calendar tile day number | Normal | 32 (42.667 on small tiles) | `--size-large`, `--size-extra-large` | Estimated |
 | People tile initials | SemiLight | 26.667 | `--size-tile-initials` | Estimated |
 | App list title | Normal | 25.333 | `--size-medium-large` | Estimated |
-| Panorama title | Light | 133.333 | `--size-panorama-title` | Estimated |
-| Panorama section header | SemiLight | 53.333 | `--size-panorama-header` | Estimated |
-| App bar button label | Normal, lowercase | 16 | `--size-app-bar-label` | Estimated |
+| Panorama title | Light | 133.333 | `--size-panorama-title` | Estimated; the native `PanoramaTitleFontSize` is 128 pt (170.667 px), see [open questions](14-evidence.md#type-and-layout) |
+| Panorama section header | SemiLight | 53.333 | `--size-panorama-header` | Estimated; the native `PanoramaGroupHeaderFontSize` is 50 pt (66.667 px) |
+| App bar button label | Normal, lowercase | 16 | `--size-app-bar-label` | Estimated; 8.1 WinRT says about 12 (see [8.1](#windows-phone-81)) |
 | App bar menu item | Normal, lowercase | 25.333 | `--size-medium-large` | Estimated |
-| Date and time picker item | SemiLight | 54 (secondary line Normal 20) | `--size-picker-item` (`--size-normal`) | Estimated |
+| Date and time picker item | SemiLight | 54 (secondary line Normal 20) | `--size-picker-item` (`--size-normal`) | Estimated; the time picker size agrees with 8.1 WinRT |
 | Picker page title (CHOOSE TIME) | SemiBold | 20 | `--size-normal` | Estimated |
-| Message box caption | SemiBold | 32 | `--size-large` | Estimated |
+| Message box caption | SemiBold | 32 | `--size-large` | Estimated; agrees with 8.1 WinRT (`MessageDialogTitleStyle`) |
+
 ## Line height
 
 | Where | Value | Source |
@@ -116,6 +117,28 @@ Sizes used by shared components that are not one of the styles above. Values off
 - Headings and labels are left-aligned. Nothing is centred except tile glyphs and picker items.
 - Letter case is part of the type system: see [Writing](12-writing.md).
 - The desk controls beside the phone (13–15 px) are outside the phone and not part of the ramp.
+
+## Windows Phone 8.1
+
+The 8.1 SDK's theme for its new WinRT app model gives every size in view pixels, which are 8.0 px × 0.8: `TextStyleMediumFontSize` 16 is `PhoneFontSizeNormal` 20, `PivotHeaderItemFontSize` 57 is 72, and so on down the ramp. Multiplied back by 1.25, the WinRT theme agrees with the whole 8.0 ramp, so 8.1 kept the 8.0 type grid. Silverlight apps on 8.1 still use the 8.0 `ThemeResources.xaml` unchanged.
+
+Where the WinRT theme has a size for one of the Estimated rows above, it agrees with the message box caption (32) and message (22.667), the toggle state (32) and the time picker item (54). Those rows stay **Estimated**: WinRT apps are not the 8.0 shell, so agreement is corroboration, not proof.
+
+What the WinRT theme does differently, all **Decoded (8.1 WinRT)** and converted to 8.0 px. The recreation doesn't follow these.
+
+| Where | 8.1 WinRT | Recreation (8.0) |
+|---|---|---|
+| App bar button label | 9.5 (about 12 px) | Normal 16, Estimated. The strongest hint to re-measure on an 8.0 phone |
+| Toggle state (On/Off) | Normal weight | Light |
+| List item title (`ListViewItemTextBlockStyle`) | SemiLight 37.333, one step smaller | SemiLight 42.667 (`PhoneTextExtraLargeStyle`) |
+| List item subtitle | SemiLight 20 | Normal 20 |
+| Pivot header | `CharacterSpacing` −25 | No letter spacing |
+| Picker page title (`FlyoutPickerTitleTextBlockStyle`) | SemiBold 22.667, wide tracking | SemiBold 20 |
+| Looping selector item | SemiBold 56.25, secondary SemiBold 21.25 | SemiLight 54, secondary Normal 20 |
+| New steps | 13.333 (`TextStyleSmallFontSize`) and 37.333 (`TextStyleExtraLargePlusFontSize`) | Not in the 8.0 ramp |
+| Hub (8.1's panorama for WinRT) | Title Light 97.5; section headers SemiBold 23.75 | Panorama title Light 133.333, section headers SemiLight 53.333 |
+
+The WinRT Hub is a different control from the native panorama, so its sizes don't bear on the [panorama header question](14-evidence.md#type-and-layout). The native panorama's own markup does.
 
 ## App-specific sizes
 

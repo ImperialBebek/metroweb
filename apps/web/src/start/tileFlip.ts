@@ -12,7 +12,8 @@ import { flushSync } from 'react-dom'
 type Curve = (t: number) => number
 
 // Iris interpolations as uixrender computes them: Exp eases in, Log eases out.
-// SCurve's exact shape wasn't decoded; this is Exp mirrored about the midpoint.
+// SCurve is Exp over the first half and Log over the second (uixrender), which is
+// Exp mirrored about the midpoint.
 const exp =
   (w: number): Curve =>
   (t) =>
