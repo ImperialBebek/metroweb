@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: MS-PL
+// This file is a port of TiltEffect from the Windows Phone Toolkit,
+// Copyright (c) Microsoft Corporation. Because it is derived from Ms-PL source,
+// it is distributed under the Microsoft Public License, not the MIT License
+// that covers the rest of metroweb. The licence text is in THIRD-PARTY-NOTICES.md.
+
 import { useCallback, useRef, type PointerEvent } from 'react'
 
 // Port of the Windows Phone Toolkit TiltEffect: the element tips toward the

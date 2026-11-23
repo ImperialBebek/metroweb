@@ -14,7 +14,7 @@ The path data in `src/icons/phosphor.ts`, compiled to `dist/icons/phosphor.js`, 
 
 ## Windows Phone Toolkit
 
-`src/components/useTilt.ts` is a port of the Toolkit's `TiltEffect`. The values labelled **Toolkit** in the design docs come from the Toolkit's source: `TurnstileTransition`, `TurnstileFeatherEffect`, `SwivelTransition`, `ToggleSwitch`, `ListPicker`, `DatePicker`, `TimePicker` and `LoopingSelector`. The Toolkit is copyright Microsoft Corporation and licensed under the Microsoft Public License.
+`src/components/useTilt.ts` is a port of the Toolkit's `TiltEffect`. Section 3(D) of the Ms-PL says source that includes Ms-PL code may be shared only under the Ms-PL, so that one file is under the Ms-PL below, not the MIT License. The values labelled **Toolkit** in the design docs come from the Toolkit's source: `TurnstileTransition`, `TurnstileFeatherEffect`, `SwivelTransition`, `ToggleSwitch`, `ListPicker`, `DatePicker`, `TimePicker` and `LoopingSelector`. The Toolkit is copyright Microsoft Corporation and licensed under the Microsoft Public License.
 
 ### Microsoft Public License (Ms-PL)
 

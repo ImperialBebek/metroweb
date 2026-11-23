@@ -17,7 +17,7 @@
     "url": "git+https://github.com/ImperialBebek/metroweb.git",
     "directory": "packages/metroweb"
   },
-  "license": "MIT",
+  "license": "MIT AND MS-PL",
   "author": "Rafly Nurfallah",
   "type": "module",
   "sideEffects": [
