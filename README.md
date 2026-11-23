@@ -70,7 +70,7 @@ Read [`AGENTS.md`](AGENTS.md), which is for people as much as for agents, and th
 - The code and docs are under the [MIT License](LICENSE).
 - Text is set in Metroweb Sans: [Selawik](https://github.com/microsoft/Selawik), Microsoft's open-source metric match for Segoe UI, modified and renamed as its licence requires. It is under the [SIL Open Font License](packages/metroweb/fonts/SELAWIK-LICENSE.txt).
 - Icons are from [Phosphor](https://phosphoricons.com), under the [MIT License](packages/metroweb/src/icons/LICENSE-phosphor.txt).
-- Tilt is a port of the Windows Phone Toolkit's `TiltEffect`, and values labelled **Toolkit** come from the Toolkit's source (Microsoft Public License).
+- Tilt is a port of the Windows Phone Toolkit's `TiltEffect`, so `useTilt.ts` is under the Microsoft Public License rather than MIT. Values labelled **Toolkit** come from the Toolkit's source.
 - The music is public-domain recordings from Wikimedia Commons; see [`apps/web/public/music/CREDITS.md`](apps/web/public/music/CREDITS.md).
 - The sample photos in `apps/web/public/photos/` are AI-generated for this project.
 
